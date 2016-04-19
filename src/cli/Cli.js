@@ -29,8 +29,6 @@ const outStream = outFile ? fs.createWriteStream(outFile) : process.stdout;
 const formatter = new formatters[argv.format](outStream);
 const closeStream = () => outFile ? outStream.end() : null;
 
-console.dir(argv)
-
 const glob = new Glob(argv.pattern, {
     cwd: directory,
     nosort: true,
