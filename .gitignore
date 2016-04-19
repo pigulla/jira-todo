@@ -1,0 +1,4 @@
+.idea/
+node_modules/
+.jtcrc
+npm-debug.log

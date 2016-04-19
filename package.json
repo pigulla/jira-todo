@@ -1,0 +1,46 @@
+{
+  "name": "jira-ticket-check",
+  "version": "0.0.1",
+  "description": "Check ticket ids against their current Jira status.",
+  "engines": {
+    "node": ">=4"
+  },
+  "bin": {
+    "jtc": "./src/cli/Cli.js"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "jira",
+    "ticket",
+    "check",
+    "todo",
+    "fixme"
+  ],
+  "author": "Raphael Pigulla <pigulla@four66.com>",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "assert-plus": "1.0.0",
+    "async": "2.0.0-rc.3",
+    "bluebird": "3.3.5",
+    "bunyan": "1.8.0",
+    "bunyan-format": "0.2.1",
+    "espree": "3.1.3",
+    "glob": "7.0.3",
+    "jira-connector": "2.3.0",
+    "joi": "8.0.5",
+    "lodash.defaults": "4.0.1",
+    "stream-blackhole": "1.0.3",
+    "xml-escape": "1.1.0",
+    "xregexp": "3.1.0",
+    "yargs": "4.6.0"
+  },
+  "devDependencies": {
+    "mocha": "2.4.5"
+  },
+  "directories": {
+    "test": "test"
+  }
+}
