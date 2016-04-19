@@ -6,8 +6,6 @@ const path = require('path');
 const async = require('async');
 const Promise = require('bluebird');
 
-const JiraTodo = require('../JiraTodo');
-
 const CONCURRENCY = 5;
 
 /**
@@ -54,7 +52,7 @@ module.exports = function cliRunner(glob, jt, formatter, logger) {
         glob.on('error', stop);
         glob.on('match', function (match) {
             fileCount++;
-            queue.push(match)
+            queue.push(match);
         });
         glob.on('end', function () {
             if (fileCount === 0) {
@@ -65,4 +63,4 @@ module.exports = function cliRunner(glob, jt, formatter, logger) {
             }
         });
     });
-}
+};

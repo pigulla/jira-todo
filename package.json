@@ -1,6 +1,7 @@
 {
   "name": "jira-todo",
   "version": "0.0.1",
+  "private": true,
   "description": "Check your source code for todos and the Jira issues referenced by them.",
   "engines": {
     "node": ">=4"

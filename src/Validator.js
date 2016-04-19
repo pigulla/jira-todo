@@ -3,8 +3,6 @@
 const assert = require('assert-plus');
 const defaults = require('lodash.defaults');
 
-const intersect = require('./lib/set-intersect');
-
 /**
  * @class jt.Validator
  */

@@ -3,8 +3,6 @@
 const joi = require('joi');
 const bunyan = require('bunyan');
 
-const formatters = Object.keys(require('./formatter'));
-
 const DEFAULT_TODO_PATTERN = '(?:\\*|\\s)?(?<keyword>todo|fixme)(?:!|:|\\s)(?<text>.+)';
 const DEFAULT_ISSUE_PATTERN = '(?<key>(?<project>[A-Z][_A-Z0-9]*)-(?<number>\\d+))';
 

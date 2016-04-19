@@ -19,7 +19,7 @@ function getSingleStatus(jiraConnector, issueKey, cb) {
     const query = {
         issueKey,
         fields: ['status', 'issuetype']
-    }
+    };
 
     jiraConnector.issue.getIssue(query, function (error, result, response) {
         if (error) {
@@ -62,4 +62,4 @@ module.exports = function getStatus(jiraConnector, issueKeys, concurrency) {
             }
         })
         .reduce((map, result) => map.set(result.issueKey, result), new Map());
-}
+};

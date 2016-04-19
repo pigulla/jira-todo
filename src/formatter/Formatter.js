@@ -29,7 +29,7 @@ class Formatter {
     /**
      * @param {jt.FileReport} fileReport
      */
-    report(fileReport) {
+    report(fileReport) { // eslint-disable-line no-unused-vars
     }
 
     end() {

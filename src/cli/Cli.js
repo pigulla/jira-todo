@@ -3,7 +3,6 @@
 const fs = require('fs');
 const path = require('path');
 
-const Promise = require('bluebird');
 const Glob = require('glob').Glob;
 const bunyan = require('bunyan');
 const bformat = require('bunyan-format');

@@ -20,7 +20,7 @@ class CheckstyleFormatter extends Formatter {
                 `column="${error.column}"`,
                 `severity="error"`,
                 `message="${escape(error.message)}"/>`
-                ].join(' '), 4);
+            ].join(' '), 4);
         }, this);
     }
     

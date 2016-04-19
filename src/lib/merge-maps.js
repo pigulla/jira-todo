@@ -5,4 +5,4 @@ module.exports = function mergeMaps(maps) {
     const result = Array.prototype.concat.apply([], entries);
 
     return new Map(result);
-}
+};

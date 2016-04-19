@@ -1,7 +1,6 @@
 'use strict';
 
 const assert = require('assert-plus');
-const defaults = require('lodash.defaults');
 const Promise = require('bluebird');
 const JiraConnector = require('jira-connector');
 
@@ -53,7 +52,7 @@ class Processor {
         return getStatus(this._connector, new Set(uncached))
             .bind(this)
             .then(function (statuses) {
-                this._logger.trace(`Received status for ${Array.from(statuses.keys()).join(', ')}`)
+                this._logger.trace(`Received status for ${Array.from(statuses.keys()).join(', ')}`);
                 statuses.forEach(function (status, key) {
                     resolvers.get(key)(status);
                     resolvers.delete(key);
