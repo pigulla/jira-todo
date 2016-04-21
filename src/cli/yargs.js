@@ -11,7 +11,12 @@ const OPTIONS = {
     },
     'log': {
         type: 'boolean',
-        describe: 'Disable logging',
+        describe: 'Enable logging',
+        default: false
+    },
+    'monochrome': {
+        type: 'boolean',
+        describe: 'Disable color in logouput',
         default: false
     },
     'directory': {

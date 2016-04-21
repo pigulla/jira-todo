@@ -18,9 +18,10 @@ class JsonFormatter extends Formatter {
 
     /** @inheritDoc */
     report(fileReport) {
-        if (!this._first) {
-            this._stream.write(',');
+        if (this._first) {
             this._first = false;
+        } else {
+            this._stream.write(',');
         }
 
         this._stream.write(JSON.stringify(fileReport));

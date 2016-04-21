@@ -13,7 +13,7 @@ const CONCURRENCY = 5;
  * @param {jt.JiraTodo} jt
  * @param {jt.Formatter} formatter
  * @param {Bunyan} logger
- * @return {Promise}
+ * @return {Promise.<{ files: number, errors: number }>}
  */
 module.exports = function cliRunner(glob, jt, formatter, logger) {
     let errorCount = 0;
@@ -22,7 +22,7 @@ module.exports = function cliRunner(glob, jt, formatter, logger) {
     return new Promise(function (resolve, reject) {
         function drained() {
             formatter.end();
-            resolve(errorCount);
+            resolve({ files: fileCount, errors: errorCount });
         }
 
         function stop(err, file) {
@@ -31,7 +31,7 @@ module.exports = function cliRunner(glob, jt, formatter, logger) {
 
             queue.kill();
             glob.abort();
-            reject(err);
+            reject(error);
         }
 
         function worker(match, cb) {
@@ -55,8 +55,7 @@ module.exports = function cliRunner(glob, jt, formatter, logger) {
             queue.push(match);
         });
         glob.on('end', function () {
-            if (fileCount === 0) {
-                logger.warn('No files processed');
+            if (queue.idle()) {
                 drained();
             } else {
                 queue.drain = drained;

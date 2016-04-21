@@ -2,6 +2,7 @@
 
 const assert = require('assert-plus');
 const async = require('async');
+const http = require('http-status');
 const Promise = require('bluebird');
 
 const DEFAULT_CONCURRENCY = 5;
@@ -23,17 +24,25 @@ function getSingleStatus(jiraConnector, issueKey, cb) {
 
     jiraConnector.issue.getIssue(query, function (error, result, response) {
         if (error) {
-            const msg = `Request to Jira server failed with status code ${response.statusCode} (${response.statusMessage})`;
-            return cb(null, new Error(msg));
+            if (!response) {
+                const msg = `Request to Jira server failed: ${error.message}`;
+                return cb(null, new Error(msg));
+            } else if (response.statusCode === http.NOT_FOUND) {
+                return cb(null, { issueKey, data: null });
+            } else {
+                const msg = `Request to Jira server failed with status code ${response.statusCode} (${response.statusMessage})`;
+                return cb(null, new Error(msg));
+            }
         }
 
         cb(null, {
             issueKey,
-            errors: null,
-            typeId: parseInt(result.fields.issuetype.id, 10),
-            typeName: result.fields.issuetype.name,
-            statusId: parseInt(result.fields.status.id, 10),
-            statusName: result.fields.status.name
+            data: {
+                typeId: parseInt(result.fields.issuetype.id, 10),
+                typeName: result.fields.issuetype.name,
+                statusId: parseInt(result.fields.status.id, 10),
+                statusName: result.fields.status.name
+            }
         });
     });
 }
@@ -61,5 +70,5 @@ module.exports = function getStatus(jiraConnector, issueKeys, concurrency) {
                 throw result;
             }
         })
-        .reduce((map, result) => map.set(result.issueKey, result), new Map());
+        .reduce((map, result) => map.set(result.issueKey, result.data), new Map());
 };

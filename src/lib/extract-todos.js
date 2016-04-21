@@ -59,5 +59,6 @@ module.exports = function extractTodos(string, todoRegex, issueRegex) {
     const allIssues = new Map();
     const todos = getTodosFromString(string);
     todos.forEach(todo => todo.issues = parseIssuesFromString(todo.text, allIssues));
+    
     return { todos, issues: allIssues };
 };

@@ -22,14 +22,14 @@ class Formatter {
         const padding = new Array(1 + (arguments.length < 2 ? 0 : indent)).join(' ');
         this._stream.write(padding + string + os.EOL);
     }
-    
+
     start() {
     }
 
     /**
      * @param {jt.FileReport} fileReport
      */
-    report(fileReport) { // eslint-disable-line no-unused-vars
+    report(fileReport) {
     }
 
     end() {

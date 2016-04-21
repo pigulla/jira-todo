@@ -1,4 +1,5 @@
 .idea/
+reports/
 node_modules/
 .jtrc
 npm-debug.log

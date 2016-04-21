@@ -11,69 +11,84 @@ const blackhole = require('stream-blackhole');
 const runner = require('./Runner');
 const JiraTodo = require('../JiraTodo');
 const formatters = require('../formatter/');
+const cliYargs = require('./yargs');
 
-const argv = require('./yargs').argv;
-const verbosity = Math.min(argv.verbose, 3);
-const level = { 3: bunyan.TRACE, 2: bunyan.DEBUG, 1: bunyan.INFO, 0: bunyan.WARN }[verbosity];
+/**
+ * @param {Array.<string>} args
+ * @param {stream.Writable} stdout
+ * @return {Promise.<number>}
+ */
+module.exports = function (args, stdout) {
+    const argv = cliYargs.parse(args);
+    const verbosity = Math.min(argv.verbose, 3);
+    const level = { 3: bunyan.TRACE, 2: bunyan.DEBUG, 1: bunyan.INFO, 0: bunyan.WARN }[verbosity];
 
-const logger = bunyan.createLogger({
-    name: 'default',
-    level,
-    stream: bformat({ outputMode: 'short' }, argv.log ? process.stdout : blackhole())
-});
+    const logger = bunyan.createLogger({
+        name: 'default',
+        level,
+        stream: bformat({ outputMode: 'short', color: !argv.monochrome }, argv.log ? stdout : blackhole())
+    });
 
-const directory = path.resolve(argv.directory);
-const outFile = argv.output ? path.resolve(argv.output) : null;
-const outStream = outFile ? fs.createWriteStream(outFile) : process.stdout;
-const formatter = new formatters[argv.format](outStream);
-const closeStream = () => outFile ? outStream.end() : null;
+    const directory = path.resolve(argv.directory);
+    const outFile = argv.output ? path.resolve(argv.output) : null;
+    const outStream = outFile ? fs.createWriteStream(outFile) : stdout;
+    const formatter = new formatters[argv.format](outStream);
+    const closeStream = () => outFile ? outStream.end() : null; // stdout can't be closed
 
-const glob = new Glob(argv.pattern, {
-    cwd: directory,
-    nosort: true,
-    ignore: argv.ignore
-});
-const jt = new JiraTodo({
-    logger,
-    processor: {
-        connector: {
-            host: argv.jiraHost,
-            protocol: argv.jiraProtocol,
-            basic_auth: {
-                username: argv.jiraUsername,
-                password: argv.jiraPassword
+    const glob = new Glob(argv.pattern, {
+        cwd: directory,
+        nosort: true,
+        ignore: argv.ignore
+    });
+    const jt = new JiraTodo({
+        logger,
+        processor: {
+            connector: {
+                host: argv.jiraHost,
+                protocol: argv.jiraProtocol,
+                basic_auth: {
+                    username: argv.jiraUsername,
+                    password: argv.jiraPassword
+                }
+            }
+        },
+        validator: {
+            projects: {
+                default: argv.projectsDefault,
+                filter: argv.projectsFilter || []
+            },
+            issueTypes: {
+                default: argv.issueTypesDefault,
+                filter: argv.issueTypesFilter || []
+            },
+            issueStatus: {
+                default: argv.issueStatusDefault,
+                filter: argv.issueStatusFilter || []
             }
         }
-    },
-    validator: {
-        projects: {
-            default: argv.projectsDefault,
-            filter: argv.projectsFilter || []
-        },
-        issueTypes: {
-            default: argv.issueTypesDefault,
-            filter: argv.issueTypesFilter || []
-        },
-        issueStatus: {
-            default: argv.issueStatusDefault,
-            filter: argv.issueStatusFilter || []
-        }
-    }
-});
-
-runner(glob, jt, formatter, logger)
-    .then(function (errorCount) {
-        closeStream();
-
-        if (errorCount > 0) {
-            logger.error(`${errorCount} problem${errorCount > 1 ? 's' : ''} found`);
-            process.exit(1);
-        } else {
-            logger.info('All files are OK');
-        }
-    })
-    .catch(function (error) {
-        logger.error(error);
-        closeStream();
-        process.exit(2);
     });
+
+    return runner(glob, jt, formatter, logger)
+        .then(function (result) {
+            closeStream();
+
+            if (result.files === 0) {
+                logger.warn(`No files processed`);
+                return 0;
+            } else if (result.errors > 0) {
+                logger.error(
+                    `${result.errors} problem${result.errors > 1 ? 's' : ''} found ` +
+                    `in ${result.files} file${result.errors > 1 ? 's' : ''}`
+                );
+                return 1;
+            } else {
+                logger.info(`All files are OK`);
+                return 0;
+            }
+        })
+        .catch(function (error) {
+            logger.error(error);
+            closeStream();
+            return 2;
+        });
+};

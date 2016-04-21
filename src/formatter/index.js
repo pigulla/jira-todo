@@ -2,6 +2,6 @@
 
 module.exports = {
     null: require('./Formatter'),
-    checkstyle: require('./checkstyle'),
-    json: require('./json')
+    checkstyle: require('./Checkstyle'),
+    json: require('./Json')
 };

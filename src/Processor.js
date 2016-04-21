@@ -48,13 +48,20 @@ class Processor {
             return clientPromise;
         }
 
-        this._logger.trace(`Requesting Jira status for issue(s) ${uncached.join(', ')}`);
+        this._logger.trace(`Requesting Jira data for issue(s) ${uncached.join(', ')}`);
         return getStatus(this._connector, new Set(uncached))
             .bind(this)
-            .then(function (statuses) {
-                this._logger.trace(`Received status for ${Array.from(statuses.keys()).join(', ')}`);
-                statuses.forEach(function (status, key) {
-                    resolvers.get(key)(status);
+            .then(function (result) {
+                this._logger.trace(`Received data for ${Array.from(result.keys()).join(', ')}`);
+                result.forEach(function (data, key) {
+                    if (data) {
+                        this._logger.trace(
+                            `Status for ${key} (${data.typeName}) is ${data.statusId} (${data.statusName})`
+                        );
+                    } else {
+                        this._logger.trace(`Issue ${key} was not found`);
+                    }
+                    resolvers.get(key)(data);
                     resolvers.delete(key);
                 }, this);
                 return clientPromise;
@@ -84,21 +91,8 @@ class Processor {
                 result.issues.forEach(function (issue, issueKey, map) {
                     map.get(issueKey).status = this._cache.get(issueKey).value();
                 }, this);
-                return result;
-            });
-    }
-
-    /**
-     * Process a comment and add all found issue keys (and the objects referenced by them) to the given data structures.
-     *
-     * @private
-     * @param {Object} comment
-     * @param {Set.<string>} issueKeys
-     */
-    _processComment(comment, issueKeys) {
-        comment.todos.forEach(function (todo) {
-            todo.issues.forEach(issue => issueKeys.add(issue.key));
-        });
+            })
+            .then(() => result);
     }
 }
 

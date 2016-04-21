@@ -14,8 +14,6 @@ jt.Issue;
 
 /**
  * @typedef {{
- *   errors: Array.<string>,
- *   issueKey: string,
  *   typeId: number,
  *   typeName: string.
  *   statusId: number,
@@ -62,6 +60,7 @@ jt.Result;
 
 /**
  * @typedef {Array.<{
+ *   issue: string,
  *   message: string,
  *   line: number, 
  *   column: number

@@ -9,6 +9,7 @@ const ESPREE_OPTIONS = {
     attachComment: true,
     ecmaVersion: 6,
     ecmaFeatures: {
+        jsx: true,
         impliedStrict: true
     }
 };

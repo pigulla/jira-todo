@@ -1,10 +1,11 @@
 'use strict';
 
+const assert = require('assert-plus');
 const joi = require('joi');
 
 const Processor = require('./Processor');
 const Validator = require('./Validator');
-const configSchema = require('./config-schema');
+const configSchema = require('./config-schema').schema;
 
 /**
  * @class jt.JiraTodo
@@ -14,6 +15,8 @@ class JiraTodo {
      * @param {object} options
      */
     constructor(options) {
+        assert.object(options, 'options');
+        
         const result = joi.validate(options, configSchema, { presence: 'required' });
 
         if (result.error) {
@@ -32,7 +35,7 @@ class JiraTodo {
      * @param {string} source
      * @param {string} filename
      * @param {jt.Formatter} formatter
-     * @return {Promise.<jt.FileReport>}
+     * @return {Promise.<jt.Reports>}
      */
     run(source, filename, formatter) {
         const logger = this._logger.child({ filename });
@@ -66,6 +69,7 @@ class JiraTodo {
                         `No issue key given for keyword "${todo.keyword}" ` +
                         `in comment starting in line ${comment.line}`);
                     errors.push({
+                        issue: null,
                         message: 'No issue key given',
                         line: comment.line,
                         column: comment.column
@@ -81,6 +85,7 @@ class JiraTodo {
                             `Problem found for issue ${data.issue.key} ` +
                             `in comment starting in line ${comment.line}: ${data.error}`);
                         errors.push({
+                            issue: data.issue.key,
                             message: data.error,
                             line: comment.line,
                             column: comment.column

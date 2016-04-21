@@ -26,22 +26,40 @@ class Validator {
      * @return {?string}
      */
     validate(issue) {
-        if (!this._isOk(issue.project, this._opts.projects.default, this._opts.projects.filter)) {
-            return `Project "${issue.project}" is not allowed`;
+        if (!issue.status) {
+            return `Issue was not found`;
         }
 
-        if (issue.status.errors) {
-            return issue.status.errors[0];
+        if (!this._isOk(issue.project, this._opts.projects.default, this._opts.projects.filter)) {
+            return `Project "${issue.project}" is not allowed`;
         }
 
         if (!this._isOk(issue.status.typeId, this._opts.issueTypes.default, this._opts.issueTypes.filter)) {
             return `Type "${issue.status.typeName}" (id ${issue.status.typeId}) is not allowed`;
         }
+
         if (!this._isOk(issue.status.statusId, this._opts.issueStatus.default, this._opts.issueStatus.filter)) {
             return `Status "${issue.status.statusName}" (id ${issue.status.statusId}) is not allowed`;
         }
 
         return null;
+    }
+
+    /**
+     * @private
+     * @param {*} value
+     * @param {string} dflt
+     * @param {Set} filter
+     * @return {boolean}
+     */
+    _isOk(value, dflt, filter) {
+        if (dflt === 'included') {
+            return !filter.has(value);
+        } /* istanbul ignore else */ else if (dflt === 'excluded') {
+            return filter.has(value);
+        } else {
+            throw new Error();
+        }
     }
 
     /**
@@ -106,7 +124,7 @@ class Validator {
     /**
      * @private
      */
-    _logDebuggingInfoFor(title, dflt, filter) {
+    _logDebuggingInfoFor /* istanbul ignore next */ (title, dflt, filter) {
         const list = Array.from(filter);
 
         if (dflt === 'included') {
@@ -121,23 +139,6 @@ class Validator {
                 `All but the following ${title} are forbidden: ${list.join(', ')}` :
                 `No ${title} are allowed`
             );
-        }
-    }
-
-    /**
-     * @private
-     * @param {*} value
-     * @param {string} dflt
-     * @param {Set} filter
-     * @return {boolean}
-     */
-    _isOk(value, dflt, filter) {
-        if (dflt === 'included') {
-            return !filter.has(value);
-        } else if (dflt === 'excluded') {
-            return filter.has(value);
-        } else {
-            throw new Error();
         }
     }
 }
