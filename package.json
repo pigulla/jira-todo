@@ -11,8 +11,9 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "npm run lint && npm run test-with-coverage && npm run check-coverage",
+    "test": "npm run lint && npm run test-with-coverage && npm run check-coverage && npm run nsp",
     "lint": "eslint .",
+    "nsp": "nsp check",
     "mocha": "mocha test/\\*\\*/\\*.spec.js",
     "test-with-coverage": "istanbul cover _mocha test/\\*\\*/\\*.spec.js",
     "check-coverage": "istanbul check-coverage"
@@ -59,6 +60,7 @@
     "libxmljs": "0.17.1",
     "mocha": "2.4.5",
     "nock": "8.0.0",
+    "nsp": "2.3.1",
     "proxyquire": "1.7.4",
     "sinon": "1.17.3",
     "sinon-chai": "2.8.0",
