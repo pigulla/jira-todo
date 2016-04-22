@@ -1,5 +1,5 @@
 # jira-todo
-
+[![Codeship Status for pigulla/jira-todo](https://www.codeship.io/projects/b975c890-eac8-0133-c44b-7a726143f84a/status?branch=master)](https://www.codeship.io/projects/148002)
 > Check your source code for todos and the Jira issues referenced by them.
 
 ## Integration into your Build System
