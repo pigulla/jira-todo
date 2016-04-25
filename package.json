@@ -16,7 +16,8 @@
     "nsp": "nsp check",
     "mocha": "mocha test/\\*\\*/\\*.spec.js",
     "test-with-coverage": "istanbul cover _mocha test/\\*\\*/\\*.spec.js",
-    "check-coverage": "istanbul check-coverage"
+    "check-coverage": "istanbul check-coverage",
+    "coveralls": "cat reports/lcov.info > coveralls"
   },
   "repository": {
     "type": "git",
