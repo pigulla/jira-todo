@@ -2,6 +2,7 @@
 
 const expect = require('chai').expect;
 const sinon = require('sinon');
+const Promise = require('bluebird');
 const streamBuffers = require('stream-buffers');
 
 const test = require('../setup');

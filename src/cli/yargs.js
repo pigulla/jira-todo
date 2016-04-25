@@ -121,7 +121,7 @@ const OPTIONS = {
 
 module.exports = yargs
     .help('help').describe('help', 'Display this help message')
-    .env('JTC')
+    .env('JT')
     .detectLocale(false)
     .options(OPTIONS)
     .config('config', path => JSON.parse(fs.readFileSync(path)))

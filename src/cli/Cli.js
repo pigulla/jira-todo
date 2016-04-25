@@ -5,6 +5,7 @@ const path = require('path');
 
 const Glob = require('glob').Glob;
 const bunyan = require('bunyan');
+const Promise = require('bluebird');
 const bformat = require('bunyan-format');
 const blackhole = require('stream-blackhole');
 
@@ -33,7 +34,15 @@ module.exports = function (args, stdout) {
     const outFile = argv.output ? path.resolve(argv.output) : null;
     const outStream = outFile ? fs.createWriteStream(outFile) : stdout;
     const formatter = new formatters[argv.format](outStream);
-    const closeStream = () => outFile ? outStream.end() : null; // stdout can't be closed
+
+    function closeStream() {
+        if (!outFile) {
+            // stdout can't be closed
+            return Promise.resolve();
+        }
+
+        return Promise.fromCallback(cb => outStream.end(cb));
+    }
 
     const glob = new Glob(argv.pattern, {
         cwd: directory,
@@ -69,9 +78,8 @@ module.exports = function (args, stdout) {
     });
 
     return runner(glob, jt, formatter, logger)
+        .tap(closeStream)
         .then(function (result) {
-            closeStream();
-
             if (result.files === 0) {
                 logger.warn(`No files processed`);
                 return 0;
@@ -88,7 +96,6 @@ module.exports = function (args, stdout) {
         })
         .catch(function (error) {
             logger.error(error);
-            closeStream();
-            return 2;
+            return closeStream().return(2);
         });
 };
