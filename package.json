@@ -1,7 +1,7 @@
 {
   "name": "jira-todo",
-  "version": "0.0.1",
-  "private": true,
+  "version": "1.0.0-beta.1",
+  "private": false,
   "description": "Check your source code for todos and the Jira issues referenced by them.",
   "engines": {
     "node": ">=4"
@@ -55,6 +55,7 @@
   "devDependencies": {
     "chai": "3.5.0",
     "chai-as-promised": "5.3.0",
+    "coveralls": "2.11.9",
     "eslint": "2.8.0",
     "istanbul": "0.4.3",
     "libxmljs": "0.17.1",
