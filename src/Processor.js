@@ -1,8 +1,11 @@
 'use strict';
 
+const util = require('util');
+
 const assert = require('assert-plus');
 const Promise = require('bluebird');
 const JiraConnector = require('jira-connector');
+const XRegExp = require('xregexp');
 
 const analyze = require('./lib/analyze');
 const getStatus = require('./lib/get-status');
@@ -14,18 +17,24 @@ class Processor {
     /**
      * @param {Object} options
      * @param {Object} options.connector
-     * @param {string} options.todoPattern
-     * @param {string} options.issuePattern
+     * @param {Array.<string>} options.keywords
      * @param {Bunyan} logger
      */
     constructor(options, logger) {
         assert.object(options, 'options');
         assert.object(logger, 'logger');
+        assert.object(options.connector, 'options.connector');
+        assert.arrayOfString(options.keywords, 'options.keywords');
 
         this._logger = logger;
-        this._opts = options;
-        this._connector = new JiraConnector(this._opts.connector);
+        this._connector = new JiraConnector(options.connector);
         this._cache = new Map();
+
+        this._issuePattern = Processor.ISSUE_PATTERN;
+        this._todoPattern = util.format(
+            Processor.TODO_PATTERN_TEMPLATE,
+            options.keywords.map(keyword => XRegExp.escape(keyword)).join('|')
+        );
     }
 
     /**
@@ -80,7 +89,7 @@ class Processor {
         let result;
 
         return Promise
-            .try(() => analyze(input, this._opts.todoPattern, this._opts.issuePattern))
+            .try(() => analyze(input, this._todoPattern, this._issuePattern))
             .bind(this)
             .then(function (commentsAndIssues) {
                 result = commentsAndIssues;
@@ -95,5 +104,8 @@ class Processor {
             .then(() => result);
     }
 }
+
+Processor.ISSUE_PATTERN = '(?<key>(?<project>[A-Z][_A-Z0-9]*)-(?<number>\\d+))';
+Processor.TODO_PATTERN_TEMPLATE = '(?:^|\\*|\\s|@)(?<keyword>%s)(?:!|:|\\s)(?<text>.+)';
 
 module.exports = Processor;

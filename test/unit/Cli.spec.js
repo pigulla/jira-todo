@@ -22,13 +22,18 @@ const cli = test.proxyquireSrc('cli/Cli', {
 });
 
 describe('Cli', function () {
-    const args = [];
-    let stdout;
+    const proc = {
+        argv: null,
+        stdout: null,
+        stderr: null
+    };
 
     beforeEach(function () {
-        stdout = new streamBuffers.WritableStreamBuffer();
+        proc.stdout = new streamBuffers.WritableStreamBuffer();
+        proc.stderr = new streamBuffers.WritableStreamBuffer();
 
-        yargs.parse.withArgs(args).returns({
+        yargs.parse.reset();
+        yargs.parse.withArgs(proc.argv).returns({
             directory: __dirname,
             format: 'json'
         });
@@ -40,7 +45,7 @@ describe('Cli', function () {
             errors: 0
         }));
 
-        return cli(args, stdout)
+        return cli(proc)
             .then(exitCode => expect(exitCode).to.equal(0));
     });
 
@@ -50,14 +55,14 @@ describe('Cli', function () {
             errors: 2
         }));
 
-        return cli(args, stdout)
+        return cli(proc)
             .then(exitCode => expect(exitCode).to.equal(1));
     });
 
     it('for errors', function () {
         runner.returns(Promise.reject('Oh noes'));
 
-        return cli(args, stdout)
+        return cli(proc)
             .then(exitCode => expect(exitCode).to.equal(2));
     });
 });

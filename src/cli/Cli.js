@@ -15,29 +15,31 @@ const formatters = require('../formatter/');
 const cliYargs = require('./yargs');
 
 /**
- * @param {Array.<string>} args
- * @param {stream.Writable} stdout
+ * @param {Object} proc
+ * @param {Array.<string>} proc.argv
+ * @param {stream.Writable} proc.stdout
+ * @param {stream.Writable} proc.stderr
  * @return {Promise.<number>}
  */
-module.exports = function (args, stdout) {
-    const argv = cliYargs.parse(args);
+module.exports = function (proc) {
+    const argv = cliYargs.parse(proc.argv);
     const verbosity = Math.min(argv.verbose, 3);
     const level = { 3: bunyan.TRACE, 2: bunyan.DEBUG, 1: bunyan.INFO, 0: bunyan.WARN }[verbosity];
 
     const logger = bunyan.createLogger({
         name: 'default',
         level,
-        stream: bformat({ outputMode: 'short', color: !argv.monochrome }, argv.log ? stdout : blackhole())
+        stream: bformat({ outputMode: 'short', color: !argv.monochrome }, argv.quiet ? blackhole() : proc.stderr)
     });
 
     const directory = path.resolve(argv.directory);
     const outFile = argv.output ? path.resolve(argv.output) : null;
-    const outStream = outFile ? fs.createWriteStream(outFile) : stdout;
+    const outStream = outFile ? fs.createWriteStream(outFile) : proc.stderr;
     const formatter = new formatters[argv.format](outStream);
 
     function closeStream() {
         if (!outFile) {
-            // stdout can't be closed
+            // stderr can't be closed
             return Promise.resolve();
         }
 
@@ -51,7 +53,9 @@ module.exports = function (args, stdout) {
     });
     const jt = new JiraTodo({
         logger,
+        allowTodosWithoutIssues: argv.allowTodosWithoutIssues,
         processor: {
+            keywords: argv.keyword,
             connector: {
                 host: argv.jiraHost,
                 protocol: argv.jiraProtocol,
@@ -80,6 +84,8 @@ module.exports = function (args, stdout) {
     return runner(glob, jt, formatter, logger)
         .tap(closeStream)
         .then(function (result) {
+            logger.debug(`A total of ${result.files} file${result.files === 1 ? ' was' : 's were'} processed`);
+
             if (result.files === 0) {
                 logger.warn(`No files processed`);
                 return 0;

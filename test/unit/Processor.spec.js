@@ -17,7 +17,11 @@ const Processor = test.proxyquireSrc('Processor', {
 
 describe('Processor', function () {
     function getProcessor(options) {
-        return new Processor(options, test.nullLogger());
+        const opts = Object.assign({}, {
+            connector: {},
+            keywords: []
+        }, options);
+        return new Processor(opts, test.nullLogger());
     }
 
     it('does nothing for input without comments', function () {

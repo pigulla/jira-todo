@@ -23,18 +23,25 @@ describe('JiraTodo', function () {
         logger: test.nullLogger(),
         allowTodosWithoutIssues: false,
         processor: {
+            keywords: ['todo'],
             connector: {
-                host: 'jira.host.invalid'
+                host: 'jira.host.invalid',
+                protocol: 'https',
+                username: '',
+                password: ''
             }
         },
         validator: {
             projects: {
+                default: 'excluded',
                 filter: []
             },
             issueTypes: {
+                default: 'excluded',
                 filter: []
             },
             issueStatus: {
+                default: 'excluded',
                 filter: []
             }
         }

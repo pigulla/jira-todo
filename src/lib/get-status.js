@@ -25,12 +25,13 @@ function getSingleStatus(jiraConnector, issueKey, cb) {
     jiraConnector.issue.getIssue(query, function (error, result, response) {
         if (error) {
             if (!response) {
-                const msg = `Request to Jira server failed: ${error.message}`;
+                const msg = `Request to Jira server for issue ${issueKey} failed: ${error.message}`;
                 return cb(null, new Error(msg));
             } else if (response.statusCode === http.NOT_FOUND) {
                 return cb(null, { issueKey, data: null });
             } else {
-                const msg = `Request to Jira server failed with status code ${response.statusCode} (${response.statusMessage})`;
+                const msg = `Request to Jira server for issue ${issueKey} failed ` +
+                    `with status code ${response.statusCode} (${response.statusMessage})`;
                 return cb(null, new Error(msg));
             }
         }

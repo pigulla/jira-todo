@@ -80,11 +80,11 @@ class Validator {
         });
         defaults(opts.issueTypes, {
             default: 'excluded',
-            filter: [1, 3, 4, 5]
+            filter: []
         });
         defaults(opts.issueStatus, {
             default: 'excluded',
-            filter: [1]
+            filter: []
         });
 
         this._validateOptions(opts);

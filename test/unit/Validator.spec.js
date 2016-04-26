@@ -7,7 +7,18 @@ const Validator = test.requireSrc('Validator');
 
 describe('Validator', function () {
     function getValidator(options) {
-        return new Validator(options, test.nullLogger());
+        const opts = Object.assign({}, {
+            issueTypes: {
+                default: 'excluded',
+                filter: [1, 3, 4, 5]
+            },
+            issueStatus: {
+                default: 'excluded',
+                filter: [1]
+            }
+        }, options);
+
+        return new Validator(opts, test.nullLogger());
     }
 
     function makeIssue(project, type, status) {

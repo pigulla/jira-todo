@@ -1,11 +1,9 @@
 'use strict';
 
 const assert = require('assert-plus');
-const joi = require('joi');
 
 const Processor = require('./Processor');
 const Validator = require('./Validator');
-const configSchema = require('./config-schema').schema;
 
 /**
  * @class jt.JiraTodo
@@ -16,17 +14,15 @@ class JiraTodo {
      */
     constructor(options) {
         assert.object(options, 'options');
-        
-        const result = joi.validate(options, configSchema, { presence: 'required' });
+        assert.object(options.logger, 'options.logger');
+        assert.bool(options.allowTodosWithoutIssues, 'options.allowTodosWithoutIssues');
+        assert.object(options.processor, 'options.processor');
+        assert.object(options.validator, 'options.validator');
 
-        if (result.error) {
-            throw new Error(`Invalid options (${result.error.toString()})`);
-        }
-
-        this._logger = result.value.logger;
-        this._allowTodosWithoutIssues = result.value.allowTodosWithoutIssues;
-        this._processor = new Processor(result.value.processor, this._logger);
-        this._validator = new Validator(result.value.validator, this._logger);
+        this._logger = options.logger;
+        this._allowTodosWithoutIssues = options.allowTodosWithoutIssues;
+        this._processor = new Processor(options.processor, this._logger);
+        this._validator = new Validator(options.validator, this._logger);
 
         this._logger.info(`Todos without issues are ${this._allowTodosWithoutIssues ? 'allowed' : 'forbidden' }`);
     }

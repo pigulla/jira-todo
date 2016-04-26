@@ -1,6 +1,6 @@
 'use strict';
 
-/* eslint-disable quotes */
+/* eslint-disable quotes, max-len */
 
 module.exports = function makeResponse(key, options) {
     return {

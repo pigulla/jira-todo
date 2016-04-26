@@ -1,12 +1,14 @@
 'use strict';
 
+const util = require('util');
+
 const expect = require('chai').expect;
 const sinon = require('sinon');
 
 const test = require('../../setup');
+const Processor = test.requireSrc('Processor');
 
-const TODO_PATTERN = test.requireSrc('config-schema').defaultTodoPattern;
-const ISSUE_PATTERN = test.requireSrc('config-schema').defaultIssuePattern;
+const TODO_PATTERN = util.format(Processor.TODO_PATTERN_TEMPLATE, 'todo|fixme');
 
 const extractComments = sinon.stub();
 const extractTodods = sinon.stub();
@@ -19,7 +21,7 @@ const analyze = test.proxyquireSrc('lib/analyze', stubs);
 
 describe('analyze', function () {
     function run(source) {
-        const result = analyze(source, TODO_PATTERN, ISSUE_PATTERN);
+        const result = analyze(source, TODO_PATTERN, Processor.ISSUE_PATTERN);
         return test.objectify(result);
     }
 

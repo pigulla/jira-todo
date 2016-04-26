@@ -1,13 +1,17 @@
 'use strict';
 
+const util = require('util');
+
 const expect = require('chai').expect;
 const XRegExp = require('xregexp');
 
 const test = require('../../setup');
 
 const extractTodos = test.requireSrc('lib/extract-todos');
-const TODO_REGEX = XRegExp(test.requireSrc('config-schema').defaultTodoPattern, 'gi');
-const ISSUE_REGEX = XRegExp(test.requireSrc('config-schema').defaultIssuePattern, 'gi');
+const Processor = test.requireSrc('Processor');
+
+const TODO_REGEX = XRegExp(util.format(Processor.TODO_PATTERN_TEMPLATE, 'todo|fixme'), 'gi');
+const ISSUE_REGEX = XRegExp(Processor.ISSUE_PATTERN, 'gi');
 
 describe('extractTodos', function () {
     function extract(string) {

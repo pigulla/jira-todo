@@ -26,7 +26,9 @@ describe('Integration test for cli runner', function () {
 
         const jt = new JiraTodo({
             logger,
+            allowTodosWithoutIssues: false,
             processor: {
+                keywords: [],
                 connector: {
                     host: 'jira.host.invalid',
                     protocol: 'https',

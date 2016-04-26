@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require('./Cli')(process.argv, process.stdout).then(exitCode => process.exit(exitCode));
+require('./Cli')(process).then(exitCode => process.exit(exitCode));

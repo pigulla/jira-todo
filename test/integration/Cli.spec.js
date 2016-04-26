@@ -13,18 +13,67 @@ const test = require('../setup');
 const cli = test.requireSrc('cli/Cli');
 
 describe('Integration for cli wrapper', function () {
-    this.slow(2000);
-    
+    this.slow(4000);
+
+    function getProcessMock(args) {
+        const argv = [
+            '/usr/local/bin/node',
+            __filename
+        ].concat(args);
+
+        return {
+            argv,
+            stdout: new streamBuffers.WritableStreamBuffer(),
+            stderr: new streamBuffers.WritableStreamBuffer()
+        };
+    }
+
+    describe('directs output properly', function () {
+        it('when writing to a file and logging', function () {
+            const tmpFile = tmp.fileSync();
+            const proc = getProcessMock([
+                '--verbose', '--verbose', '--verbose',
+                '--jiraUsername', 'myusername',
+                '--jiraPassword', 'mypassword',
+                '--jiraHost', 'jira.host.invalid',
+                '--pattern', '**/fixtures/testing.empty.js',
+                '--output', tmpFile.name
+            ]);
+
+            return cli(proc)
+                .then(exitCode => expect(exitCode).to.equal(0))
+                .then(function () {
+                    expect(proc.stderr.getContents()).to.not.be.false;
+                    expect(proc.stdout.getContents()).to.be.false;
+                });
+        });
+
+        it('when writing to stdout and not logging', function () {
+            const proc = getProcessMock([
+                '--quiet',
+                '--verbose', '--verbose',
+                '--jiraUsername', 'myusername',
+                '--jiraPassword', 'mypassword',
+                '--jiraHost', 'jira.host.invalid',
+                '--pattern', '**/fixtures/testing.empty.js'
+            ]);
+
+            return cli(proc)
+                .then(exitCode => expect(exitCode).to.equal(0))
+                .then(function () {
+                    expect(proc.stderr.getContents()).to.not.be.false;
+                    expect(proc.stdout.getContents()).to.be.false;
+                });
+        });
+
+    });
+
     describe('works', function () {
         afterEach(() => nock.cleanAll());
 
         it('for testing nothing', function () {
             const tmpFile = tmp.fileSync();
-            const stdout = new streamBuffers.WritableStreamBuffer();
-            const args = [
-                '/usr/local/bin/node',
-                __filename,
-                '--log',
+            const proc = getProcessMock([
                 '--monochrome',
                 '--verbose', '--verbose', '--verbose',
                 '--jiraUsername', 'myusername',
@@ -41,9 +90,9 @@ describe('Integration for cli wrapper', function () {
                 '--issueTypesFilter', '3',
                 '--issueTypesFilter', '4',
                 '--output', tmpFile.name
-            ];
+            ]);
 
-            return cli(args, stdout)
+            return cli(proc)
                 .then(exitCode => expect(exitCode).to.equal(0))
                 .then(() => Promise.fromCallback(cb => fs.readFile(tmpFile.name, cb)))
                 .then(contents => JSON.parse(contents.toString()))
@@ -52,11 +101,7 @@ describe('Integration for cli wrapper', function () {
 
         it('for testing files that are ok', function () {
             const tmpFile = tmp.fileSync();
-            const stdout = new streamBuffers.WritableStreamBuffer();
-            const args = [
-                '/usr/local/bin/node',
-                __filename,
-                '--log',
+            const proc = getProcessMock([
                 '--monochrome',
                 '--verbose', '--verbose', '--verbose',
                 '--jiraUsername', 'myusername',
@@ -67,9 +112,9 @@ describe('Integration for cli wrapper', function () {
                 '--issueStatusDefault', 'included',
                 '--issueTypesDefault', 'included',
                 '--output', tmpFile.name
-            ];
+            ]);
 
-            return cli(args, stdout)
+            return cli(proc)
                 .then(exitCode => expect(exitCode).to.equal(0))
                 .then(() => Promise.fromCallback(cb => fs.readFile(tmpFile.name, cb)))
                 .then(contents => JSON.parse(contents.toString()))
@@ -83,7 +128,7 @@ describe('Integration for cli wrapper', function () {
 
         it('for testing.es5.js', function () {
             test.addIssueToNock('PM-42', { statusId: 5, statusName: 'Resolved', typeId: 2, typeName: 'Task' });
-            test.addIssueToNock('PM-1234', { statusId: 2, statusName: 'In Progress', typeId: 4, typeName: 'Improvement' });
+            test.addIssueToNock('PM-1234', { statusId: 2, statusName: 'In Progress', typeId: 4, typeName: 'Bug' });
             test.addIssueToNock('ABC-13', { statusId: 2, statusName: 'In Progress', typeId: 9, typeName: 'Story' });
             test.addIssueToNock('ABC-99', { statusId: 5, statusName: 'Resolved', typeId: 3, typeName: 'Subtask' });
             test.addIssueToNock('ABC-1000', { statusId: 1, statusName: 'Open', typeId: 9, typeName: 'Story' });
@@ -91,11 +136,7 @@ describe('Integration for cli wrapper', function () {
             test.addNotFoundIssueToNock('TK-4711');
 
             const tmpFile = tmp.fileSync();
-            const stdout = new streamBuffers.WritableStreamBuffer();
-            const args = [
-                '/usr/local/bin/node',
-                __filename,
-                '--log',
+            const proc = getProcessMock([
                 '--monochrome',
                 '--verbose', '--verbose', '--verbose',
                 '--jiraUsername', 'myusername',
@@ -112,9 +153,9 @@ describe('Integration for cli wrapper', function () {
                 '--issueTypesFilter', '3',
                 '--issueTypesFilter', '4',
                 '--output', tmpFile.name
-            ];
+            ]);
 
-            return cli(args, stdout)
+            return cli(proc)
                 .then(exitCode => expect(exitCode).to.equal(1))
                 .then(() => Promise.fromCallback(cb => fs.readFile(tmpFile.name, cb)))
                 .then(contents => JSON.parse(contents.toString()))
@@ -181,23 +222,20 @@ describe('Integration for cli wrapper', function () {
             test.addIssueToNock('PM-42', { statusId: 5, statusName: 'Resolved' });
 
             const tmpFile = tmp.fileSync();
-            const stdout = new streamBuffers.WritableStreamBuffer();
-            const args = [
-                '/usr/local/bin/node',
-                __filename,
-                '--log',
+            const proc = getProcessMock([
                 '--monochrome',
                 '--verbose', '--verbose', '--verbose',
                 '--jiraUsername', 'myusername',
                 '--jiraPassword', 'mypassword',
                 '--jiraHost', 'jira.host.invalid',
                 '--pattern', '**/testing.es6.js',
+                '--projectsDefault', 'included',
                 '--issueStatusDefault', 'excluded',
                 '--issueStatusFilter', '1',
                 '--output', tmpFile.name
-            ];
+            ]);
 
-            return cli(args, stdout)
+            return cli(proc)
                 .then(exitCode => expect(exitCode).to.equal(1))
                 .then(() => Promise.fromCallback(cb => fs.readFile(tmpFile.name, cb)))
                 .then(contents => JSON.parse(contents.toString()))
