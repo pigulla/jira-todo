@@ -19,6 +19,10 @@ module.exports = {
             pattern: 'test/integration/*.json',
             instrument: false
         },
+        {
+            pattern: 'package.json',
+            instrument: false
+        },
         'src/**/*.js'
     ],
     tests: [
