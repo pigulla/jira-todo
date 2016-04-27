@@ -7,6 +7,27 @@
 
 > Check your source code for todos and the Jira issues referenced by them.
 
-## Integration into your Build System
+## The What
+jira-todo analyzes your JavaScript files and looks for comments that contain todo annotations as defined by certain keywords (by default those are `todo` and `fixme`).
 
-Plugins for [Grunt](http://gruntjs.com/) and [Gulp](http://gulpjs.com/) are coming soon.
+For example, consider the following source code:
+```js
+function fibonacci(n) {
+    // TODO FIB-42: Consider negative values for n
+    if (n === 1 || n === 2) {
+        return 1;
+    } else {
+        return fibonacci(n - 1) + fibonacci(n - 2);
+    }
+}
+```
+jira-todo will be triggered by the keyword `TODO` and identify the referenced Jira issue `FIB-42`. In a second step it will contact the Jira server, retrieve the data for that  issue and validate whether its type and status are acceptable.
+
+## The Why
+In most projects the code is riddled with TODOs and FIXMEs, but experience shows that those are oftentimes not resolved unless there is a ticket in your issue tracker that forces you to (sooner or later).
+
+But even if you connect your todos with specific issues the two can still run out of sync or you might reference issues that are already closed. jira-todo helps you enforce consistency between your source code and Jira issues.
+
+## Configuration
+
+Check out the documentation in the [wiki](../../wiki/Configuration).

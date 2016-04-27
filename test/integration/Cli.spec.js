@@ -52,6 +52,7 @@ describe('Integration for cli wrapper', function () {
             const proc = getProcessMock([
                 '--quiet',
                 '--verbose', '--verbose',
+                '--withModules',
                 '--jiraUsername', 'myusername',
                 '--jiraPassword', 'mypassword',
                 '--jiraHost', 'jira.host.invalid',

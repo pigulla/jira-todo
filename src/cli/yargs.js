@@ -141,6 +141,21 @@ const OPTIONS = {
     }
 };
 
+/**
+ * @param {?Array.<string>} array
+ * @param {string} name
+ */
+function parseToIntegers(array, name) {
+    if (array) {
+        array.forEach(function (value, index) {
+            if (!/^\d+$/.test(value)) {
+                throw new Error(`${name} "${value}" is not an integer`);
+            }
+            array[index] = parseInt(value, 10);
+        });
+    }
+}
+
 /* eslint-disable max-len */
 module.exports = yargs
     .help('help').describe('help', 'Display this help message')
@@ -178,4 +193,9 @@ module.exports = yargs
     ], 'Other options')
     .pkgConf('jira-todo', process.cwd())
     .config('config', path => JSON.parse(fs.readFileSync(path)))
+    .check(function (argv, options) {
+        parseToIntegers(argv.issueTypesFilter, 'issueTypeFilter');
+        parseToIntegers(argv.issueStatusFilter, 'issueStatusFilter');
+        return true;
+    })
     .strict();
