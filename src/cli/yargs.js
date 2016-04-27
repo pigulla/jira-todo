@@ -45,9 +45,18 @@ const OPTIONS = {
     'ignore': {
         type: 'string',
         array: true,
-        default: ['node_modules/**/*'],
         requiresArg: true,
         describe: 'Glob pattern of files to ignore (can be specified multiple times)'
+    },
+    'dot': {
+        type: 'boolean',
+        describe: 'Treat dots as normal characters (otherwise they are ignored by default)',
+        default: false
+    },
+    'withModules': {
+        type: 'boolean',
+        describe: 'Do not automatically add "node_modules/**/*" to the list of ignored patterns',
+        default: false
     },
     'format': {
         type: 'string',
@@ -138,6 +147,7 @@ module.exports = yargs
     .env('JT')
     .detectLocale(false)
     .wrap(yargs.terminalWidth())
+    .version()
     .usage(`${pkg.name} v${pkg.version}, (c) ${pkg.author}`)
     .epilog(`For more information visit the project's homepage at ${pkg.homepage}`)
     .example(
@@ -151,20 +161,20 @@ module.exports = yargs
     )
     .options(OPTIONS)
     .group([
-        'directory', 'pattern', 'ignore', 'keyword'
+        'directory', 'pattern', 'ignore', 'dot', 'withModules', 'keyword', 'config'
     ], 'General configuration')
     .group([
         'output', 'format', 'quiet', 'verbose', 'monochrome'
     ], 'Logging and output')
     .group([
-        'jiraHost', 'jiraUsername', 'jiraPassword', 'jiraProtocol'
+        'jiraHost', 'jiraProtocol', 'jiraUsername', 'jiraPassword'
     ], 'Jira settings')
     .group([
         'projectsDefault', 'projectsFilter', 'issueTypesDefault', 'issueTypesFilter',
         'issueStatusDefault', 'issueStatusFilter', 'allowTodosWithoutIssues'
     ], 'Issue handling')
     .group([
-        'help', 'config'
+        'help', 'version'
     ], 'Other options')
     .pkgConf('jira-todo')
     .config('config', path => JSON.parse(fs.readFileSync(path)))

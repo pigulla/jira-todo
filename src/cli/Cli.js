@@ -36,6 +36,7 @@ module.exports = function (proc) {
     const outFile = argv.output ? path.resolve(argv.output) : null;
     const outStream = outFile ? fs.createWriteStream(outFile) : proc.stderr;
     const formatter = new formatters[argv.format](outStream);
+    const defaultIgnores = argv.withModules ? [] : ['node_modules/**/*'];
 
     function closeStream() {
         if (!outFile) {
@@ -49,7 +50,8 @@ module.exports = function (proc) {
     const glob = new Glob(argv.pattern, {
         cwd: directory,
         nosort: true,
-        ignore: argv.ignore
+        dot: argv.dot,
+        ignore: defaultIgnores.concat(argv.ignore || [])
     });
     const jt = new JiraTodo({
         logger,
