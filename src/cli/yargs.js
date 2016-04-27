@@ -121,7 +121,7 @@ const OPTIONS = {
         default: 'included'
     },
     'issueTypesFilter': {
-        type: 'number',
+        type: 'string',
         array: true,
         requiresArg: true,
         describe: 'White- or blacklist of issue types (depending on the "issueTypesDefault" setting)'
@@ -134,7 +134,7 @@ const OPTIONS = {
         default: 'included'
     },
     'issueStatusFilter': {
-        type: 'number',
+        type: 'string',
         array: true,
         requiresArg: true,
         describe: 'White- or blacklist of issue status (depending on the "issueStatusDefault" setting)'
@@ -148,7 +148,7 @@ module.exports = yargs
     .detectLocale(false)
     .wrap(yargs.terminalWidth())
     .version()
-    .usage(`${pkg.name} v${pkg.version}, (c) ${pkg.author}`)
+    .usage(`${pkg.name} v${pkg.version}, (c) ${pkg.author.name} <${pkg.author.email}>`)
     .epilog(`For more information visit the project's homepage at ${pkg.homepage}`)
     .example(
         '$0 --config .jtrc.json',
@@ -176,6 +176,6 @@ module.exports = yargs
     .group([
         'help', 'version'
     ], 'Other options')
-    .pkgConf('jira-todo')
+    .pkgConf('jira-todo', process.cwd())
     .config('config', path => JSON.parse(fs.readFileSync(path)))
     .strict();

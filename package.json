@@ -1,6 +1,6 @@
 {
   "name": "jira-todo",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.4",
   "description": "Check your source code for todos and the Jira issues referenced by them.",
   "engines": {
     "node": ">=4"
@@ -34,7 +34,10 @@
     "todo",
     "fixme"
   ],
-  "author": "Raphael Pigulla <pigulla@four66.com>",
+  "author": {
+    "name": "Raphael Pigulla",
+    "email": "pigulla@four66.com"
+  },
   "license": "BSD-2-Clause",
   "dependencies": {
     "assert-plus": "1.0.0",
