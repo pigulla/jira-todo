@@ -12,6 +12,7 @@ const JiraTodo = test.requireSrc('JiraTodo');
 const runner = test.requireSrc('cli/Runner');
 
 describe('Integration test for cli runner', function () {
+    this.timeout(4000);
     this.slow(2000);
 
     afterEach(() => nock.cleanAll());

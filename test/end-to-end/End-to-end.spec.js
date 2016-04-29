@@ -65,7 +65,8 @@ function run(name) {
 
 describe('End-to-End', function () {
     let server;
-
+    
+    this.timeout(4000);
     this.slow(2000);
 
     before(function () {

@@ -13,6 +13,7 @@ const test = require('../setup');
 const cli = test.requireSrc('cli/Cli');
 
 describe('Integration for cli wrapper', function () {
+    this.timeout(5000);
     this.slow(4000);
 
     function getProcessMock(args) {
