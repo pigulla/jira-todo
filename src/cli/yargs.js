@@ -62,7 +62,7 @@ const OPTIONS = {
     },
     'withModules': {
         type: 'boolean',
-        describe: 'Do not automatically add "node_modules/**/*" to the list of ignored patterns',
+        describe: 'Do not automatically add all "node_modules" directories to the list of ignored patterns',
         default: false
     },
     'format': {
@@ -184,8 +184,8 @@ module.exports = yargs
         'Read the entire config from the given config file, including the Jira password (generally not a good idea)'
     )
     .example(
-        'JT_JIRA_USERNAME=groot JT_JIRA_PASSWORD=mypass $0 --jiraHost jira.example.com --projectsFilter FOO --projectsFilter BAR',
-        'Process all .js files in the current directory recursively allowing only issues from the projects FOO and BAR. ' +
+        'JT_JIRA_USERNAME=groot JT_JIRA_PASSWORD=mypass $0 --pattern **/*.\\{js,jsx\\} --jiraHost jira.example.com --projectsFilter FOO --projectsFilter BAR',
+        'Process all .js and .jsx files in the current directory recursively allowing only issues from the projects FOO and BAR. ' +
         'All issue types and status are accepted. The Jira username and password are provided via environment variables'
     )
     .options(OPTIONS)
@@ -193,7 +193,7 @@ module.exports = yargs
         'directory', 'pattern', 'ignore', 'dot', 'withModules', 'keyword', 'config'
     ], 'General configuration')
     .group([
-        'output', 'format', 'quiet', 'verbose', 'monochrome'
+        'output', 'format', 'logFormat', 'quiet', 'verbose', 'monochrome'
     ], 'Logging and output')
     .group([
         'jiraHost', 'jiraProtocol', 'jiraPort', 'jiraUsername', 'jiraPassword'

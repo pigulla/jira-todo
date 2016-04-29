@@ -38,7 +38,7 @@ module.exports = function (proc) {
     const outFile = argv.output ? path.resolve(argv.output) : null;
     const outStream = outFile ? fs.createWriteStream(outFile) : proc.stdout;
     const formatter = new formatters[argv.format](outStream);
-    const defaultIgnores = argv.withModules ? [] : ['node_modules/**/*'];
+    const defaultIgnores = argv.withModules ? [] : ['**/node_modules/**/*'];
 
     function closeStream() {
         if (!outFile) {

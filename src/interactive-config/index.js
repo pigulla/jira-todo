@@ -1,9 +1,11 @@
 'use strict';
 
+const chalk = require('chalk');
 const inquirer = require('inquirer');
-const fs = require('fs');
 const Promise = require('bluebird');
 const JiraConnector = require('jira-connector');
+
+/* eslint-disable no-console */
 
 function jira(answers, scope, command, options) {
     const connector = new JiraConnector({
@@ -28,37 +30,52 @@ function jira(answers, scope, command, options) {
     }).timeout(5000, `Request to Jira server timed out after 5 seconds`);
 }
 
+console.log();
+console.log(chalk.yellow(`Welcome to the jira-todo configuration tool`));
+console.log(chalk.yellow('-------------------------------------------'));
+console.log();
+console.log('This tool will contact the Jira server multiple times during the configuration');
+console.log('process to retrieve data. Please be patient.');
+console.log();
+
 inquirer
     .prompt([
         {
-            message: 'Jira host',
+            message: 'Please enter the hostname of your Jira server (without "http"):',
             name: 'jiraHost',
             type: 'string'
         },
         {
-            message: 'Jira protocol',
+            message: 'What protocol do you want to use?',
             name: 'jiraProtocol',
             type: 'list',
             choices: ['https', 'http'],
             default: 'https'
         },
         {
-            message: 'Jira Username',
+            message: 'What is the port of your Jira server?',
+            name: 'jiraPort',
+            type: 'string',
+            default(answers) {
+                return answers.jiraProtocol === 'https' ? 443 : 80;
+            }
+        },
+        {
+            message: 'Please enter your Jira username:',
             name: 'jiraUsername',
             type: 'string'
         },
         {
-            message: 'Password',
+            message: 'Please enter your Jira password:',
             name: 'jiraPassword',
             type: 'password',
             validate(password, answers) {
                 const options = Object.assign({}, answers, { jiraPassword: password });
-
                 return jira(options, 'myPermissions', 'getMyPermissions').return(true);
             }
         },
         {
-            message: 'Default project behaviour',
+            message: 'Unless explicitly listed, all projects should be...',
             name: 'projectsDefault',
             type: 'list',
             choices: ['included', 'excluded'],
@@ -67,7 +84,7 @@ inquirer
         {
             message(answers) {
                 return `Select projects to explicitly ` +
-                    `${answers.projectsDefault === 'excluded' ? 'include' : 'exclude'}:`;
+                    `${answers.projectsDefault === 'excluded' ? 'allow' : 'forbid'}:`;
             },
             name: 'projectsFilter',
             type: 'checkbox',
@@ -80,7 +97,7 @@ inquirer
             }
         },
         {
-            message: 'Default status behaviour',
+            message: 'Unless explicitly listed, all issue status should be...',
             name: 'issueStatusDefault',
             type: 'list',
             choices: ['included', 'excluded'],
@@ -89,7 +106,7 @@ inquirer
         {
             message(answers) {
                 return `Select status to explicitly ` +
-                    `${answers.issueStatusDefault === 'excluded' ? 'include' : 'exclude'}:`;
+                    `${answers.issueStatusDefault === 'excluded' ? 'allow' : 'forbid'}:`;
             },
             name: 'issueStatusFilter',
             type: 'checkbox',
@@ -102,7 +119,7 @@ inquirer
             }
         },
         {
-            message: 'Default issue type behaviour',
+            message: 'Unless explicitly listed, all issue types should be...',
             name: 'issueTypesDefault',
             type: 'list',
             choices: ['included', 'excluded'],
@@ -111,7 +128,7 @@ inquirer
         {
             message(answers) {
                 return `Select status to explicitly ` +
-                    `${answers.issueTypesDefault === 'excluded' ? 'include' : 'exclude'}:`;
+                    `${answers.issueTypesDefault === 'excluded' ? 'allow' : 'forbid'}:`;
             },
             name: 'issueTypesFilter',
             type: 'checkbox',
@@ -124,16 +141,25 @@ inquirer
             }
         },
         {
+            name: 'keyword',
+            message: 'List all keywords that should be considered "todo"s (separated by space):',
+            type: 'string',
+            default: 'todo, fixme',
+            filter(input) {
+                return input.trim().split(/\s+/);
+            }
+        },
+        {
             name: 'allowTodosWithoutIssues',
-            message: 'Allow todos without issues?',
+            message: 'Should todos without issues be allowed?',
             type: 'confirm',
             default: false
         },
         {
-            name: 'ignoreNodeModules',
-            message: 'Add node_modules folder to ignore list?',
+            name: 'withModules',
+            message: 'Do you want to include "node_modules" directories?',
             type: 'confirm',
-            default: true
+            default: false
         },
         {
             name: 'writeToFile',
@@ -143,7 +169,7 @@ inquirer
         },
         {
             name: 'format',
-            message: 'Output format',
+            message: 'Chose an output format:',
             type: 'list',
             choices(answers) {
                 return ['json', 'checkstyle'].concat(answers.writeToFile ? [] : ['null']);
@@ -168,7 +194,7 @@ inquirer
         },
         {
             name: 'quiet',
-            message: 'Do you want to disable log output?',
+            message: 'Do you want to disable log output completely?',
             type: 'confirm',
             default: false
         },
@@ -183,30 +209,23 @@ inquirer
         },
         {
             name: 'savePassword',
-            message: 'Do you want to store the password (not recommended)?',
+            message: 'Do you want to store your Jira password (not recommended)?',
             type: 'confirm',
             default: false
-        },
-        {
-            name: 'outfile',
-            message: 'Enter the name of the target configuration file:',
-            type: 'string',
-            default: '.jtrc.json'
         }
     ])
     .then(function (answers) {
-        const outfile = answers.outfile;
-
-        answers.ignore = answers.ignoreNodeModules ? ['node_modules/**/*'] : [];
         delete answers.writeToFile;
         delete answers.ignoreNodeModules;
         delete answers.action;
-        delete answers.outfile;
 
         if (!answers.savePassword) {
             delete answers.jiraPassword;
         }
         delete answers.savePassword;
 
-        return Promise.fromCallback(cb => fs.writeFile(outfile, JSON.stringify(answers, null, 4), cb));
+        console.log();
+        console.log(chalk.cyan('All done! Copy and paste this to your jira-todo config file:'));
+        console.log();
+        console.log(JSON.stringify(answers, null, 4));
     });
