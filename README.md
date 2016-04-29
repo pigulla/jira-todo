@@ -1,7 +1,7 @@
 # jira-todo
 [![npm](https://img.shields.io/npm/v/jira-todo.svg?style=flat-square)](https://www.npmjs.com/package/jira-todo)
 [![Coveralls](https://img.shields.io/coveralls/pigulla/jira-todo.svg?style=flat-square)]()
-[Codeship](https://img.shields.io/codeship/b975c890-eac8-0133-c44b-7a726143f84a.svg?style=flat-square)]
+![Codeship](https://img.shields.io/codeship/b975c890-eac8-0133-c44b-7a726143f84a.svg?style=flat-square)
 [![Dependency Status](https://img.shields.io/david/pigulla/jira-todo.svg?style=flat-square)](https://david-dm.org/pigulla/jira-todo)
 [![devDependency Status](https://img.shields.io/david/dev/pigulla/jira-todo.svg?style=flat-square)](https://david-dm.org/pigulla/jira-todo)
 [![License](https://img.shields.io/npm/l/jira-todo.svg?style=flat-square)](https://github.com/pigulla/jira-todo/blob/master/LICENSE)
