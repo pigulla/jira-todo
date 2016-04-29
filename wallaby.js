@@ -8,6 +8,10 @@ module.exports = {
             instrument: false
         },
         {
+            pattern: 'test/end-to-end/Server.js',
+            instrument: false
+        },
+        {
             pattern: 'test/**/*.helper.js',
             instrument: false
         },

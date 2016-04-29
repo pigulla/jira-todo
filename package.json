@@ -3,7 +3,7 @@
   "version": "1.0.0-beta.6",
   "description": "Check your source code for todos and the Jira issues referenced by them.",
   "engines": {
-    "node": ">=4"
+    "node": "4"
   },
   "bin": {
     "jt": "./src/cli/index.js",
