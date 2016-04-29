@@ -1,2 +1,3 @@
 reports/**/*
 test/fixtures/**/*
+test/end-to-end/**/files/*

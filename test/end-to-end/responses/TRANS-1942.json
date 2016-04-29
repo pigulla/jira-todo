@@ -1,0 +1,316 @@
+{
+    "expand": "renderedFields,names,schema,transitions,operations,editmeta,changelog,versionedRepresentations",
+    "id": "574789",
+    "self": "https://jira.host.invalid/rest/api/2/issue/574789",
+    "key": "TRANS-1942",
+    "fields": {
+        "customfield_12130": null,
+        "customfield_16732": null,
+        "customfield_12131": null,
+        "customfield_10230": null,
+        "customfield_14430": null,
+        "customfield_16730": null,
+        "fixVersions": [
+            {
+                "self": "https://jira.host.invalid/rest/api/2/version/61325",
+                "id": "61325",
+                "description": "",
+                "name": "1.1.0",
+                "archived": false,
+                "released": true,
+                "releaseDate": "2016-02-29"
+            }
+        ],
+        "resolution": {
+            "self": "https://jira.host.invalid/rest/api/2/resolution/1",
+            "id": "1",
+            "description": "A fix for this issue is checked into the tree and tested.",
+            "name": "Fixed"
+        },
+        "customfield_12531": "Not Started",
+        "customfield_11436": "9223372036854775807",
+        "customfield_11435": "9223372036854775807",
+        "customfield_11437": "9223372036854775807",
+        "lastViewed": "2016-04-29T17:34:51.836+0000",
+        "customfield_10180": null,
+        "priority": {
+            "self": "https://jira.host.invalid/rest/api/2/priority/4",
+            "iconUrl": "https://jira.host.invalid/images/icons/priorities/minor.svg",
+            "name": "Minor",
+            "id": "4"
+        },
+        "customfield_11431": "9223372036854775807",
+        "customfield_11434": "9223372036854775807",
+        "customfield_11433": "9223372036854775807",
+        "labels": [
+            "planned"
+        ],
+        "aggregatetimeoriginalestimate": null,
+        "timeestimate": null,
+        "versions": [
+            {
+                "self": "https://jira.host.invalid/rest/api/2/version/59904",
+                "id": "59904",
+                "description": "",
+                "name": "1.0.0",
+                "archived": false,
+                "released": true,
+                "releaseDate": "2015-11-04"
+            }
+        ],
+        "issuelinks": [],
+        "assignee": {
+            "self": "https://jira.host.invalid/rest/api/2/user?username=jjaroczynski",
+            "name": "jjaroczynski",
+            "key": "jjaroczynski",
+            "emailAddress": "jjaroczynski at atlassian dot com",
+            "avatarUrls": {
+                "48x48": "https://jira.host.invalid/secure/useravatar?avatarId=10612",
+                "24x24": "https://jira.host.invalid/secure/useravatar?size=small&avatarId=10612",
+                "16x16": "https://jira.host.invalid/secure/useravatar?size=xsmall&avatarId=10612",
+                "32x32": "https://jira.host.invalid/secure/useravatar?size=medium&avatarId=10612"
+            },
+            "displayName": "Jacek Jaroczynski [Atlassian]",
+            "active": true,
+            "timeZone": "Europe/Warsaw"
+        },
+        "status": {
+            "self": "https://jira.host.invalid/rest/api/2/status/5",
+            "description": "This issue has been rolled out to our Cloud instances, and also fixed in a Server release. \nPlease look at the Transitions tab to get to know when it was deployed to Cloud, and to the Fix Version field to find out when it was resolved in a Server release.",
+            "iconUrl": "https://jira.host.invalid/images/icons/statuses/resolved.png",
+            "name": "Resolved",
+            "id": "5",
+            "statusCategory": {
+                "self": "https://jira.host.invalid/rest/api/2/statuscategory/3",
+                "id": 3,
+                "key": "done",
+                "colorName": "green",
+                "name": "Done"
+            }
+        },
+        "customfield_16030": null,
+        "components": [],
+        "customfield_14130": null,
+        "customfield_14532": null,
+        "customfield_11930": null,
+        "aggregatetimeestimate": null,
+        "creator": {
+            "self": "https://jira.host.invalid/rest/api/2/user?username=rstocker",
+            "name": "rstocker",
+            "key": "rstocker",
+            "emailAddress": "rstocker at atlassian dot com",
+            "avatarUrls": {
+                "48x48": "https://jira.host.invalid/secure/useravatar?ownerId=rstocker&avatarId=97689",
+                "24x24": "https://jira.host.invalid/secure/useravatar?size=small&ownerId=rstocker&avatarId=97689",
+                "16x16": "https://jira.host.invalid/secure/useravatar?size=xsmall&ownerId=rstocker&avatarId=97689",
+                "32x32": "https://jira.host.invalid/secure/useravatar?size=medium&ownerId=rstocker&avatarId=97689"
+            },
+            "displayName": "Robin Stocker",
+            "active": true,
+            "timeZone": "Australia/Sydney"
+        },
+        "customfield_15331": null,
+        "subtasks": [],
+        "customfield_10160": "5616000",
+        "customfield_10161": "true",
+        "customfield_11130": "9223372036854775807",
+        "customfield_13430": null,
+        "customfield_10680": null,
+        "reporter": {
+            "self": "https://jira.host.invalid/rest/api/2/user?username=rstocker",
+            "name": "rstocker",
+            "key": "rstocker",
+            "emailAddress": "rstocker at atlassian dot com",
+            "avatarUrls": {
+                "48x48": "https://jira.host.invalid/secure/useravatar?ownerId=rstocker&avatarId=97689",
+                "24x24": "https://jira.host.invalid/secure/useravatar?size=small&ownerId=rstocker&avatarId=97689",
+                "16x16": "https://jira.host.invalid/secure/useravatar?size=xsmall&ownerId=rstocker&avatarId=97689",
+                "32x32": "https://jira.host.invalid/secure/useravatar?size=medium&ownerId=rstocker&avatarId=97689"
+            },
+            "displayName": "Robin Stocker",
+            "active": true,
+            "timeZone": "Australia/Sydney"
+        },
+        "aggregateprogress": {
+            "progress": 0,
+            "total": 0
+        },
+        "progress": {
+            "progress": 0,
+            "total": 0
+        },
+        "votes": {
+            "self": "https://jira.host.invalid/rest/api/2/issue/TRANS-1942/votes",
+            "votes": 0,
+            "hasVoted": false
+        },
+        "worklog": {
+            "startAt": 0,
+            "maxResults": 20,
+            "total": 0,
+            "worklogs": []
+        },
+        "issuetype": {
+            "self": "https://jira.host.invalid/rest/api/2/issuetype/1",
+            "id": "1",
+            "description": "A problem which impairs or prevents the functions of the product.",
+            "iconUrl": "https://jira.host.invalid/secure/viewavatar?size=xsmall&avatarId=51493&avatarType=issuetype",
+            "name": "Bug",
+            "subtask": false,
+            "avatarId": 51493
+        },
+        "customfield_16530": null,
+        "timespent": null,
+        "customfield_10150": [
+            "jjaroczynski(jjaroczynski)",
+            "rstocker(rstocker)"
+        ],
+        "project": {
+            "self": "https://jira.host.invalid/rest/api/2/project/11460",
+            "id": "11460",
+            "key": "TRANS",
+            "name": "Atlassian Translations",
+            "avatarUrls": {
+                "48x48": "https://jira.host.invalid/secure/projectavatar?pid=11460&avatarId=10011",
+                "24x24": "https://jira.host.invalid/secure/projectavatar?size=small&pid=11460&avatarId=10011",
+                "16x16": "https://jira.host.invalid/secure/projectavatar?size=xsmall&pid=11460&avatarId=10011",
+                "32x32": "https://jira.host.invalid/secure/projectavatar?size=medium&pid=11460&avatarId=10011"
+            }
+        },
+        "customfield_16532": null,
+        "customfield_16531": null,
+        "customfield_12730": null,
+        "aggregatetimespent": null,
+        "customfield_16535": null,
+        "resolutiondate": "2016-02-23T09:53:10.612+0000",
+        "workratio": -1,
+        "watches": {
+            "self": "https://jira.host.invalid/rest/api/2/issue/TRANS-1942/watchers",
+            "watchCount": 3,
+            "isWatching": false
+        },
+        "customfield_15430": null,
+        "created": "2016-02-22T23:59:07.660+0000",
+        "customfield_15830": null,
+        "customfield_11631": null,
+        "customfield_12833": null,
+        "customfield_12832": null,
+        "customfield_14735": "0|12b2gg:",
+        "updated": "2016-03-01T15:35:24.316+0000",
+        "customfield_14330": null,
+        "timeoriginalestimate": null,
+        "description": "# Go here: https://translations.atlassian.com/dashboard/originalMessage/123500?lang=de_DE\r\n# Click the delete button for the second translation\r\n# Click yes\r\n\r\nExpected: Translation is deleted.\r\nActual: Getting an \"Invalid XSRF token\" error.\r\n\r\nThis is with Firefox 45.0b6 if that matters.",
+        "customfield_16632": null,
+        "customfield_12431": null,
+        "customfield_12430": null,
+        "customfield_16630": null,
+        "customfield_12433": null,
+        "customfield_10650": null,
+        "customfield_14733": "1|i0iv3j:",
+        "customfield_10651": null,
+        "customfield_12432": null,
+        "customfield_14734": "0|12b2go:",
+        "customfield_12831": null,
+        "customfield_12435": null,
+        "customfield_14731": "2|i0twfv:",
+        "customfield_12434": null,
+        "timetracking": {},
+        "customfield_12830": null,
+        "customfield_10653": null,
+        "customfield_14732": "0|12b33c:",
+        "attachment": [],
+        "summary": "Deleting translation does not work, \"Invalid XSRF token\" error",
+        "customfield_13230": "2016-02-23 09:48:34.37",
+        "customfield_15532": null,
+        "customfield_13231": "1_*:*_1_*:*_35294673_*|*_10029_*:*_1_*:*_336765_*|*_3_*:*_1_*:*_11528_*|*_5_*:*_1_*:*_0",
+        "customfield_15530": null,
+        "customfield_15932": null,
+        "customfield_15930": null,
+        "customfield_11730": null,
+        "customfield_15931": null,
+        "customfield_12931": null,
+        "environment": null,
+        "duedate": null,
+        "comment": {
+            "startAt": 0,
+            "maxResults": 2,
+            "total": 2,
+            "comments": [
+                {
+                    "self": "https://jira.host.invalid/rest/api/2/issue/574789/comment/873786",
+                    "id": "873786",
+                    "author": {
+                        "self": "https://jira.host.invalid/rest/api/2/user?username=jjaroczynski",
+                        "name": "jjaroczynski",
+                        "key": "jjaroczynski",
+                        "emailAddress": "jjaroczynski at atlassian dot com",
+                        "avatarUrls": {
+                            "48x48": "https://jira.host.invalid/secure/useravatar?avatarId=10612",
+                            "24x24": "https://jira.host.invalid/secure/useravatar?size=small&avatarId=10612",
+                            "16x16": "https://jira.host.invalid/secure/useravatar?size=xsmall&avatarId=10612",
+                            "32x32": "https://jira.host.invalid/secure/useravatar?size=medium&avatarId=10612"
+                        },
+                        "displayName": "Jacek Jaroczynski [Atlassian]",
+                        "active": true,
+                        "timeZone": "Europe/Warsaw"
+                    },
+                    "body": "Thank you for the report.\r\n\r\nThat issue has been already fixed in TRANS-1759 and is awaiting release.\r\n\r\nThanks,\r\nJacek",
+                    "updateAuthor": {
+                        "self": "https://jira.host.invalid/rest/api/2/user?username=jjaroczynski",
+                        "name": "jjaroczynski",
+                        "key": "jjaroczynski",
+                        "emailAddress": "jjaroczynski at atlassian dot com",
+                        "avatarUrls": {
+                            "48x48": "https://jira.host.invalid/secure/useravatar?avatarId=10612",
+                            "24x24": "https://jira.host.invalid/secure/useravatar?size=small&avatarId=10612",
+                            "16x16": "https://jira.host.invalid/secure/useravatar?size=xsmall&avatarId=10612",
+                            "32x32": "https://jira.host.invalid/secure/useravatar?size=medium&avatarId=10612"
+                        },
+                        "displayName": "Jacek Jaroczynski [Atlassian]",
+                        "active": true,
+                        "timeZone": "Europe/Warsaw"
+                    },
+                    "created": "2016-02-23T09:48:34.370+0000",
+                    "updated": "2016-02-23T09:52:44.721+0000"
+                },
+                {
+                    "self": "https://jira.host.invalid/rest/api/2/issue/574789/comment/874141",
+                    "id": "874141",
+                    "author": {
+                        "self": "https://jira.host.invalid/rest/api/2/user?username=rstocker",
+                        "name": "rstocker",
+                        "key": "rstocker",
+                        "emailAddress": "rstocker at atlassian dot com",
+                        "avatarUrls": {
+                            "48x48": "https://jira.host.invalid/secure/useravatar?ownerId=rstocker&avatarId=97689",
+                            "24x24": "https://jira.host.invalid/secure/useravatar?size=small&ownerId=rstocker&avatarId=97689",
+                            "16x16": "https://jira.host.invalid/secure/useravatar?size=xsmall&ownerId=rstocker&avatarId=97689",
+                            "32x32": "https://jira.host.invalid/secure/useravatar?size=medium&ownerId=rstocker&avatarId=97689"
+                        },
+                        "displayName": "Robin Stocker",
+                        "active": true,
+                        "timeZone": "Australia/Sydney"
+                    },
+                    "body": "Thanks (thumbsup). I did a search before reporting but didn't find that one.",
+                    "updateAuthor": {
+                        "self": "https://jira.host.invalid/rest/api/2/user?username=rstocker",
+                        "name": "rstocker",
+                        "key": "rstocker",
+                        "emailAddress": "rstocker at atlassian dot com",
+                        "avatarUrls": {
+                            "48x48": "https://jira.host.invalid/secure/useravatar?ownerId=rstocker&avatarId=97689",
+                            "24x24": "https://jira.host.invalid/secure/useravatar?size=small&ownerId=rstocker&avatarId=97689",
+                            "16x16": "https://jira.host.invalid/secure/useravatar?size=xsmall&ownerId=rstocker&avatarId=97689",
+                            "32x32": "https://jira.host.invalid/secure/useravatar?size=medium&ownerId=rstocker&avatarId=97689"
+                        },
+                        "displayName": "Robin Stocker",
+                        "active": true,
+                        "timeZone": "Australia/Sydney"
+                    },
+                    "created": "2016-02-23T22:52:05.546+0000",
+                    "updated": "2016-02-23T22:52:05.546+0000"
+                }
+            ]
+        }
+    }
+}

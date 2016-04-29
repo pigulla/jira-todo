@@ -30,6 +30,11 @@ class Processor {
         this._connector = new JiraConnector(options.connector);
         this._cache = new Map();
 
+        this._logger.debug(
+            `Connecting as user "${options.connector.basic_auth.username}" to Jira at ` +
+            `${options.connector.protocol}://${options.connector.host}:${options.connector.port}`
+        );
+
         this._issuePattern = Processor.ISSUE_PATTERN;
         this._todoPattern = util.format(
             Processor.TODO_PATTERN_TEMPLATE,

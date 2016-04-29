@@ -7,6 +7,7 @@ const ESPREE_OPTIONS = {
     loc: true,
     comments: true,
     attachComment: true,
+    sourceType: 'module',
     ecmaVersion: 6,
     ecmaFeatures: {
         jsx: true,

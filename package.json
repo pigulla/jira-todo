@@ -1,12 +1,13 @@
 {
   "name": "jira-todo",
-  "version": "1.0.0-beta.5",
+  "version": "1.0.0-beta.6",
   "description": "Check your source code for todos and the Jira issues referenced by them.",
   "engines": {
     "node": ">=4"
   },
   "bin": {
-    "jt": "./src/cli/index.js"
+    "jt": "./src/cli/index.js",
+    "jt-configure": "./src/interactive-config/index.js"
   },
   "main": "index.js",
   "scripts": {
@@ -14,7 +15,7 @@
     "lint": "eslint .",
     "nsp": "nsp check",
     "mocha": "mocha test/\\*\\*/\\*.spec.js",
-    "test-with-coverage": "istanbul cover _mocha test/\\*\\*/\\*.spec.js",
+    "test-with-coverage": "NODE_BINARY=`which node` istanbul cover _mocha test/\\*\\*/\\*.spec.js",
     "check-coverage": "istanbul check-coverage",
     "coveralls": "cat reports/lcov.info > coveralls"
   },
@@ -60,13 +61,15 @@
     "chai": "3.5.0",
     "chai-as-promised": "5.3.0",
     "coveralls": "2.11.9",
-    "eslint": "2.8.0",
+    "eslint": "2.9.0",
     "istanbul": "0.4.3",
     "libxmljs": "0.17.1",
+    "lodash.pick": "4.2.0",
     "mocha": "2.4.5",
     "nock": "8.0.0",
     "nsp": "2.3.2",
     "proxyquire": "1.7.4",
+    "restify": "4.0.4",
     "sinon": "1.17.3",
     "sinon-chai": "2.8.0",
     "stream-buffers": "3.0.0",

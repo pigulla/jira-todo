@@ -18,7 +18,12 @@ const Processor = test.proxyquireSrc('Processor', {
 describe('Processor', function () {
     function getProcessor(options) {
         const opts = Object.assign({}, {
-            connector: {},
+            connector: {
+                basic_auth: {
+                    username: '',
+                    password: ''
+                }
+            },
             keywords: []
         }, options);
         return new Processor(opts, test.nullLogger());

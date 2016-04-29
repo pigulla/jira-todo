@@ -17,9 +17,16 @@ const OPTIONS = {
         describe: 'Do not output any log messages at all',
         default: false
     },
+    'logFormat': {
+        type: 'string',
+        requiresArg: true,
+        describe: 'Format of the log output',
+        choices: ['text', 'json'],
+        default: 'text'
+    },
     'monochrome': {
         type: 'boolean',
-        describe: 'Disable color in log messages',
+        describe: 'Disable color in log messages (ignored if format is "text")',
         default: false
     },
     'directory': {
@@ -75,6 +82,13 @@ const OPTIONS = {
         required: true,
         requiresArg: true,
         describe: 'Hostname of the Jira server (without "http://")'
+    },
+    'jiraPort': {
+        type: 'number',
+        requiresArg: true,
+        describe: 'Port of the Jira server',
+        default: null,
+        defaultDescription: '443 for HTTPS, 80 for HTTP'
     },
     'jiraProtocol': {
         type: 'string',
@@ -182,7 +196,7 @@ module.exports = yargs
         'output', 'format', 'quiet', 'verbose', 'monochrome'
     ], 'Logging and output')
     .group([
-        'jiraHost', 'jiraProtocol', 'jiraUsername', 'jiraPassword'
+        'jiraHost', 'jiraProtocol', 'jiraPort', 'jiraUsername', 'jiraPassword'
     ], 'Jira settings')
     .group([
         'projectsDefault', 'projectsFilter', 'issueTypesDefault', 'issueTypesFilter',

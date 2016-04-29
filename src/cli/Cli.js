@@ -25,22 +25,24 @@ module.exports = function (proc) {
     const argv = cliYargs.parse(proc.argv);
     const verbosity = Math.min(argv.verbose, 3);
     const level = { 3: bunyan.TRACE, 2: bunyan.DEBUG, 1: bunyan.INFO, 0: bunyan.WARN }[verbosity];
-
+    const logFormatConfig = argv.logFormat === 'json' ?
+        { outputMode: 'bunyan', levelInString: true } :
+        { outputMode: 'short', color: !argv.monochrome };
     const logger = bunyan.createLogger({
         name: 'default',
         level,
-        stream: bformat({ outputMode: 'short', color: !argv.monochrome }, argv.quiet ? blackhole() : proc.stderr)
+        stream: bformat(logFormatConfig, argv.quiet ? blackhole() : proc.stderr)
     });
 
     const directory = path.resolve(argv.directory);
     const outFile = argv.output ? path.resolve(argv.output) : null;
-    const outStream = outFile ? fs.createWriteStream(outFile) : proc.stderr;
+    const outStream = outFile ? fs.createWriteStream(outFile) : proc.stdout;
     const formatter = new formatters[argv.format](outStream);
     const defaultIgnores = argv.withModules ? [] : ['node_modules/**/*'];
 
     function closeStream() {
         if (!outFile) {
-            // stderr can't be closed
+            // stdout can't be closed
             return Promise.resolve();
         }
 
@@ -61,6 +63,7 @@ module.exports = function (proc) {
             connector: {
                 host: argv.jiraHost,
                 protocol: argv.jiraProtocol,
+                port: argv.jiraPort ? argv.jiraPort : (argv.jiraProtocol === 'https' ? 443 : 80),
                 basic_auth: {
                     username: argv.jiraUsername,
                     password: argv.jiraPassword

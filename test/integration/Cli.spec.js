@@ -51,19 +51,21 @@ describe('Integration for cli wrapper', function () {
         it('when writing to stdout and not logging', function () {
             const proc = getProcessMock([
                 '--quiet',
+                '--logFormat', 'json',
                 '--verbose', '--verbose',
                 '--withModules',
                 '--jiraUsername', 'myusername',
                 '--jiraPassword', 'mypassword',
                 '--jiraHost', 'jira.host.invalid',
+                '--jiraPort', '1234',
                 '--pattern', '**/fixtures/testing.empty.js'
             ]);
 
             return cli(proc)
                 .then(exitCode => expect(exitCode).to.equal(0))
                 .then(function () {
-                    expect(proc.stderr.getContents()).to.not.be.false;
-                    expect(proc.stdout.getContents()).to.be.false;
+                    expect(proc.stderr.getContents()).to.be.false;
+                    expect(proc.stdout.getContents()).to.not.be.false;
                 });
         });
 
