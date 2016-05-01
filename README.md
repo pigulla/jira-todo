@@ -4,6 +4,7 @@
 ![Codeship](https://img.shields.io/codeship/b975c890-eac8-0133-c44b-7a726143f84a.svg?style=flat-square)
 [![Dependency Status](https://img.shields.io/david/pigulla/jira-todo.svg?style=flat-square)](https://david-dm.org/pigulla/jira-todo)
 [![devDependency Status](https://img.shields.io/david/dev/pigulla/jira-todo.svg?style=flat-square)](https://david-dm.org/pigulla/jira-todo)
+![node](https://img.shields.io/node/v/jira-todo.svg?style=flat-square)
 [![License](https://img.shields.io/npm/l/jira-todo.svg?style=flat-square)](https://github.com/pigulla/jira-todo/blob/master/LICENSE)
 
 > Check your source code for todos and the Jira issues referenced by them.
