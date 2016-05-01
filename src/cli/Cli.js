@@ -3,6 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const pkg = require('../../package.json');
+
 const Glob = require('glob').Glob;
 const bunyan = require('bunyan');
 const Promise = require('bluebird');
@@ -25,19 +27,19 @@ module.exports = function (proc) {
     const argv = cliYargs.parse(proc.argv);
     const verbosity = Math.min(argv.verbose, 3);
     const level = { 3: bunyan.TRACE, 2: bunyan.DEBUG, 1: bunyan.INFO, 0: bunyan.WARN }[verbosity];
-    const logFormatConfig = argv.logFormat === 'json' ?
-        { outputMode: 'bunyan', levelInString: true } :
-        { outputMode: 'short', color: !argv.monochrome };
+    const logStream = argv.logFormat === 'null' ?
+        blackhole() :
+        bformat({ outputMode: argv.logFormat, levelInString: true, color: !argv.monochrome }, proc.stderr);
     const logger = bunyan.createLogger({
-        name: 'default',
+        name: pkg.name,
         level,
-        stream: bformat(logFormatConfig, argv.quiet ? blackhole() : proc.stderr)
+        stream: logStream
     });
 
     const directory = path.resolve(argv.directory);
     const outFile = argv.output ? path.resolve(argv.output) : null;
     const outStream = outFile ? fs.createWriteStream(outFile) : proc.stdout;
-    const formatter = new formatters[argv.format](outStream);
+    const formatter = new formatters[argv.format](outStream, argv.monochrome);
     const defaultIgnores = argv.withModules ? [] : ['**/node_modules/**/*'];
 
     function closeStream() {
@@ -55,20 +57,25 @@ module.exports = function (proc) {
         dot: argv.dot,
         ignore: defaultIgnores.concat(argv.ignore || [])
     });
+    const connectorConfig = {
+        host: argv.jiraHost,
+        protocol: argv.jiraProtocol,
+        port: argv.jiraPort ? argv.jiraPort : (argv.jiraProtocol === 'https' ? 443 : 80)
+    };
+    
+    if (argv.jiraUsername) {
+        connectorConfig.basic_auth = {
+            username: argv.jiraUsername,
+            password: argv.jiraPassword
+        };
+    }
+    
     const jt = new JiraTodo({
         logger,
         allowTodosWithoutIssues: argv.allowTodosWithoutIssues,
         processor: {
             keywords: argv.keyword,
-            connector: {
-                host: argv.jiraHost,
-                protocol: argv.jiraProtocol,
-                port: argv.jiraPort ? argv.jiraPort : (argv.jiraProtocol === 'https' ? 443 : 80),
-                basic_auth: {
-                    username: argv.jiraUsername,
-                    password: argv.jiraPassword
-                }
-            }
+            connector: connectorConfig
         },
         validator: {
             projects: {

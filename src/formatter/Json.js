@@ -6,14 +6,14 @@ const Formatter = require('./Formatter');
  * @class jt.JsonFormatter
  */
 class JsonFormatter extends Formatter {
-    constructor(stream) {
-        super(stream);
+    constructor(stream, monochrome) {
+        super(stream, monochrome);
         this._first = true;
     }
 
     /** @inheritDoc */
     start() {
-        this._stream.write('[');
+        this._writeLn('[');
     }
 
     /** @inheritDoc */
@@ -21,15 +21,16 @@ class JsonFormatter extends Formatter {
         if (this._first) {
             this._first = false;
         } else {
-            this._stream.write(',');
+            this._writeLn(',');
         }
 
-        this._stream.write(JSON.stringify(fileReport));
+        this._stream.write(JSON.stringify(fileReport), 2);
     }
 
     /** @inheritDoc */
     end() {
-        this._stream.write(']');
+        this._writeLn();
+        this._writeLn(']');
     }
 }
 

@@ -33,6 +33,7 @@ describe('Integration for cli wrapper', function () {
         it('when writing to a file and logging', function () {
             const tmpFile = tmp.fileSync();
             const proc = getProcessMock([
+                '--logFormat', 'long',
                 '--verbose', '--verbose', '--verbose',
                 '--jiraUsername', 'myusername',
                 '--jiraPassword', 'mypassword',
@@ -51,8 +52,7 @@ describe('Integration for cli wrapper', function () {
 
         it('when writing to stdout and not logging', function () {
             const proc = getProcessMock([
-                '--quiet',
-                '--logFormat', 'json',
+                '--logFormat', 'null',
                 '--verbose', '--verbose',
                 '--withModules',
                 '--jiraUsername', 'myusername',
@@ -79,6 +79,7 @@ describe('Integration for cli wrapper', function () {
             const tmpFile = tmp.fileSync();
             const proc = getProcessMock([
                 '--monochrome',
+                '--logFormat', 'bunyan',
                 '--verbose', '--verbose', '--verbose',
                 '--jiraUsername', 'myusername',
                 '--jiraPassword', 'mypassword',
@@ -93,6 +94,7 @@ describe('Integration for cli wrapper', function () {
                 '--issueTypesFilter', '2',
                 '--issueTypesFilter', '3',
                 '--issueTypesFilter', '4',
+                '--format', 'json',
                 '--output', tmpFile.name
             ]);
 
@@ -107,6 +109,7 @@ describe('Integration for cli wrapper', function () {
             const tmpFile = tmp.fileSync();
             const proc = getProcessMock([
                 '--monochrome',
+                '--logFormat', 'simple',
                 '--verbose', '--verbose', '--verbose',
                 '--jiraUsername', 'myusername',
                 '--jiraPassword', 'mypassword',
@@ -115,6 +118,7 @@ describe('Integration for cli wrapper', function () {
                 '--projectsDefault', 'included',
                 '--issueStatusDefault', 'included',
                 '--issueTypesDefault', 'included',
+                '--format', 'json',
                 '--output', tmpFile.name
             ]);
 
@@ -142,6 +146,7 @@ describe('Integration for cli wrapper', function () {
             const tmpFile = tmp.fileSync();
             const proc = getProcessMock([
                 '--monochrome',
+                '--logFormat', 'short',
                 '--verbose', '--verbose', '--verbose',
                 '--jiraUsername', 'myusername',
                 '--jiraPassword', 'mypassword',
@@ -156,6 +161,7 @@ describe('Integration for cli wrapper', function () {
                 '--issueTypesFilter', '2',
                 '--issueTypesFilter', '3',
                 '--issueTypesFilter', '4',
+                '--format', 'json',
                 '--output', tmpFile.name
             ]);
 
@@ -228,6 +234,7 @@ describe('Integration for cli wrapper', function () {
             const tmpFile = tmp.fileSync();
             const proc = getProcessMock([
                 '--monochrome',
+                '--logFormat', 'long',
                 '--verbose', '--verbose', '--verbose',
                 '--jiraUsername', 'myusername',
                 '--jiraPassword', 'mypassword',
@@ -236,6 +243,7 @@ describe('Integration for cli wrapper', function () {
                 '--projectsDefault', 'included',
                 '--issueStatusDefault', 'excluded',
                 '--issueStatusFilter', '1',
+                '--format', 'json',
                 '--output', tmpFile.name
             ]);
 

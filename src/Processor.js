@@ -30,8 +30,11 @@ class Processor {
         this._connector = new JiraConnector(options.connector);
         this._cache = new Map();
 
+        const asUser = options.connector.basic_auth ?
+            `as user "${options.connector.basic_auth.username}"` :
+            'anonymously';
         this._logger.debug(
-            `Connecting as user "${options.connector.basic_auth.username}" to Jira at ` +
+            `Connecting ${asUser} to Jira at ` +
             `${options.connector.protocol}://${options.connector.host}:${options.connector.port}`
         );
 

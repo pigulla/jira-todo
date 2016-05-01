@@ -8,19 +8,21 @@ const os = require('os');
 class Formatter {
     /**
      * @param {stream.Writable} stream
+     * @param {boolean} monochrome
      */
-    constructor(stream) {
+    constructor(stream, monochrome) {
         this._stream = stream;
+        this._monochrome = monochrome;
     }
     
     /**
      * @protected
-     * @param {string} string
+     * @param {string=} string
      * @param {number=} indent
      */
     _writeLn(string, indent) {
         const padding = new Array(1 + (arguments.length < 2 ? 0 : indent)).join(' ');
-        this._stream.write(padding + string + os.EOL);
+        this._stream.write(padding + (arguments.length === 0 ? '' : string) + os.EOL);
     }
 
     start() {

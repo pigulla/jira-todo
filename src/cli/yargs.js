@@ -12,21 +12,16 @@ const OPTIONS = {
         count: true,
         describe: 'Increase logging verbosity (can be specified multiple times)'
     },
-    'quiet': {
-        type: 'boolean',
-        describe: 'Do not output any log messages at all',
-        default: false
-    },
     'logFormat': {
         type: 'string',
         requiresArg: true,
         describe: 'Format of the log output',
-        choices: ['text', 'json'],
-        default: 'text'
+        choices: ['short', 'long', 'simple', 'json', 'bunyan', 'null'],
+        default: 'null'
     },
     'monochrome': {
         type: 'boolean',
-        describe: 'Disable color in log messages (ignored if format is "text")',
+        describe: 'Disable colors in all output written to the console',
         default: false
     },
     'directory': {
@@ -70,12 +65,12 @@ const OPTIONS = {
         requiresArg: true,
         describe: 'The output format',
         choices: Object.keys(formatters),
-        default: 'json'
+        default: 'text'
     },
     'output': {
         type: 'string',
         requiresArg: true,
-        describe: 'The output file to write to'
+        describe: 'The output file to write to (if not given, stdout is used)'
     },
     'jiraHost': {
         type: 'string',
@@ -99,13 +94,11 @@ const OPTIONS = {
     },
     'jiraUsername': {
         type: 'string',
-        required: true,
         requiresArg: true,
         describe: 'The username for the Jira account to use'
     },
     'jiraPassword': {
         type: 'string',
-        required: true,
         requiresArg: true,
         describe: 'The password for the Jira account to use'
     },
@@ -172,7 +165,7 @@ function parseToIntegers(array, name) {
 
 /* eslint-disable max-len */
 module.exports = yargs
-    .help('help').describe('help', 'Display this help message')
+    .help('help').describe('help', 'Display basic usage information')
     .env('JT')
     .detectLocale(false)
     .wrap(yargs.terminalWidth())
@@ -193,7 +186,7 @@ module.exports = yargs
         'directory', 'pattern', 'ignore', 'dot', 'withModules', 'keyword', 'config'
     ], 'General configuration')
     .group([
-        'output', 'format', 'logFormat', 'quiet', 'verbose', 'monochrome'
+        'output', 'format', 'logFormat', 'verbose', 'monochrome'
     ], 'Logging and output')
     .group([
         'jiraHost', 'jiraProtocol', 'jiraPort', 'jiraUsername', 'jiraPassword'
@@ -205,6 +198,8 @@ module.exports = yargs
     .group([
         'help', 'version'
     ], 'Other options')
+    .implies('jiraUsername', 'jiraPassword')
+    .implies('jiraPassword', 'jiraUsername')
     .pkgConf('jira-todo', process.cwd())
     .config('config', path => JSON.parse(fs.readFileSync(path)))
     .check(function (argv, options) {

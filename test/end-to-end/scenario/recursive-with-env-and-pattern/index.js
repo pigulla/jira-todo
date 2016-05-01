@@ -4,6 +4,8 @@ module.exports.setup = {};
 module.exports.result = {};
 
 module.exports.setup.argv = [
+    '--monochrome',
+    '--format', 'json',
     '--logFormat', 'json',
     '--pattern', '**/*.{js,jsx}',
     '--jiraHost', 'localhost',

@@ -43,7 +43,7 @@ class CheckstyleFormatter extends Formatter {
 
     /** @inheritDoc */
     end() {
-        this._stream.write('</checkstyle>');
+        this._writeLn('</checkstyle>');
     }
 }
 

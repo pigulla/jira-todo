@@ -20,11 +20,12 @@ module.exports.sampleResult = [
  * 
  * @param {function} Formatter
  * @param {Array.<jt.FileReport>} fileReports
+ * @param {boolean=} monochrome
  * @return {string}
  */
-module.exports.format = function (Formatter, fileReports) { 
+module.exports.format = function (Formatter, fileReports, monochrome) { 
     const stream = new streamBuffers.WritableStreamBuffer();
-    const formatter = new Formatter(stream);
+    const formatter = new Formatter(stream, !!monochrome);
 
     formatter.start();
     fileReports.forEach(fileReport => formatter.report(fileReport));
