@@ -20,14 +20,43 @@ describe('Processor', function () {
         const opts = Object.assign({}, {
             connector: {
                 basic_auth: {
-                    username: '',
-                    password: ''
+                    username: 'groot',
+                    password: '6r007'
                 }
             },
             keywords: []
         }, options);
         return new Processor(opts, test.nullLogger());
     }
+
+    beforeEach(function () {
+        jiraConnectorConstructor.reset();
+    });
+
+    describe('creates jira-connector', function () {
+        it('for anonymous access', function () {
+            getProcessor({ connector: {} });
+
+            expect(jiraConnectorConstructor).to.have.been.calledOnce;
+            expect(jiraConnectorConstructor).to.have.been.calledWithNew;
+            expect(jiraConnectorConstructor.firstCall.args[0]).to.be.an('object');
+            expect(jiraConnectorConstructor.firstCall.args[0])
+                .to.not.have.property('basic_auth');
+        });
+
+        it('for basic auth', function () {
+            getProcessor();
+
+            expect(jiraConnectorConstructor).to.have.been.calledOnce;
+            expect(jiraConnectorConstructor).to.have.been.calledWithNew;
+            expect(jiraConnectorConstructor.firstCall).to.have.been.calledWithMatch({
+                basic_auth: {
+                    username: 'groot',
+                    password: '6r007'
+                }
+            });
+        });
+    });
 
     it('does nothing for input without comments', function () {
         const processor = getProcessor({});

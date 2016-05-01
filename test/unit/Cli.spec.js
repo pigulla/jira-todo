@@ -22,6 +22,7 @@ const cli = test.proxyquireSrc('cli/Cli', {
 });
 
 describe('Cli', function () {
+    let parsedArgs;
     const proc = {
         argv: null,
         stdout: null,
@@ -29,13 +30,46 @@ describe('Cli', function () {
     };
 
     beforeEach(function () {
+        parsedArgs = {
+            directory: __dirname,
+            format: 'json'
+        };
+
         proc.stdout = new streamBuffers.WritableStreamBuffer();
         proc.stderr = new streamBuffers.WritableStreamBuffer();
 
+        JiraTodo.reset();
         yargs.parse.reset();
-        yargs.parse.withArgs(proc.argv).returns({
-            directory: __dirname,
-            format: 'json'
+        yargs.parse.withArgs(proc.argv).returns(parsedArgs);
+    });
+
+    describe('sets up jira-connector', function () {
+        beforeEach(function () {
+            runner.returns(Promise.resolve({
+                files: 0,
+                errors: 0
+            }));
+        });
+
+        it('with basic authentication', function () {
+            parsedArgs.jiraUsername = 'groot';
+            parsedArgs.jiraPassword = '6r007';
+            cli(proc);
+
+            expect(JiraTodo).to.have.been.calledOnce;
+            expect(JiraTodo).to.have.been.calledWithNew;
+            expect(JiraTodo.firstCall.args[0])
+                .to.have.deep.property('processor.connector.basic_auth.username', 'groot');
+            expect(JiraTodo.firstCall.args[0])
+                .to.have.deep.property('processor.connector.basic_auth.password', '6r007');
+        });
+
+        it('without basic authentication', function () {
+            cli(proc);
+
+            expect(JiraTodo).to.have.been.calledOnce;
+            expect(JiraTodo).to.have.been.calledWithNew;
+            expect(JiraTodo.firstCall.args[0]).to.not.have.deep.property('processor.connector.basic_auth');
         });
     });
 

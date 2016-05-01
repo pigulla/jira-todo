@@ -19,37 +19,39 @@ const JiraTodo = test.proxyquireSrc('JiraTodo', {
 
 describe('JiraTodo', function () {
     const formatter = sinon.stub(new Formatter());
-    const options = {
-        logger: test.nullLogger(),
-        allowTodosWithoutIssues: false,
-        processor: {
-            keywords: ['todo'],
-            connector: {
-                host: 'jira.host.invalid',
-                protocol: 'https',
-                username: '',
-                password: ''
-            }
-        },
-        validator: {
-            projects: {
-                default: 'excluded',
-                filter: []
-            },
-            issueTypes: {
-                default: 'excluded',
-                filter: []
-            },
-            issueStatus: {
-                default: 'excluded',
-                filter: []
-            }
-        }
-    };
+    let options;
 
     beforeEach(function () {
         process.reset();
         validate.reset();
+        
+        options = {
+            logger: test.nullLogger(),
+            allowTodosWithoutIssues: false,
+            processor: {
+                keywords: ['todo'],
+                connector: {
+                    host: 'jira.host.invalid',
+                    protocol: 'https',
+                    username: 'myuser',
+                    password: 'mypass'
+                }
+            },
+            validator: {
+                projects: {
+                    default: 'excluded',
+                    filter: []
+                },
+                issueTypes: {
+                    default: 'excluded',
+                    filter: []
+                },
+                issueStatus: {
+                    default: 'excluded',
+                    filter: []
+                }
+            }
+        };
     });
 
     describe('constructor', function () {
