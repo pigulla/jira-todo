@@ -39,7 +39,7 @@
     "name": "Raphael Pigulla",
     "email": "pigulla@four66.com"
   },
-  "license": "BSD-2-Clause",
+  "license": "ISC",
   "dependencies": {
     "assert-plus": "1.0.0",
     "async": "2.0.0-rc.3",
