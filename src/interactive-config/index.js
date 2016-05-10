@@ -172,6 +172,22 @@ inquirer
             default: false
         },
         {
+            name: 'jsx',
+            message: 'Do you need to parse JSX files?',
+            type: 'confirm',
+            default: false
+        },
+        {
+            name: 'ecmaVersion',
+            message: 'Which version of ECMAScript are you using?',
+            type: 'list',
+            choices: ['3', '5', '6', '7'],
+            default: '6',
+            filter(input) {
+                return parseInt(input, 10);
+            }
+        },
+        {
             name: 'withModules',
             message: 'Do you want to include "node_modules" directories?',
             type: 'confirm',
