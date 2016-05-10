@@ -8,6 +8,8 @@ module.exports.setup.argv = [
     '--format', 'json',
     '--logFormat', 'json',
     '--pattern', '**/*.{js,jsx}',
+    '--jsx',
+    '--sourceType', 'module',
     '--jiraHost', 'localhost',
     '--jiraProtocol', 'http',
     '--projectsDefault', 'excluded',
@@ -23,6 +25,10 @@ module.exports.setup.env = {
 };
 
 module.exports.result.logs = [
+    { level: 'INFO', msg: 'All but the following projects are forbidden: TRANS, FOO' },
+    { level: 'INFO', msg: 'All issue types are allowed' },
+    { level: 'INFO', msg: 'No issue status are allowed' },
+    { level: 'INFO', msg: 'Todos without issues are forbidden' },
     {
         filename: 'one/service.js',
         level: 'WARN',

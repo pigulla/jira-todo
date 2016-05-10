@@ -140,6 +140,40 @@ const OPTIONS = {
         choices: ['excluded', 'included'],
         default: 'included'
     },
+    'ecmaVersion': {
+        type: 'number',
+        requiresArg: true,
+        describe: 'Supported ECMAScript version',
+        choices: [3, 5, 6, 7],
+        default: 6
+    },
+    'sourceType': {
+        type: 'string',
+        requiresArg: true,
+        describe: 'Type of script to be parsed',
+        choices: ['script', 'module'],
+        default: 'script'
+    },
+    'impliedStrict': {
+        type: 'boolean',
+        describe: 'Enable implied strict mode (if ecmaVersion >= 5)',
+        default: false
+    },
+    'globalReturn': {
+        type: 'boolean',
+        describe: 'Enable return in global scope',
+        default: false
+    },
+    'jsx': {
+        type: 'boolean',
+        describe: 'Enable JSX parsing',
+        default: false
+    },
+    'experimentalObjectRestSpread': {
+        type: 'boolean',
+        describe: 'Allow experimental object rest/spread',
+        default: false
+    },
     'issueStatusFilter': {
         type: 'string',
         array: true,
@@ -186,6 +220,9 @@ module.exports = yargs
         'directory', 'pattern', 'ignore', 'dot', 'withModules', 'keyword', 'config'
     ], 'General configuration')
     .group([
+        'sourceType', 'ecmaVersion', 'jsx', 'globalReturn', 'impliedStrict', 'experimentalObjectRestSpread'
+    ], 'Parser configuration')
+    .group([
         'output', 'format', 'logFormat', 'verbose', 'monochrome'
     ], 'Logging and output')
     .group([
@@ -203,8 +240,13 @@ module.exports = yargs
     .pkgConf('jira-todo', process.cwd())
     .config('config', path => JSON.parse(fs.readFileSync(path)))
     .check(function (argv, options) {
+        argv.ecmaVersion = parseInt(argv.ecmaVersion, 10);
         parseToIntegers(argv.issueTypesFilter, 'issueTypeFilter');
         parseToIntegers(argv.issueStatusFilter, 'issueStatusFilter');
+
+        if (argv.verbose && argv.logFormat === 'null') {
+            throw new Error(`The "verbose" flag requires a logFormat other than "null".`);
+        }
         return true;
     })
     .strict();

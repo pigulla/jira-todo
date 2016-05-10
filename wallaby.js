@@ -13,7 +13,7 @@ module.exports = {
         },
         {
             pattern: 'test/**/*.helper.js',
-            instrument: false
+            instrument: false 
         },
         {
             pattern: 'test/fixtures/*',

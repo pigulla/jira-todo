@@ -73,6 +73,28 @@ describe('Cli', function () {
         });
     });
 
+    describe('reports errors to stderr', function () {
+        beforeEach(function () {
+            runner.returns(Promise.reject(new Error('Oh noes!')));
+        });
+
+        it('as JSON if logging is enabled', function () {
+            return cli(proc)
+                .then(function () {
+                    const contents = proc.stderr.getContentsAsString();
+                    expect(contents).to.not.be.false;
+                    expect(JSON.parse(contents)).to.have.deep.property('msg', 'Oh noes!');
+                });
+        });
+
+        it('if logging is disabled', function () {
+            parsedArgs.logFormat = 'null';
+            return cli(proc)
+                .then(exitCode => expect(exitCode).to.equal(2))
+                .then(() => expect(proc.stderr.getContentsAsString()).not.to.be.false);
+        });
+    });
+
     it('for no files', function () {
         runner.returns(Promise.resolve({
             files: 0,

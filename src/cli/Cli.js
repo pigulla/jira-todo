@@ -25,22 +25,24 @@ const cliYargs = require('./yargs');
  */
 module.exports = function (proc) {
     const argv = cliYargs.parse(proc.argv);
-    const verbosity = Math.min(argv.verbose, 3);
-    const level = { 3: bunyan.TRACE, 2: bunyan.DEBUG, 1: bunyan.INFO, 0: bunyan.WARN }[verbosity];
-    const logStream = argv.logFormat === 'null' ?
-        blackhole() :
-        bformat({ outputMode: argv.logFormat, levelInString: true, color: !argv.monochrome }, proc.stderr);
-    const logger = bunyan.createLogger({
-        name: pkg.name,
-        level,
-        stream: logStream
-    });
+
+    const SILENT = argv.logFormat === 'null';
+    const VERBOSITY = Math.min(argv.verbose, 3);
+    const LEVEL = { 3: bunyan.TRACE, 2: bunyan.DEBUG, 1: bunyan.INFO, 0: bunyan.WARN }[VERBOSITY];
 
     const directory = path.resolve(argv.directory);
     const outFile = argv.output ? path.resolve(argv.output) : null;
     const outStream = outFile ? fs.createWriteStream(outFile) : proc.stdout;
     const formatter = new formatters[argv.format](outStream, argv.monochrome);
     const defaultIgnores = argv.withModules ? [] : ['**/node_modules/**/*'];
+    const logStream = SILENT ?
+        blackhole() :
+        bformat({ outputMode: argv.logFormat, levelInString: true, color: !argv.monochrome }, proc.stderr);
+    const logger = bunyan.createLogger({
+        name: pkg.name,
+        LEVEL,
+        stream: logStream
+    });
 
     function closeStream() {
         if (!outFile) {
@@ -69,13 +71,23 @@ module.exports = function (proc) {
             password: argv.jiraPassword
         };
     }
-    
+
     const jt = new JiraTodo({
         logger,
         allowTodosWithoutIssues: argv.allowTodosWithoutIssues,
         processor: {
             keywords: argv.keyword,
-            connector: connectorConfig
+            connector: connectorConfig,
+            parserOptions: {
+                sourceType: argv.sourceType,
+                ecmaVersion: argv.ecmaVersion,
+                ecmaFeatures: {
+                    jsx: argv.jsx,
+                    globalReturn: argv.globalReturn,
+                    impliedStrict: argv.impliedStrict,
+                    experimentalObjectRestSpread: argv.experimentalObjectRestSpread
+                }
+            }
         },
         validator: {
             projects: {
@@ -93,7 +105,7 @@ module.exports = function (proc) {
         }
     });
 
-    return runner(glob, jt, formatter, logger)
+    return runner(glob, jt, formatter)
         .tap(closeStream)
         .then(function (result) {
             logger.debug(`A total of ${result.files} file${result.files === 1 ? ' was' : 's were'} processed`);
@@ -113,7 +125,11 @@ module.exports = function (proc) {
             }
         })
         .catch(function (error) {
-            logger.error(error);
+            if (SILENT) {
+                proc.stderr.write(`An error occurred: ${error.message}.`);
+            } else {
+                logger.error(error);
+            }
             return closeStream().return(2);
         });
 };

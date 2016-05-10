@@ -58,7 +58,7 @@ class Validator {
         } /* istanbul ignore else */ else if (dflt === 'excluded') {
             return filter.has(value);
         } else {
-            throw new Error();
+            throw new Error(`Unexpected default value: ${dflt}`);
         }
     }
 

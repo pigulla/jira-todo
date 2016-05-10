@@ -57,8 +57,8 @@ function run(name) {
         child.on('error', reject);
     })
     .spread(function (exitCode, output, logs) {
-        expect(scenario.result.report).to.deep.equal(output);
-        expect(scenario.result.logs).to.deep.equal(logs.map(entry => pick(entry, ['level', 'msg', 'filename'])));
+        expect(output).to.deep.equal(scenario.result.report);
+        expect(logs.map(entry => pick(entry, ['level', 'msg', 'filename']))).to.deep.equal(scenario.result.logs);
         expect(exitCode).to.equal(scenario.result.exitCode);
     });
 }

@@ -15,19 +15,18 @@ const runner = test.proxyquireSrc('cli/Runner', {
 });
 
 describe('Runner', function () {
-    let glob, jt, formatter, logger;
+    let glob, jt, formatter;
 
     beforeEach(function () {
         glob = Object.assign(new EventEmitter(), { abort: sinon.spy(), cwd: '/my/source' });
         jt = { run: sinon.stub() };
         formatter = { start: sinon.stub(), end: sinon.stub() };
-        logger = test.nullLogger();
     });
 
     it('aborts on file error', function (done) {
         const fsError = new Error('Oh noes');
 
-        runner(glob, jt, formatter, logger)
+        runner(glob, jt, formatter)
             .catch(function (error) {
                 expect(error).to.be.an('error');
                 expect(error.message).to.have.string('/my/source/myfile.js');
@@ -45,7 +44,7 @@ describe('Runner', function () {
     it('aborts on glob error', function (done) {
         const globError = new Error();
 
-        runner(glob, jt, formatter, logger)
+        runner(glob, jt, formatter)
             .catch(function (error) {
                 expect(error).to.equal(globError);
                 expect(glob.abort).to.have.been.calledOnce;
@@ -56,7 +55,7 @@ describe('Runner', function () {
     });
 
     it('works for no files', function (done) {
-        runner(glob, jt, formatter, logger)
+        runner(glob, jt, formatter)
             .then(function (result) {
                 expect(formatter.start).to.have.been.calledOnce;
                 expect(formatter.end).to.have.been.calledOnce;

@@ -18,6 +18,10 @@ module.exports.setup.env = {
 };
 
 module.exports.result.logs = [
+    { level: 'INFO', msg: 'No projects are allowed' },
+    { level: 'INFO', msg: 'All issue types are allowed' },
+    { level: 'INFO', msg: 'All issue status are allowed' },
+    { level: 'INFO', msg: 'Todos without issues are forbidden' },
     {
         level: 'WARN',
         msg: 'Problem found for issue FOO-42 in comment starting in line 4: Issue was not found',

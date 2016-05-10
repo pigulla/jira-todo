@@ -12,10 +12,9 @@ const CONCURRENCY = 5;
  * @param {Glob} glob
  * @param {jt.JiraTodo} jt
  * @param {jt.Formatter} formatter
- * @param {Bunyan} logger
  * @return {Promise.<{ files: number, errors: number }>}
  */
-module.exports = function cliRunner(glob, jt, formatter, logger) {
+module.exports = function cliRunner(glob, jt, formatter) {
     let errorCount = 0;
     let fileCount = 0;
     
@@ -27,7 +26,6 @@ module.exports = function cliRunner(glob, jt, formatter, logger) {
 
         function stop(err, file) {
             const error = file ? new Error(`Could not process file "${file}" (${err.message})`) : err;
-            logger.error(error);
 
             queue.kill();
             glob.abort();

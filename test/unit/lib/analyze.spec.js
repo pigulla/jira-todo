@@ -9,6 +9,7 @@ const test = require('../../setup');
 const Processor = test.requireSrc('Processor');
 
 const TODO_PATTERN = util.format(Processor.TODO_PATTERN_TEMPLATE, 'todo|fixme');
+const PARSER_OPTIONS = {};
 
 const extractComments = sinon.stub();
 const extractTodods = sinon.stub();
@@ -21,7 +22,7 @@ const analyze = test.proxyquireSrc('lib/analyze', stubs);
 
 describe('analyze', function () {
     function run(source) {
-        const result = analyze(source, TODO_PATTERN, Processor.ISSUE_PATTERN);
+        const result = analyze(source, TODO_PATTERN, Processor.ISSUE_PATTERN, PARSER_OPTIONS);
         return test.objectify(result);
     }
 
@@ -34,7 +35,7 @@ describe('analyze', function () {
             comments: [],
             issues: {}
         });
-        expect(extractComments).to.have.been.calledWithExactly('ignored');
+        expect(extractComments).to.have.been.calledWithExactly('ignored', PARSER_OPTIONS);
         expect(extractTodods).not.to.have.been.called;
     });
 

@@ -24,7 +24,8 @@ describe('Processor', function () {
                     password: '6r007'
                 }
             },
-            keywords: []
+            keywords: [],
+            parserOptions: {}
         }, options);
         return new Processor(opts, test.nullLogger());
     }

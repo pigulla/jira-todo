@@ -37,6 +37,16 @@ describe('Integration test for cli runner', function () {
                         username: 'myusername',
                         password: 'mypassword'
                     }
+                },
+                parserOptions: {
+                    ecmaVersion: 6,
+                    sourceType: 'module',
+                    ecmaFeatures: {
+                        jsx: false,
+                        impliedStrict: false,
+                        globalReturn: false,
+                        experimentalObjectRestSpread: false
+                    }
                 }
             },
             validator: {
@@ -55,7 +65,7 @@ describe('Integration test for cli runner', function () {
             }
         });
 
-        return runner(glob, jt, jsonFormatter, logger)
+        return runner(glob, jt, jsonFormatter)
             .then(function (errorCount) {
                 const result = JSON.parse(stream.getContents());
 

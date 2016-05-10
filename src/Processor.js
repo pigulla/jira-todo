@@ -18,12 +18,14 @@ class Processor {
      * @param {Object} options
      * @param {Object} options.connector
      * @param {Array.<string>} options.keywords
+     * @param {Object} options.parserOptions
      * @param {Bunyan} logger
      */
     constructor(options, logger) {
         assert.object(options, 'options');
         assert.object(logger, 'logger');
         assert.object(options.connector, 'options.connector');
+        assert.object(options.parserOptions, 'options.parserOptions');
         assert.arrayOfString(options.keywords, 'options.keywords');
 
         this._logger = logger;
@@ -38,6 +40,7 @@ class Processor {
             `${options.connector.protocol}://${options.connector.host}:${options.connector.port}`
         );
 
+        this._parserOptions = options.parserOptions;
         this._issuePattern = Processor.ISSUE_PATTERN;
         this._todoPattern = util.format(
             Processor.TODO_PATTERN_TEMPLATE,
@@ -97,7 +100,7 @@ class Processor {
         let result;
 
         return Promise
-            .try(() => analyze(input, this._todoPattern, this._issuePattern))
+            .try(() => analyze(input, this._todoPattern, this._issuePattern, this._parserOptions))
             .bind(this)
             .then(function (commentsAndIssues) {
                 result = commentsAndIssues;

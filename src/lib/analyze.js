@@ -14,18 +14,20 @@ const extractTodos = require('./extract-todos');
  * @param {string} source
  * @param {string} todoPattern
  * @param {string} issuePattern
+ * @param {Object} parserOptions
  * @return {jt.Result}
  */
-module.exports = function analyze(source, todoPattern, issuePattern) {
+module.exports = function analyze(source, todoPattern, issuePattern, parserOptions) {
     assert.string(source, 'source');
     assert.string(todoPattern, 'todoPattern');
     assert.string(issuePattern, 'issuePattern');
+    assert.object(parserOptions, 'parserOptions');
 
     const todoRegex = XRegExp.cache(todoPattern, 'gi');
     const issueRegex = XRegExp.cache(issuePattern, 'gi');
 
     const issueMaps = [];
-    const comments = extractComments(source)
+    const comments = extractComments(source, parserOptions)
         .map(function (comment) {
             /** @type {{ todos: Array.<jt.Todo>, issues: Map.<string, jt.Issue> }} */
             const data = extractTodos(comment.value, todoRegex, issueRegex);

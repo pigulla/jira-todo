@@ -53,7 +53,6 @@ describe('Integration for cli wrapper', function () {
         it('when writing to stdout and not logging', function () {
             const proc = getProcessMock([
                 '--logFormat', 'null',
-                '--verbose', '--verbose',
                 '--withModules',
                 '--jiraUsername', 'myusername',
                 '--jiraPassword', 'mypassword',
