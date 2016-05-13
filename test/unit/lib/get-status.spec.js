@@ -102,6 +102,15 @@ describe('getStatus', function () {
             return expect(run(['ABC-42'])).to.eventually.be.rejected;
         });
 
+        it('no data returned', function () {
+            getIssue.yields(
+                null,
+                undefined,
+                { statusCode: http.OK, statusMessage: 'OK' }
+            );
+            return expect(run(['ABC-42'])).to.eventually.be.rejected;
+        });
+
         it('not found', function () {
             getIssue.yields(
                 new Error('Request failed'),

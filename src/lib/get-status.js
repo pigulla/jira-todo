@@ -36,6 +36,11 @@ function getSingleStatus(jiraConnector, issueKey, cb) {
             }
         }
 
+        if (!result) {
+            const msg = `Request to Jira server returned no data. Maybe you are lacking permissions?`;
+            return cb(null, new Error(msg));
+        }
+
         cb(null, {
             issueKey,
             data: {
