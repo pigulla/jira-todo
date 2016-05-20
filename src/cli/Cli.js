@@ -17,6 +17,15 @@ const formatters = require('../formatter/');
 const cliYargs = require('./yargs');
 
 /**
+ * @enum {number}
+ */
+const EXIT_CODE = {
+    OK: 0,
+    PROBLEMS_FOUND: 1,
+    INTERNAL_ERROR: 2
+};
+
+/**
  * @param {Object} proc
  * @param {Array.<string>} proc.argv
  * @param {stream.Writable} proc.stdout
@@ -118,18 +127,19 @@ module.exports = function (proc) {
                     `${result.errors} problem${result.errors > 1 ? 's' : ''} found ` +
                     `in ${result.files} file${result.errors > 1 ? 's' : ''}`
                 );
-                return 1;
+                return EXIT_CODE.PROBLEMS_FOUND;
             } else {
                 logger.info(`All files are OK`);
-                return 0;
+                return EXIT_CODE.OK;
             }
         })
+        .then(exitCode => argv.warnOnly ? 0 : exitCode)
         .catch(function (error) {
             if (SILENT) {
                 proc.stderr.write(`An error occurred: ${error.message}.`);
             } else {
                 logger.error(error);
             }
-            return closeStream().return(2);
+            return closeStream().return(EXIT_CODE.INTERNAL_ERROR);
         });
 };

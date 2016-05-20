@@ -105,14 +105,25 @@ describe('Cli', function () {
             .then(exitCode => expect(exitCode).to.equal(0));
     });
 
-    it('for files with problems', function () {
-        runner.returns(Promise.resolve({
-            files: 4,
-            errors: 2
-        }));
+    describe('for files with problems', function () {
+        beforeEach(function () {
+            runner.returns(Promise.resolve({
+                files: 4,
+                errors: 2
+            }));
+        });
 
-        return cli(proc)
-            .then(exitCode => expect(exitCode).to.equal(1));
+        it('in regular mode', function () {
+            return cli(proc)
+                .then(exitCode => expect(exitCode).to.equal(1));
+        });
+
+        it('when warning only', function () {
+            parsedArgs.warnOnly = true;
+
+            return cli(proc)
+                .then(exitCode => expect(exitCode).to.equal(0));
+        });
     });
 
     it('for errors', function () {

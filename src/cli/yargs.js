@@ -24,6 +24,11 @@ const OPTIONS = {
         describe: 'Disable colors in all output written to the console',
         default: false
     },
+    'warnOnly': {
+        type: 'boolean',
+        default: false,
+        describe: 'Always exit with code 0 even if problems were found (unless an error occurred)'
+    },
     'directory': {
         type: 'string',
         default: process.cwd(),
@@ -217,7 +222,7 @@ module.exports = yargs
     )
     .options(OPTIONS)
     .group([
-        'directory', 'pattern', 'ignore', 'dot', 'withModules', 'keyword', 'config'
+        'directory', 'pattern', 'ignore', 'dot', 'withModules', 'keyword', 'config', 'warnOnly'
     ], 'General configuration')
     .group([
         'sourceType', 'ecmaVersion', 'jsx', 'globalReturn', 'impliedStrict', 'experimentalObjectRestSpread'
