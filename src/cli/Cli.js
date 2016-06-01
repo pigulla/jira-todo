@@ -125,7 +125,7 @@ module.exports = function (proc) {
             } else if (result.errors > 0) {
                 logger.error(
                     `${result.errors} problem${result.errors > 1 ? 's' : ''} found ` +
-                    `in ${result.files} file${result.errors > 1 ? 's' : ''}`
+                    `in ${result.files} file${result.files > 1 ? 's' : ''}`
                 );
                 return EXIT_CODE.PROBLEMS_FOUND;
             } else {

@@ -30,6 +30,6 @@ In most projects the code is riddled with TODOs and FIXMEs, but experience shows
 
 But even if you connect your todos with specific issues the two can still run out of sync or you might reference issues that are already closed. jira-todo helps you enforce consistency between your source code and Jira issues.
 
-## Configuration
+## The How
 
 Check out the documentation in the [wiki](../../wiki/Configuration).
