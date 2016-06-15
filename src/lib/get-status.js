@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('assert-plus');
-const async = require('async');
+const mapLimit = require('async/mapLimit');
 const http = require('http-status');
 const Promise = require('bluebird');
 
@@ -65,12 +65,12 @@ module.exports = function getStatus(jiraConnector, issueKeys, concurrency) {
     assert.object(jiraConnector, 'jiraConnector');
     assert.ok(issueKeys instanceof Set, 'issueKeys must be a set of strings');
     assert.optionalFinite(concurrency, 'concurrency');
-    
+
     const limit = arguments.length < 3 ? DEFAULT_CONCURRENCY : concurrency;
     const keys = Array.from(issueKeys);
 
     return Promise
-        .fromCallback(cb => async.mapLimit(keys, limit, getSingleStatus.bind(null, jiraConnector), cb))
+        .fromCallback(cb => mapLimit(keys, limit, getSingleStatus.bind(null, jiraConnector), cb))
         .each(function (result) {
             if (result instanceof Error) {
                 throw result;

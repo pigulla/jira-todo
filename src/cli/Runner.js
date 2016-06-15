@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const async = require('async');
+const queue = require('async/queue');
 const Promise = require('bluebird');
 
 const CONCURRENCY = 5;
@@ -17,7 +17,7 @@ const CONCURRENCY = 5;
 module.exports = function cliRunner(glob, jt, formatter) {
     let errorCount = 0;
     let fileCount = 0;
-    
+
     return new Promise(function (resolve, reject) {
         function drained() {
             formatter.end();
@@ -27,7 +27,7 @@ module.exports = function cliRunner(glob, jt, formatter) {
         function stop(err, file) {
             const error = file ? new Error(`Could not process file "${file}" (${err.message})`) : err;
 
-            queue.kill();
+            tasks.kill();
             glob.abort();
             reject(error);
         }
@@ -44,19 +44,19 @@ module.exports = function cliRunner(glob, jt, formatter) {
                 .finally(cb);
         }
 
-        const queue = async.queue(worker, CONCURRENCY);
+        const tasks = queue(worker, CONCURRENCY);
         formatter.start();
 
         glob.on('error', stop);
         glob.on('match', function (match) {
             fileCount++;
-            queue.push(match);
+            tasks.push(match);
         });
         glob.on('end', function () {
-            if (queue.idle()) {
+            if (tasks.idle()) {
                 drained();
             } else {
-                queue.drain = drained;
+                tasks.drain = drained;
             }
         });
     });

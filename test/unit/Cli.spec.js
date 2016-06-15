@@ -13,13 +13,17 @@ const yargs = { parse: sinon.stub() };
 const Glob = sinon.stub();
 const runner = sinon.stub();
 
-const cli = test.proxyquireSrc('cli/Cli', {
+const Cli = test.proxyquireSrc('cli/Cli', {
     'glob': { Glob },
     'path': path,
     './Runner': runner,
     './yargs': yargs,
     '../JiraTodo': JiraTodo
 });
+
+function cli(proc) {
+    return new Cli(proc).run();
+}
 
 describe('Cli', function () {
     let parsedArgs;

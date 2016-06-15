@@ -16,130 +16,177 @@ const JiraTodo = require('../JiraTodo');
 const formatters = require('../formatter/');
 const cliYargs = require('./yargs');
 
-/**
- * @enum {number}
- */
-const EXIT_CODE = {
-    OK: 0,
-    PROBLEMS_FOUND: 1,
-    INTERNAL_ERROR: 2
-};
+class Cli {
+    /**
+     * @param {Object} proc
+     * @param {Array.<string>} proc.argv
+     * @param {stream.Writable} proc.stdout
+     * @param {stream.Writable} proc.stderr
+     */
+    constructor(proc) {
+        this._argv = cliYargs.parse(proc.argv);
+        this._process = proc;
 
-/**
- * @param {Object} proc
- * @param {Array.<string>} proc.argv
- * @param {stream.Writable} proc.stdout
- * @param {stream.Writable} proc.stderr
- * @return {Promise.<number>}
- */
-module.exports = function (proc) {
-    const argv = cliYargs.parse(proc.argv);
+        this._initLogger();
+    }
 
-    const SILENT = argv.logFormat === 'null';
-    const VERBOSITY = Math.min(argv.verbose, 3);
-    const LEVEL = { 3: bunyan.TRACE, 2: bunyan.DEBUG, 1: bunyan.INFO, 0: bunyan.WARN }[VERBOSITY];
+    /**
+     * @type {boolean}
+     */
+    get silent() {
+        return this._argv.logFormat === 'null';
+    }
 
-    const directory = path.resolve(argv.directory);
-    const outFile = argv.output ? path.resolve(argv.output) : null;
-    const outStream = outFile ? fs.createWriteStream(outFile) : proc.stdout;
-    const formatter = new formatters[argv.format](outStream, argv.monochrome);
-    const defaultIgnores = argv.withModules ? [] : ['**/node_modules/**/*'];
-    const logStream = SILENT ?
-        blackhole() :
-        bformat({ outputMode: argv.logFormat, levelInString: true, color: !argv.monochrome }, proc.stderr);
-    const logger = bunyan.createLogger({
-        name: pkg.name,
-        LEVEL,
-        stream: logStream
-    });
+    /**
+     * @private
+     */
+    _initLogger() {
+        const VERBOSITY = Math.min(this._argv.verbose, 3);
+        const LEVEL = { 3: bunyan.TRACE, 2: bunyan.DEBUG, 1: bunyan.INFO, 0: bunyan.WARN }[VERBOSITY];
 
-    function closeStream() {
-        if (!outFile) {
+        const logStream = this.silent ?
+            blackhole() :
+            bformat({
+                outputMode: this._argv.logFormat,
+                levelInString: true,
+                color: !this._argv.monochrome
+            }, this._process.stderr);
+
+        this._logger = bunyan.createLogger({
+            name: pkg.name,
+            LEVEL,
+            stream: logStream
+        });
+    }
+
+    /**
+     * @private
+     * @return {jt.JiraTodo}
+     */
+    _getJiraTodo() {
+        const argv = this._argv;
+
+        const connectorConfig = {
+            host: argv.jiraHost,
+            protocol: argv.jiraProtocol,
+            port: argv.jiraPort ? argv.jiraPort : (argv.jiraProtocol === 'https' ? 443 : 80)
+        };
+
+        if (argv.jiraUsername) {
+            connectorConfig.basic_auth = {
+                username: argv.jiraUsername,
+                password: argv.jiraPassword
+            };
+        }
+
+        return new JiraTodo({
+            logger: this._logger,
+            allowTodosWithoutIssues: argv.allowTodosWithoutIssues,
+            processor: {
+                keywords: argv.keyword,
+                connector: connectorConfig,
+                parserOptions: {
+                    sourceType: argv.sourceType,
+                    ecmaVersion: argv.ecmaVersion,
+                    ecmaFeatures: {
+                        jsx: argv.jsx,
+                        globalReturn: argv.globalReturn,
+                        impliedStrict: argv.impliedStrict,
+                        experimentalObjectRestSpread: argv.experimentalObjectRestSpread
+                    }
+                }
+            },
+            validator: {
+                projects: {
+                    default: argv.projectsDefault,
+                    filter: argv.projectsFilter || []
+                },
+                issueTypes: {
+                    default: argv.issueTypesDefault,
+                    filter: argv.issueTypesFilter || []
+                },
+                issueStatus: {
+                    default: argv.issueStatusDefault,
+                    filter: argv.issueStatusFilter || []
+                }
+            }
+        });
+    }
+
+    /**
+     * @return {Promise.<number>}
+     */
+    run() {
+        const argv = this._argv;
+        const logger = this._logger;
+        const directory = path.resolve(argv.directory);
+        const defaultIgnores = argv.withModules ? [] : ['**/node_modules/**/*'];
+        const outFile = argv.output ? path.resolve(argv.output) : null;
+        const outStream = outFile ? fs.createWriteStream(outFile) : this._process.stdout;
+        const formatter = new formatters[argv.format](outStream, this._argv.monochrome);
+        const glob = new Glob(argv.pattern, {
+            cwd: directory,
+            nosort: true,
+            dot: argv.dot,
+            ignore: defaultIgnores.concat(argv.ignore || [])
+        });
+        const jt = this._getJiraTodo();
+
+        return runner(glob, jt, formatter)
+            .bind(this)
+            .tap(() => this._closeStream(outStream))
+            .then(function (result) {
+                logger.debug(`A total of ${result.files} file${result.files === 1 ? ' was' : 's were'} processed`);
+
+                if (result.files === 0) {
+                    logger.warn(`No files processed`);
+                    return 0;
+                } else if (result.errors > 0) {
+                    logger.error(
+                        `${result.errors} problem${result.errors > 1 ? 's' : ''} found ` +
+                        `in ${result.files} file${result.files > 1 ? 's' : ''}`
+                    );
+                    return Cli.EXIT_CODE.PROBLEMS_FOUND;
+                } else {
+                    logger.info(`All files are OK`);
+                    return Cli.EXIT_CODE.OK;
+                }
+            })
+            .then(exitCode => argv.warnOnly ? 0 : exitCode)
+            .catch(function (error) {
+                if (this.silent) {
+                    this._process.stderr.write(`An error occurred: ${error.message}.`);
+                } else {
+                    logger.error(error);
+                }
+                return this._closeStream(outStream).return(Cli.EXIT_CODE.INTERNAL_ERROR);
+            });
+    }
+
+    /**
+     * Close the output stream unless it was stdout.
+     *
+     * @private
+     * @param {?stream.Writable} outStream
+     * @return {Promise}
+     */
+    _closeStream(outStream) {
+        if (outStream === this._process.stdout) {
             // stdout can't be closed
             return Promise.resolve();
         }
 
         return Promise.fromCallback(cb => outStream.end(cb));
     }
+}
 
-    const glob = new Glob(argv.pattern, {
-        cwd: directory,
-        nosort: true,
-        dot: argv.dot,
-        ignore: defaultIgnores.concat(argv.ignore || [])
-    });
-    const connectorConfig = {
-        host: argv.jiraHost,
-        protocol: argv.jiraProtocol,
-        port: argv.jiraPort ? argv.jiraPort : (argv.jiraProtocol === 'https' ? 443 : 80)
-    };
-    
-    if (argv.jiraUsername) {
-        connectorConfig.basic_auth = {
-            username: argv.jiraUsername,
-            password: argv.jiraPassword
-        };
-    }
-
-    const jt = new JiraTodo({
-        logger,
-        allowTodosWithoutIssues: argv.allowTodosWithoutIssues,
-        processor: {
-            keywords: argv.keyword,
-            connector: connectorConfig,
-            parserOptions: {
-                sourceType: argv.sourceType,
-                ecmaVersion: argv.ecmaVersion,
-                ecmaFeatures: {
-                    jsx: argv.jsx,
-                    globalReturn: argv.globalReturn,
-                    impliedStrict: argv.impliedStrict,
-                    experimentalObjectRestSpread: argv.experimentalObjectRestSpread
-                }
-            }
-        },
-        validator: {
-            projects: {
-                default: argv.projectsDefault,
-                filter: argv.projectsFilter || []
-            },
-            issueTypes: {
-                default: argv.issueTypesDefault,
-                filter: argv.issueTypesFilter || []
-            },
-            issueStatus: {
-                default: argv.issueStatusDefault,
-                filter: argv.issueStatusFilter || []
-            }
-        }
-    });
-
-    return runner(glob, jt, formatter)
-        .tap(closeStream)
-        .then(function (result) {
-            logger.debug(`A total of ${result.files} file${result.files === 1 ? ' was' : 's were'} processed`);
-
-            if (result.files === 0) {
-                logger.warn(`No files processed`);
-                return 0;
-            } else if (result.errors > 0) {
-                logger.error(
-                    `${result.errors} problem${result.errors > 1 ? 's' : ''} found ` +
-                    `in ${result.files} file${result.files > 1 ? 's' : ''}`
-                );
-                return EXIT_CODE.PROBLEMS_FOUND;
-            } else {
-                logger.info(`All files are OK`);
-                return EXIT_CODE.OK;
-            }
-        })
-        .then(exitCode => argv.warnOnly ? 0 : exitCode)
-        .catch(function (error) {
-            if (SILENT) {
-                proc.stderr.write(`An error occurred: ${error.message}.`);
-            } else {
-                logger.error(error);
-            }
-            return closeStream().return(EXIT_CODE.INTERNAL_ERROR);
-        });
+/**
+ * @enum {number}
+ */
+Cli.EXIT_CODE = {
+    OK: 0,
+    PROBLEMS_FOUND: 1,
+    INTERNAL_ERROR: 2
 };
+
+module.exports = Cli;

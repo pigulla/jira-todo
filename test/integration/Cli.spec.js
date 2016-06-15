@@ -10,7 +10,11 @@ const streamBuffers = require('stream-buffers');
 
 const test = require('../setup');
 
-const cli = test.requireSrc('cli/Cli');
+const Cli = test.requireSrc('cli/Cli');
+
+function cli(proc) {
+    return new Cli(proc).run();
+}
 
 describe('Integration for cli wrapper', function () {
     this.timeout(5000);

@@ -1,2 +1,3 @@
 #!/usr/bin/env node
-require('./Cli')(process).then(exitCode => process.exit(exitCode));
+const Cli = require('./Cli');
+new Cli(process).run().then(exitCode => process.exit(exitCode));

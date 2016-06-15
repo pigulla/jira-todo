@@ -1,0 +1,6 @@
+{
+    "format": "plain",
+    "newmi": true,
+    "excludepattern": "/(.git|node_modules|reports|test)",
+    "maxcyc": 5
+}
