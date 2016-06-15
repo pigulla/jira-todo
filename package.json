@@ -18,7 +18,7 @@
     "mocha": "mocha test/\\*\\*/\\*.spec.js",
     "test-with-coverage": "NODE_BINARY=`which node` istanbul cover _mocha test/\\*\\*/\\*.spec.js",
     "check-coverage": "istanbul check-coverage",
-    "coveralls": "cat reports/lcov.info > coveralls"
+    "coveralls": "coveralls < reports/lcov.info"
   },
   "homepage": "https://github.com/pigulla/jira-todo",
   "repository": {
