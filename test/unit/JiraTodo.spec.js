@@ -24,7 +24,7 @@ describe('JiraTodo', function () {
     beforeEach(function () {
         process.reset();
         validate.reset();
-        
+
         options = {
             logger: test.nullLogger(),
             allowTodosWithoutIssues: false,
@@ -72,7 +72,11 @@ describe('JiraTodo', function () {
     describe('runs', function () {
         it('for no data', function () {
             const jt = new JiraTodo(options);
-            process.returns(Promise.resolve({ comments: [], issues: new Map() }));
+
+            process.returns(Promise.resolve({
+                comments: [],
+                issues: new Map()
+            }));
 
             return jt.run('source', 'example.js', formatter)
                 .then(function (result) {
@@ -161,17 +165,30 @@ describe('JiraTodo', function () {
                         expect(process).to.have.been.calledOnce;
                         expect(process).to.have.been.calledWithExactly('source');
                         expect(result).to.deep.equal([
-                            { issue: 'PM-38', message: 'Some error', line: 13, column: 4 },
-                            { issue: 'PM-42', message: 'Some error', line: 42, column: 2 },
-                            { issue: null, message: 'No issue key given', line: 99, column: 1 }
+                            {
+                                issue: 'PM-38',
+                                message: 'Some error',
+                                line: 13,
+                                column: 4
+                            },
+                            {
+                                issue: 'PM-42',
+                                message: 'Some error',
+                                line: 42,
+                                column: 2
+                            },
+                            {
+                                issue: null,
+                                message: 'No issue key given',
+                                line: 99,
+                                column: 1
+                            }
                         ]);
                     });
             });
 
             it('and todos without issues allowed', function () {
-                const jt = new JiraTodo(Object.assign({}, options, {
-                    allowTodosWithoutIssues: true
-                }));
+                const jt = new JiraTodo(Object.assign({}, options, { allowTodosWithoutIssues: true }));
 
                 return jt.run('source', 'example.js', formatter)
                     .then(function (result) {
@@ -179,8 +196,18 @@ describe('JiraTodo', function () {
                         expect(process).to.have.been.calledOnce;
                         expect(process).to.have.been.calledWithExactly('source');
                         expect(result).to.deep.equal([
-                            { issue: 'PM-38', message: 'Some error', line: 13, column: 4 },
-                            { issue: 'PM-42', message: 'Some error', line: 42, column: 2 }
+                            {
+                                issue: 'PM-38',
+                                message: 'Some error',
+                                line: 13,
+                                column: 4
+                            },
+                            {
+                                issue: 'PM-42',
+                                message: 'Some error',
+                                line: 42,
+                                column: 2
+                            }
                         ]);
                     });
             });

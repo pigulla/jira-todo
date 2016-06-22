@@ -6,6 +6,7 @@ const Formatter = require('./Formatter');
  * @class jt.JsonFormatter
  */
 class JsonFormatter extends Formatter {
+    /** @inheritDoc */
     constructor(stream, monochrome) {
         super(stream, monochrome);
         this._first = true;

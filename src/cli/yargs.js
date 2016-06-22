@@ -250,7 +250,7 @@ module.exports = yargs
         parseToIntegers(argv.issueStatusFilter, 'issueStatusFilter');
 
         if (argv.verbose && argv.logFormat === 'null') {
-            throw new Error(`The "verbose" flag requires a logFormat other than "null".`);
+            throw new Error('The "verbose" flag requires a logFormat other than "null".');
         }
         return true;
     })

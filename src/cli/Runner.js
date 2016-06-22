@@ -17,11 +17,16 @@ const CONCURRENCY = 5;
 module.exports = function cliRunner(glob, jt, formatter) {
     let errorCount = 0;
     let fileCount = 0;
+    let tasks;
 
     return new Promise(function (resolve, reject) {
+        /* eslint-disable require-jsdoc */
         function drained() {
             formatter.end();
-            resolve({ files: fileCount, errors: errorCount });
+            resolve({
+                files: fileCount,
+                errors: errorCount
+            });
         }
 
         function stop(err, file) {
@@ -32,19 +37,21 @@ module.exports = function cliRunner(glob, jt, formatter) {
             reject(error);
         }
 
-        function worker(match, cb) {
+        function worker(match, callback) {
             const file = path.resolve(glob.cwd, match);
 
             Promise
                 .fromCallback(cb => fs.readFile(file, cb))
                 .then(buffer => buffer.toString())
                 .then(source => jt.run(source, match, formatter))
-                .then(errors => errorCount += errors.length)
+                .then(errors => (errorCount += errors.length))
                 .catch(error => stop(error, file))
-                .finally(cb);
+                .finally(callback);
         }
+        /* eslint-enable require-jsdoc */
 
-        const tasks = queue(worker, CONCURRENCY);
+        tasks = queue(worker, CONCURRENCY);
+
         formatter.start();
 
         glob.on('error', stop);

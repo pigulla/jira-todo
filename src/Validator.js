@@ -27,7 +27,7 @@ class Validator {
      */
     validate(issue) {
         if (!issue.status) {
-            return `Issue was not found`;
+            return 'Issue was not found';
         }
 
         if (!this._isOk(issue.project, this._opts.projects.default, this._opts.projects.filter)) {
@@ -124,7 +124,7 @@ class Validator {
     /**
      * @private
      */
-    _logDebuggingInfoFor /* istanbul ignore next */ (title, dflt, filter) {
+    _logDebuggingInfoFor(title, dflt, filter) {
         const list = Array.from(filter);
 
         if (dflt === 'included') {

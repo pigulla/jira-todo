@@ -11,17 +11,20 @@ const CheckstyleFormatter = test.requireSrc('formatter/Checkstyle');
 describe('checkstyle formatter', function () {
     function formatAndParse(fileReports) {
         const string = helper.format(CheckstyleFormatter, fileReports);
+
         return libxmljs.parseXmlString(string);
     }
 
     describe('produces well-formed output', function () {
         it('for no reports', function () {
             const string = helper.format(CheckstyleFormatter, []);
+
             expect(() => libxmljs.parseXmlString(string)).not.to.throw(Error);
         });
 
         it('for several reports', function () {
             const string = helper.format(CheckstyleFormatter, helper.sampleResult);
+
             expect(() => libxmljs.parseXmlString(string)).not.to.throw(Error);
         });
     });
@@ -31,6 +34,7 @@ describe('checkstyle formatter', function () {
 
         it('for no reports', function () {
             const document = formatAndParse([]);
+
             expect(document.find('//error')).to.have.length(0);
         });
 

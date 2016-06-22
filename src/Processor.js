@@ -35,6 +35,7 @@ class Processor {
         const asUser = options.connector.basic_auth ?
             `as user "${options.connector.basic_auth.username}"` :
             'anonymously';
+
         this._logger.debug(
             `Connecting ${asUser} to Jira at ` +
             `${options.connector.protocol}://${options.connector.host}:${options.connector.port}`
@@ -105,6 +106,7 @@ class Processor {
             .then(function (commentsAndIssues) {
                 result = commentsAndIssues;
                 const issueKeys = new Set(commentsAndIssues.issues.keys());
+
                 return this._fetchIntoCache(issueKeys);
             })
             .then(function () {

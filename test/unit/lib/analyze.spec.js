@@ -23,6 +23,7 @@ const analyze = test.proxyquireSrc('lib/analyze', stubs);
 describe('analyze', function () {
     function run(source) {
         const result = analyze(source, TODO_PATTERN, Processor.ISSUE_PATTERN, PARSER_OPTIONS);
+
         return test.objectify(result);
     }
 
@@ -48,11 +49,26 @@ describe('analyze', function () {
         const ISSUE_2 = Symbol();
 
         extractComments.returns([
-            { line: 17, column: 4, value: 'A' },
-            { line: 42, column: 13, value: 'B' },
-            { line: 111, column: 1, value: 'C' }
+            {
+                line: 17,
+                column: 4,
+                value: 'A'
+            },
+            {
+                line: 42,
+                column: 13,
+                value: 'B'
+            },
+            {
+                line: 111,
+                column: 1,
+                value: 'C'
+            }
         ]);
-        extractTodods.withArgs('A').returns({ issues: [], todos: [] });
+        extractTodods.withArgs('A').returns({
+            issues: [],
+            todos: []
+        });
         extractTodods.withArgs('B').returns({
             issues: new Map([[ISSUE_1_KEY, ISSUE_1]]),
             todos: [TODO_1, TODO_2]
@@ -64,8 +80,18 @@ describe('analyze', function () {
 
         expect(run('ignored')).to.deep.equal({
             comments: [
-                { line: 42, column: 13, value: 'B', todos: [TODO_1, TODO_2] },
-                { line: 111, column: 1, value: 'C', todos: [TODO_2] }
+                {
+                    line: 42,
+                    column: 13,
+                    value: 'B',
+                    todos: [TODO_1, TODO_2]
+                },
+                {
+                    line: 111,
+                    column: 1,
+                    value: 'C',
+                    todos: [TODO_2]
+                }
             ],
             issues: {
                 [ISSUE_1_KEY]: ISSUE_1,

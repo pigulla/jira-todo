@@ -15,15 +15,15 @@ class CheckstyleFormatter extends Formatter {
     _report(reports) {
         reports.forEach(function (error) {
             this._writeLn([
-                `<error`,
+                '<error',
                 `line="${error.line}"`,
                 `column="${error.column}"`,
-                `severity="error"`,
+                'severity="error"',
                 `message="${escape(error.message)}"/>`
             ].join(' '), 4);
         }, this);
     }
-    
+
     /** @inheritDoc */
     start() {
         this._writeLn('<?xml version="1.0" encoding="utf-8"?>');
@@ -37,7 +37,7 @@ class CheckstyleFormatter extends Formatter {
         } else {
             this._writeLn(`<file name="${escape(fileReport.file)}">`, 2);
             this._report(fileReport.errors);
-            this._writeLn(`</file>`, 2);
+            this._writeLn('</file>', 2);
         }
     }
 

@@ -27,6 +27,7 @@ describe('Processor', function () {
             keywords: [],
             parserOptions: {}
         }, options);
+
         return new Processor(opts, test.nullLogger());
     }
 
@@ -77,10 +78,10 @@ describe('Processor', function () {
                 });
             });
     });
-    
+
     it('uses a cache', function () {
         const processor = getProcessor({});
-        
+
         analyze.returns(Promise.resolve({
             comments: [
                 {

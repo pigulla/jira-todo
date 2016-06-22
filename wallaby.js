@@ -13,7 +13,7 @@ module.exports = {
         },
         {
             pattern: 'test/**/*.helper.js',
-            instrument: false 
+            instrument: false
         },
         {
             pattern: 'test/fixtures/*',
@@ -32,7 +32,5 @@ module.exports = {
     tests: [
         'test/**/*.spec.js'
     ],
-    env: {
-        type: 'node'
-    }
+    env: { type: 'node' }
 };

@@ -25,10 +25,22 @@ module.exports.setup.env = {
 };
 
 module.exports.result.logs = [
-    { level: 'INFO', msg: 'All but the following projects are forbidden: TRANS, FOO' },
-    { level: 'INFO', msg: 'All issue types are allowed' },
-    { level: 'INFO', msg: 'No issue status are allowed' },
-    { level: 'INFO', msg: 'Todos without issues are forbidden' },
+    {
+        level: 'INFO',
+        msg: 'All but the following projects are forbidden: TRANS, FOO'
+    },
+    {
+        level: 'INFO',
+        msg: 'All issue types are allowed'
+    },
+    {
+        level: 'INFO',
+        msg: 'No issue status are allowed'
+    },
+    {
+        level: 'INFO',
+        msg: 'Todos without issues are forbidden'
+    },
     {
         filename: 'one/service.js',
         level: 'WARN',

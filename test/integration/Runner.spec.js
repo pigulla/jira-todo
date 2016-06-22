@@ -18,7 +18,12 @@ describe('Integration test for cli runner', function () {
     afterEach(() => nock.cleanAll());
 
     it('works', function () {
-        test.addIssueToNock('PM-42', { statusId: 5, statusName: 'Resolved', typeId: 3, typeName: 'Task' });
+        test.addIssueToNock('PM-42', {
+            statusId: 5,
+            statusName: 'Resolved',
+            typeId: 3,
+            typeName: 'Task'
+        });
 
         const glob = new Glob('../fixtures/testing.es6.js', { cwd: __dirname });
         const logger = test.nullLogger();
@@ -69,7 +74,10 @@ describe('Integration test for cli runner', function () {
             .then(function (errorCount) {
                 const result = JSON.parse(stream.getContents());
 
-                expect(errorCount).to.deep.equal({ files: 1, errors: 1 });
+                expect(errorCount).to.deep.equal({
+                    files: 1,
+                    errors: 1
+                });
                 expect(result).to.deep.equal([
                     {
                         file: '../fixtures/testing.es6.js',

@@ -29,7 +29,10 @@ describe('getStatus', function () {
         const getIssue = sinon.spy(function (query, callback) {
             requests.set(query.issueKey, function () {
                 requests.delete(query.issueKey);
-                callback(null, makeIssueObject({ typeId: 1, statusId: 1 }), { statusCode: http.OK });
+                callback(null, makeIssueObject({
+                    typeId: 1,
+                    statusId: 1
+                }), { statusCode: http.OK });
             });
         });
         const connectorStub = { issue: { getIssue } };
@@ -50,9 +53,7 @@ describe('getStatus', function () {
 
     describe('with stubbed connector.getIssue', function () {
         const getIssue = sinon.stub();
-        const connectorStub = {
-            issue: { getIssue }
-        };
+        const connectorStub = { issue: { getIssue } };
 
         beforeEach(() => getIssue.reset());
 
@@ -61,7 +62,10 @@ describe('getStatus', function () {
         }
 
         it('success', function () {
-            getIssue.yields(null, makeIssueObject({ typeId: 42, statusId: 13 }));
+            getIssue.yields(null, makeIssueObject({
+                typeId: 42,
+                statusId: 13
+            }));
 
             return run(['ABC-42'])
                 .tap(result => expect(result).to.be.instanceof(Map))
@@ -97,7 +101,10 @@ describe('getStatus', function () {
             getIssue.yields(
                 new Error('Request failed'),
                 null,
-                { statusCode: http.BAD_REQUEST, statusMessage: 'Bad Request' }
+                {
+                    statusCode: http.BAD_REQUEST,
+                    statusMessage: 'Bad Request'
+                }
             );
             return expect(run(['ABC-42'])).to.eventually.be.rejected;
         });
@@ -106,7 +113,10 @@ describe('getStatus', function () {
             getIssue.yields(
                 null,
                 undefined,
-                { statusCode: http.OK, statusMessage: 'OK' }
+                {
+                    statusCode: http.OK,
+                    statusMessage: 'OK'
+                }
             );
             return expect(run(['ABC-42'])).to.eventually.be.rejected;
         });
@@ -115,25 +125,32 @@ describe('getStatus', function () {
             getIssue.yields(
                 new Error('Request failed'),
                 null,
-                { statusCode: http.NOT_FOUND, statusMessage: 'Bad Request' }
+                {
+                    statusCode: http.NOT_FOUND,
+                    statusMessage: 'Bad Request'
+                }
             );
             return run(['ABC-42'])
                 .tap(result => expect(result).to.be.instanceof(Map))
                 .then(test.objectify)
                 .then(function (result) {
-                    expect(result).to.deep.equal({
-                        'ABC-42': null
-                    });
+                    expect(result).to.deep.equal({ 'ABC-42': null });
                 });
         });
 
         it('successes and errors mixed', function () {
             getIssue
                 .withArgs(sinon.match({ issueKey: 'ABC-XX' }), sinon.match.func)
-                .yields(new Error('Request failed'), null, { statusCode: 400, statusMessage: 'Bad Request' });
+                .yields(new Error('Request failed'), null, {
+                    statusCode: 400,
+                    statusMessage: 'Bad Request'
+                });
             getIssue
                 .withArgs(sinon.match({ issueKey: 'ABC-42' }), sinon.match.func)
-                .yields(null, makeIssueObject({ typeId: 42, statusId: 13 }));
+                .yields(null, makeIssueObject({
+                    typeId: 42,
+                    statusId: 13
+                }));
 
             return expect(run(['ABC-42', 'ABC-XX'])).to.eventually.be.rejected;
         });

@@ -24,7 +24,7 @@ class JiraTodo {
         this._processor = new Processor(options.processor, this._logger);
         this._validator = new Validator(options.validator, this._logger);
 
-        this._logger.info(`Todos without issues are ${this._allowTodosWithoutIssues ? 'allowed' : 'forbidden' }`);
+        this._logger.info(`Todos without issues are ${this._allowTodosWithoutIssues ? 'allowed' : 'forbidden'}`);
     }
 
     /**
@@ -35,17 +35,21 @@ class JiraTodo {
      */
     run(source, filename, formatter) {
         const logger = this._logger.child({ filename });
-        logger.debug(`Processing source`);
+
+        logger.debug('Processing source');
 
         return this._processor.process(source)
             .bind(this)
             .then(result => this._collectErrors(result, logger))
             .tap(function (errors) {
                 if (errors.length === 0) {
-                    logger.debug(`File is OK`);
+                    logger.debug('File is OK');
                 }
             })
-            .tap(reports => formatter.report({ file: filename, errors: reports }));
+            .tap(reports => formatter.report({
+                file: filename,
+                errors: reports
+            }));
     }
 
     /**
@@ -74,7 +78,10 @@ class JiraTodo {
 
                 Array.from(todo.issues)
                     .map(issueKey => result.issues.get(issueKey))
-                    .map(issue => ({ issue, error: validator.validate(issue) }))
+                    .map(issue => ({
+                        issue,
+                        error: validator.validate(issue)
+                    }))
                     .filter(data => data.error)
                     .forEach(function (data) {
                         logger.warn(

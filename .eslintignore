@@ -1,3 +1,4 @@
 reports/**/*
-test/fixtures/**/*
+src/cli/index.js
+test/fixtures/*
 test/end-to-end/**/files/*

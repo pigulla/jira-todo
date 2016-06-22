@@ -26,22 +26,28 @@ function getSingleStatus(jiraConnector, issueKey, cb) {
         if (error) {
             if (!response) {
                 const msg = `Request to Jira server for issue ${issueKey} failed: ${error.message}`;
+
                 return cb(null, new Error(msg));
             } else if (response.statusCode === http.NOT_FOUND) {
-                return cb(null, { issueKey, data: null });
+                return cb(null, {
+                    issueKey,
+                    data: null
+                });
             } else {
                 const msg = `Request to Jira server for issue ${issueKey} failed ` +
                     `with status code ${response.statusCode} (${response.statusMessage})`;
+
                 return cb(null, new Error(msg));
             }
         }
 
         if (!result) {
-            const msg = `Request to Jira server returned no data. Maybe you are lacking permissions?`;
+            const msg = 'Request to Jira server returned no data. Maybe you are lacking permissions?';
+
             return cb(null, new Error(msg));
         }
 
-        cb(null, {
+        return cb(null, {
             issueKey,
             data: {
                 typeId: parseInt(result.fields.issuetype.id, 10),

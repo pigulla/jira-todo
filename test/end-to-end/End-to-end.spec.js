@@ -11,7 +11,7 @@ const pick = require('lodash.pick');
 
 const createServer = require('./Server');
 
-const node = process.env.NODE_BINARY || process.argv[0];
+const node = process.env.NODE_BINARY || process.argv[0]; // eslint-disable-line no-process-env
 const scenarioDir = path.join(__dirname, 'scenario');
 const cli = path.join(__dirname, '..', '..', 'src', 'cli', 'index.js');
 
@@ -27,7 +27,11 @@ function parseBuffer(buffer, multiline) {
         return null;
     }
 
-    return multiline ? str.trim().split(/\n/).map(line => JSON.parse(line)) : JSON.parse(str);
+    return multiline ?
+        str.trim()
+            .split(/\n/)
+            .map(line => JSON.parse(line)) :
+        JSON.parse(str);
 }
 
 /**
@@ -35,7 +39,7 @@ function parseBuffer(buffer, multiline) {
  * @return Promise
  */
 function run(name) {
-    const scenario = require(path.join(scenarioDir, name));
+    const scenario = require(path.join(scenarioDir, name)); // eslint-disable-line global-require
     const args = [cli].concat(scenario.setup.argv);
     const stdout = new streamBuffers.WritableStreamBuffer();
     const stderr = new streamBuffers.WritableStreamBuffer();
@@ -70,7 +74,7 @@ describe('End-to-End', function () {
     this.slow(2000);
 
     before(function () {
-        return createServer(8080).then(restify => server = restify);
+        return createServer(8080).then(restify => (server = restify));
     });
 
     after(() => Promise.fromCallback(cb => server.close(cb)));

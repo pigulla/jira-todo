@@ -1,5 +1,7 @@
 'use strict';
 
+/* eslint-disable no-unused-expressions */
+
 const jt = {};
 
 /**
@@ -62,7 +64,7 @@ jt.Result;
  * @typedef {Array.<{
  *   issue: string,
  *   message: string,
- *   line: number, 
+ *   line: number,
  *   column: number
  * }>}
  */

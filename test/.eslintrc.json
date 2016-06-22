@@ -1,5 +1,10 @@
 {
     "env": {
         "mocha": true
+    },
+
+    "rules": {
+        "require-jsdoc": 0,
+        "no-unused-expressions": 0
     }
 }

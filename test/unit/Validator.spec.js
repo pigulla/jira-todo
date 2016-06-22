@@ -32,12 +32,13 @@ describe('Validator', function () {
             }
         };
     }
-    
+
     it('unknown issues', function () {
         const validator = getValidator({});
         const issue = makeIssue('FOO', 1, 1);
+
         delete issue.status;
-        
+
         expect(validator.validate(issue)).to.be.a('string');
     });
 

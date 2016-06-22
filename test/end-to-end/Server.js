@@ -14,20 +14,21 @@ const responseFiles = glob.sync('*.json', {
 
 const USERNAME = 'myuser';
 const PASSWORD = 'mypass';
-const BASIC_AUTH_HEADER = 'Basic ' + new Buffer(`${USERNAME}:${PASSWORD}`).toString('base64');
+const AUTH_HASH = new Buffer(`${USERNAME}:${PASSWORD}`).toString('base64');
+const BASIC_AUTH_HEADER = `Basic ${AUTH_HASH}`;
 
+/* eslint-disable global-require */
 module.exports = function createServer(port) {
     const server = restify.createServer();
 
     const responses = responseFiles.reduce(function (map, file) {
         const issueKey = path.basename(file, '.json');
         const response = require(path.join(responsesDir, file));
+
         return map.set(issueKey, response);
     }, new Map());
 
-    server.get({
-        path: '/rest/api/2/issue/:issueKey'
-    }, function (request, response, next) {
+    server.get({ path: '/rest/api/2/issue/:issueKey' }, function (request, response, next) {
         if (request.headers.authorization !== BASIC_AUTH_HEADER) {
             return next(new restify.errors.UnauthorizedError());
         }
@@ -39,7 +40,7 @@ module.exports = function createServer(port) {
         response.send(status.OK, responses.get(request.params.issueKey));
         return next();
     });
-    
+
     return Promise
         .fromCallback(cb => server.listen(port, cb))
         .return(server);

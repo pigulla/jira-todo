@@ -14,7 +14,7 @@ class Formatter {
         this._stream = stream;
         this._monochrome = monochrome;
     }
-    
+
     /**
      * @protected
      * @param {string=} string
@@ -22,9 +22,12 @@ class Formatter {
      */
     _writeLn(string, indent) {
         const padding = new Array(1 + (arguments.length < 2 ? 0 : indent)).join(' ');
+
         this._stream.write(padding + (arguments.length === 0 ? '' : string) + os.EOL);
     }
 
+    /**
+     */
     start() {
     }
 
@@ -34,6 +37,8 @@ class Formatter {
     report(fileReport) {
     }
 
+    /**
+     */
     end() {
     }
 }

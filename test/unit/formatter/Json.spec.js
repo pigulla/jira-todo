@@ -10,6 +10,7 @@ const JsonFormatter = test.requireSrc('formatter/Json');
 describe('json formatter', function () {
     function formatAndParse(fileReports) {
         const string = helper.format(JsonFormatter, fileReports);
+
         return JSON.parse(string);
     }
 
@@ -26,11 +27,13 @@ describe('json formatter', function () {
     describe('produces the correct output', function () {
         it('for no reports', function () {
             const json = formatAndParse([]);
+
             expect(json).to.deep.equal([]);
         });
 
         it('for several reports', function () {
             const json = formatAndParse(helper.sampleResult);
+
             expect(json).to.deep.equal(helper.sampleResult);
         });
     });

@@ -14,8 +14,12 @@ const blackhole = require('stream-blackhole');
 const runner = require('./Runner');
 const JiraTodo = require('../JiraTodo');
 const formatters = require('../formatter/');
+const p = require('../lib/plural');
 const cliYargs = require('./yargs');
 
+/**
+ * CLI Wrapper Class
+ */
 class Cli {
     /**
      * @param {Object} proc
@@ -42,7 +46,12 @@ class Cli {
      */
     _initLogger() {
         const VERBOSITY = Math.min(this._argv.verbose, 3);
-        const LEVEL = { 3: bunyan.TRACE, 2: bunyan.DEBUG, 1: bunyan.INFO, 0: bunyan.WARN }[VERBOSITY];
+        const LEVEL = {
+            3: bunyan.TRACE,
+            2: bunyan.DEBUG,
+            1: bunyan.INFO,
+            0: bunyan.WARN
+        }[VERBOSITY];
 
         const logStream = this.silent ?
             blackhole() :
@@ -66,10 +75,11 @@ class Cli {
     _getJiraTodo() {
         const argv = this._argv;
 
+        const defaultPort = argv.jiraProtocol === 'https' ? 443 : 80;
         const connectorConfig = {
             host: argv.jiraHost,
             protocol: argv.jiraProtocol,
-            port: argv.jiraPort ? argv.jiraPort : (argv.jiraProtocol === 'https' ? 443 : 80)
+            port: argv.jiraPort ? argv.jiraPort : defaultPort
         };
 
         if (argv.jiraUsername) {
@@ -136,23 +146,23 @@ class Cli {
             .bind(this)
             .tap(() => this._closeStream(outStream))
             .then(function (result) {
-                logger.debug(`A total of ${result.files} file${result.files === 1 ? ' was' : 's were'} processed`);
+                logger.debug(`A total of ${result.files} file${p(' was', 's were', result.files)} processed`);
 
                 if (result.files === 0) {
-                    logger.warn(`No files processed`);
+                    logger.warn('No files processed');
                     return 0;
                 } else if (result.errors > 0) {
                     logger.error(
-                        `${result.errors} problem${result.errors > 1 ? 's' : ''} found ` +
-                        `in ${result.files} file${result.files > 1 ? 's' : ''}`
+                        `${result.errors} problem${p('', 's', result.errors)} found ` +
+                        `in ${result.files} file${p('', 's', result.files)}`
                     );
                     return Cli.EXIT_CODE.PROBLEMS_FOUND;
                 } else {
-                    logger.info(`All files are OK`);
+                    logger.info('All files are OK');
                     return Cli.EXIT_CODE.OK;
                 }
             })
-            .then(exitCode => argv.warnOnly ? 0 : exitCode)
+            .then(exitCode => (argv.warnOnly ? 0 : exitCode))
             .catch(function (error) {
                 if (this.silent) {
                     this._process.stderr.write(`An error occurred: ${error.message}.`);

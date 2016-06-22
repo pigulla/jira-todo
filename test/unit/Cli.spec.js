@@ -15,7 +15,7 @@ const runner = sinon.stub();
 
 const Cli = test.proxyquireSrc('cli/Cli', {
     'glob': { Glob },
-    'path': path,
+    path,
     './Runner': runner,
     './yargs': yargs,
     '../JiraTodo': JiraTodo
@@ -86,6 +86,7 @@ describe('Cli', function () {
             return cli(proc)
                 .then(function () {
                     const contents = proc.stderr.getContentsAsString();
+
                     expect(contents).to.not.be.false;
                     expect(JSON.parse(contents)).to.have.deep.property('msg', 'Oh noes!');
                 });

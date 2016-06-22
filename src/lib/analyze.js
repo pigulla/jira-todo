@@ -31,11 +31,14 @@ module.exports = function analyze(source, todoPattern, issuePattern, parserOptio
         .map(function (comment) {
             /** @type {{ todos: Array.<jt.Todo>, issues: Map.<string, jt.Issue> }} */
             const data = extractTodos(comment.value, todoRegex, issueRegex);
+
             issueMaps.push(data.issues);
-            
             return Object.assign(comment, { todos: data.todos });
         }, this)
         .filter(comment => comment.todos.length > 0);
 
-    return { comments, issues: mergeMaps(issueMaps) };
+    return {
+        comments,
+        issues: mergeMaps(issueMaps)
+    };
 };

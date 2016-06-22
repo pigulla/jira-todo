@@ -15,12 +15,20 @@ const runner = test.proxyquireSrc('cli/Runner', {
 });
 
 describe('Runner', function () {
-    let glob, jt, formatter;
+    let glob,
+        jt,
+        formatter;
 
     beforeEach(function () {
-        glob = Object.assign(new EventEmitter(), { abort: sinon.spy(), cwd: '/my/source' });
+        glob = Object.assign(new EventEmitter(), {
+            abort: sinon.spy(),
+            cwd: '/my/source'
+        });
         jt = { run: sinon.stub() };
-        formatter = { start: sinon.stub(), end: sinon.stub() };
+        formatter = {
+            start: sinon.stub(),
+            end: sinon.stub()
+        };
     });
 
     it('aborts on file error', function (done) {

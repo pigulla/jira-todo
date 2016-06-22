@@ -19,6 +19,7 @@ chai.use(chaiAsPromised);
 
 nock.disableNetConnect();
 
+/* eslint-disable global-require */
 module.exports = {
     requireSrc(path) {
         assert.string(path, 'path');
@@ -30,7 +31,7 @@ module.exports = {
         assert.object(stubs, 'stubs');
         return proxyquire(`../src/${path}`, stubs);
     },
-    
+
     addIssueToNock(key, options) {
         const response = makeResponse(key, options);
 
@@ -43,7 +44,7 @@ module.exports = {
             .query(true)
             .reply(http.OK, response);
     },
-    
+
     addNotFoundIssueToNock(key) {
         nock('https://jira.host.invalid')
             .get(`/rest/api/2/issue/${key}`)
@@ -54,9 +55,12 @@ module.exports = {
             .query(true)
             .reply(http.NOT_FOUND, '{}');
     },
-    
+
     nullLogger() {
-        return bunyan.createLogger({ name: 'null', stream: blackhole() });
+        return bunyan.createLogger({
+            name: 'null',
+            stream: blackhole()
+        });
     },
 
     getFixture(name) {
@@ -68,12 +72,13 @@ module.exports = {
 
         return fixtures[name];
     },
-    
+
     objectify(object) {
         assert.object(object, 'object');
 
         function objectifyMap(map) {
             const keys = Array.from(map.keys());
+
             return keys.reduce(function (o, key) {
                 assert.string(key, 'key');
                 o[key] = this.node.get(key);

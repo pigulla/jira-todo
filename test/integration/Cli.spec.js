@@ -72,7 +72,6 @@ describe('Integration for cli wrapper', function () {
                     expect(proc.stdout.getContents()).to.not.be.false;
                 });
         });
-
     });
 
     describe('works', function () {
@@ -138,12 +137,42 @@ describe('Integration for cli wrapper', function () {
         });
 
         it('for testing.es5.js', function () {
-            test.addIssueToNock('PM-42', { statusId: 5, statusName: 'Resolved', typeId: 2, typeName: 'Task' });
-            test.addIssueToNock('PM-1234', { statusId: 2, statusName: 'In Progress', typeId: 4, typeName: 'Bug' });
-            test.addIssueToNock('ABC-13', { statusId: 2, statusName: 'In Progress', typeId: 9, typeName: 'Story' });
-            test.addIssueToNock('ABC-99', { statusId: 5, statusName: 'Resolved', typeId: 3, typeName: 'Subtask' });
-            test.addIssueToNock('ABC-1000', { statusId: 1, statusName: 'Open', typeId: 9, typeName: 'Story' });
-            test.addIssueToNock('X-99', { statusId: 1, statusName: 'Open', typeId: 3, typeName: 'Subtask' });
+            test.addIssueToNock('PM-42', {
+                statusId: 5,
+                statusName: 'Resolved',
+                typeId: 2,
+                typeName: 'Task'
+            });
+            test.addIssueToNock('PM-1234', {
+                statusId: 2,
+                statusName: 'In Progress',
+                typeId: 4,
+                typeName: 'Bug'
+            });
+            test.addIssueToNock('ABC-13', {
+                statusId: 2,
+                statusName: 'In Progress',
+                typeId: 9,
+                typeName: 'Story'
+            });
+            test.addIssueToNock('ABC-99', {
+                statusId: 5,
+                statusName: 'Resolved',
+                typeId: 3,
+                typeName: 'Subtask'
+            });
+            test.addIssueToNock('ABC-1000', {
+                statusId: 1,
+                statusName: 'Open',
+                typeId: 9,
+                typeName: 'Story'
+            });
+            test.addIssueToNock('X-99', {
+                statusId: 1,
+                statusName: 'Open',
+                typeId: 3,
+                typeName: 'Subtask'
+            });
             test.addNotFoundIssueToNock('TK-4711');
 
             const tmpFile = tmp.fileSync();
@@ -232,7 +261,10 @@ describe('Integration for cli wrapper', function () {
         });
 
         it('for testing.es6.js', function () {
-            test.addIssueToNock('PM-42', { statusId: 5, statusName: 'Resolved' });
+            test.addIssueToNock('PM-42', {
+                statusId: 5,
+                statusName: 'Resolved'
+            });
 
             const tmpFile = tmp.fileSync();
             const proc = getProcessMock([

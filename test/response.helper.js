@@ -7,7 +7,7 @@ module.exports = function makeResponse(key, options) {
         "expand": "renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations",
         "id": "36713",
         "self": "https://jira.host.invalid/rest/api/2/issue/4711",
-        "key": key,
+        key,
         "fields": {
             "issuetype": {
                 "self": `https://jira.host.invalid/rest/api/2/issuetype/${options.typeId}`,

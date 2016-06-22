@@ -11,8 +11,14 @@ describe('extractComments', function () {
             const source = test.getFixture('es6');
 
             expect(function () {
-                extractComments(source,
-                    { ecmaVersion: 5, sourceType: 'script', ecmaFeatures: {} });
+                extractComments(
+                    source,
+                    {
+                        ecmaVersion: 5,
+                        sourceType: 'script',
+                        ecmaFeatures: {}
+                    }
+                );
             }).to.throw();
         });
 
@@ -20,8 +26,14 @@ describe('extractComments', function () {
             const source = test.getFixture('jsx');
 
             expect(function () {
-                extractComments(source,
-                    { ecmaVersion: 6, sourceType: 'module', ecmaFeatures: {} });
+                extractComments(
+                    source,
+                    {
+                        ecmaVersion: 6,
+                        sourceType: 'module',
+                        ecmaFeatures: {}
+                    }
+                );
             }).to.throw();
         });
     });
@@ -29,16 +41,28 @@ describe('extractComments', function () {
     describe('succeeds', function () {
         it('empty file', function () {
             const source = test.getFixture('empty');
-            const result = extractComments(source,
-                { ecmaVersion: 6, sourceType: 'module', ecmaFeatures: {} });
+            const result = extractComments(
+                source,
+                {
+                    ecmaVersion: 6,
+                    sourceType: 'module',
+                    ecmaFeatures: {}
+                }
+            );
 
             expect(result).to.deep.equal([]);
         });
 
         it('ES6 with shebang', function () {
             const source = `#!/usr/bin/env node\n${test.getFixture('es6')}`;
-            const result = extractComments(source,
-                { ecmaVersion: 6, sourceType: 'module', ecmaFeatures: {} });
+            const result = extractComments(
+                source,
+                {
+                    ecmaVersion: 6,
+                    sourceType: 'module',
+                    ecmaFeatures: {}
+                }
+            );
 
             expect(result).to.deep.equal([
                 {
@@ -56,8 +80,14 @@ describe('extractComments', function () {
 
         it('ES5', function () {
             const source = test.getFixture('es5');
-            const result = extractComments(source,
-                { ecmaVersion: 5, sourceType: 'module', ecmaFeatures: {} });
+            const result = extractComments(
+                source,
+                {
+                    ecmaVersion: 5,
+                    sourceType: 'module',
+                    ecmaFeatures: {}
+                }
+            );
 
             expect(result).to.deep.equal([
                 {
@@ -100,8 +130,14 @@ describe('extractComments', function () {
 
         it('ES6', function () {
             const source = test.getFixture('es6');
-            const result = extractComments(source,
-                { ecmaVersion: 6, sourceType: 'module', ecmaFeatures: {}});
+            const result = extractComments(
+                source,
+                {
+                    ecmaVersion: 6,
+                    sourceType: 'module',
+                    ecmaFeatures: {}
+                }
+            );
 
             expect(result).to.deep.equal([
                 {
@@ -114,8 +150,14 @@ describe('extractComments', function () {
 
         it('JSX', function () {
             const source = test.getFixture('jsx');
-            const result = extractComments(source,
-                { ecmaVersion: 6, sourceType: 'module', ecmaFeatures: { jsx: true } });
+            const result = extractComments(
+                source,
+                {
+                    ecmaVersion: 6,
+                    sourceType: 'module',
+                    ecmaFeatures: { jsx: true }
+                }
+            );
 
             expect(result).to.deep.equal([
                 {

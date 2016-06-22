@@ -23,7 +23,7 @@ describe('text formatter', function () {
         expect(chalk.constructor).to.have.been.calledWithNew;
         expect(chalk.constructor).to.have.been.calledWithMatch({ enabled: true });
     });
-    
+
     it('disables color', function () {
         helper.format(TextFormatter, [], true);
         expect(chalk.constructor).to.have.been.calledWithNew;
@@ -32,6 +32,7 @@ describe('text formatter', function () {
 
     it('produces the correct number of output lines', function () {
         const output = helper.format(TextFormatter, helper.sampleResult, true);
+
         expect(output.trim().split(/\n/)).to.have.length(6);
     });
 });

@@ -7,6 +7,13 @@ const JiraConnector = require('jira-connector');
 
 /* eslint-disable no-console */
 
+/**
+ * @param {Object} answers
+ * @param {string} scope
+ * @param {string} command
+ * @param {Object} options
+ * @return {Promise}
+ */
 function jira(answers, scope, command, options) {
     const connectorOpts = Object.assign({
         host: answers.jiraHost,
@@ -27,13 +34,14 @@ function jira(answers, scope, command, options) {
             }
 
             const message = response ? `request failed with status code ${response.statusCode}` : error.message;
-            reject(new Error(`Error accessing Jira server: ${message}`));
+
+            return reject(new Error(`Error accessing Jira server: ${message}`));
         });
-    }).timeout(10000, `Request to Jira server timed out after 10 seconds`);
+    }).timeout(10000, 'Request to Jira server timed out after 10 seconds');
 }
 
 console.log();
-console.log(chalk.yellow(`Welcome to the jira-todo configuration tool`));
+console.log(chalk.yellow('Welcome to the jira-todo configuration tool'));
 console.log(chalk.yellow('-------------------------------------------'));
 console.log();
 console.log(
@@ -87,6 +95,7 @@ inquirer
             },
             validate(password, answers) {
                 const options = Object.assign({}, answers, { jiraPassword: password });
+
                 return jira(options, 'myPermissions', 'getMyPermissions').return(true);
             }
         },
@@ -99,7 +108,7 @@ inquirer
         },
         {
             message(answers) {
-                return `Select projects to explicitly ` +
+                return 'Select projects to explicitly ' +
                     `${answers.projectsDefault === 'excluded' ? 'allow' : 'forbid'}:`;
             },
             name: 'projectsFilter',
@@ -121,7 +130,7 @@ inquirer
         },
         {
             message(answers) {
-                return `Select status to explicitly ` +
+                return 'Select status to explicitly ' +
                     `${answers.issueStatusDefault === 'excluded' ? 'allow' : 'forbid'}:`;
             },
             name: 'issueStatusFilter',
@@ -143,7 +152,7 @@ inquirer
         },
         {
             message(answers) {
-                return `Select status to explicitly ` +
+                return 'Select status to explicitly ' +
                     `${answers.issueTypesDefault === 'excluded' ? 'allow' : 'forbid'}:`;
             },
             name: 'issueTypesFilter',
