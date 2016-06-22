@@ -18,7 +18,7 @@ const p = require('../lib/plural');
 const cliYargs = require('./yargs');
 
 /**
- * CLI Wrapper Class
+ * @class jt.Cli
  */
 class Cli {
     /**

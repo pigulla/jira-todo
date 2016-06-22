@@ -65,6 +65,7 @@
     "complexity-report": "2.0.0-alpha",
     "coveralls": "2.11.9",
     "eslint": "2.13.1",
+    "eslint-config-four66": "1.0.0",
     "istanbul": "0.4.4",
     "libxmljs": "0.18.0",
     "lodash.pick": "4.2.1",
