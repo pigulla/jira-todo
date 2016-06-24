@@ -71,7 +71,7 @@
     "lodash.pick": "4.2.1",
     "mocha": "2.5.3",
     "nock": "8.0.0",
-    "nsp": "2.4.0",
+    "nsp": "2.5.0",
     "proxyquire": "1.7.9",
     "restify": "4.1.1",
     "sinon": "1.17.4",

@@ -81,7 +81,7 @@ describe('Integration test for cli runner', function () {
                 expect(result).to.deep.equal([
                     {
                         file: '../fixtures/testing.es6.js',
-                        errors: [
+                        reports: [
                             {
                                 issue: 'PM-42',
                                 message: 'Type "Task" (id 3) is not allowed',

@@ -47,7 +47,7 @@ module.exports.result.logs = [
 module.exports.result.report = [
     {
         file: 'my-file.js',
-        errors: [
+        reports: [
             {
                 issue: 'FOO-42',
                 message: 'Issue was not found',

@@ -32,11 +32,11 @@ class CheckstyleFormatter extends Formatter {
 
     /** @inheritDoc */
     report(fileReport) {
-        if (fileReport.errors.length === 0) {
+        if (fileReport.reports.length === 0) {
             this._writeLn(`<file name="${escape(fileReport.file)}"/>`, 2);
         } else {
             this._writeLn(`<file name="${escape(fileReport.file)}">`, 2);
-            this._report(fileReport.errors);
+            this._report(fileReport.reports);
             this._writeLn('</file>', 2);
         }
     }

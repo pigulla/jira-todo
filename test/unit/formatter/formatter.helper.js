@@ -5,11 +5,11 @@ const streamBuffers = require('stream-buffers');
 module.exports.sampleResult = [
     {
         file: 'foo.js',
-        errors: []
+        reports: []
     },
     {
         file: 'bar/baz.js',
-        errors: [
+        reports: [
             {
                 line: 12,
                 column: 2,

@@ -36,9 +36,9 @@ class TextFormatter extends Formatter {
     /** @inheritDoc */
     report(fileReport) {
         this._fileCount++;
-        this._errorCount += fileReport.errors.length;
+        this._errorCount += fileReport.reports.length;
 
-        const count = fileReport.errors.length;
+        const count = fileReport.reports.length;
 
         if (count === 0) {
             this._writeLn(this._chalk.gray(`No problems found in file ${fileReport.file}`));
@@ -49,7 +49,7 @@ class TextFormatter extends Formatter {
             ));
         }
 
-        fileReport.errors.forEach(function (error) {
+        fileReport.reports.forEach(function (error) {
             this._writeLn(
                 this._chalk.yellow(`  Problem with issue ${error.issue} in comment starting in line ${error.line}: `) +
                 this._chalk.yellow.bold(error.message)

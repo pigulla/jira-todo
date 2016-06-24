@@ -1,5 +1,6 @@
 {
     "extends": "eslint-config-four66",
+
     "env": {
         "node": true
     }

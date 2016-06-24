@@ -73,7 +73,7 @@ jt.Reports;
 /**
  * @typedef {{
  *   file: string,
- *   errors: jt.Reports
+ *   reports: jt.Reports
  * }}
  */
 jt.FileReport;

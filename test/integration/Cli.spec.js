@@ -131,7 +131,7 @@ describe('Integration for cli wrapper', function () {
                 .then(result => expect(result).to.deep.equal([
                     {
                         file: 'test/fixtures/index.js',
-                        errors: []
+                        reports: []
                     }
                 ]));
         });
@@ -204,7 +204,7 @@ describe('Integration for cli wrapper', function () {
                 .then(function (result) {
                     expect(result).to.deep.equal([
                         {
-                            errors: [
+                            reports: [
                                 {
                                     issue: 'X-99',
                                     column: 4,
@@ -289,7 +289,7 @@ describe('Integration for cli wrapper', function () {
                 .then(function (result) {
                     expect(result).to.deep.equal([
                         {
-                            errors: [
+                            reports: [
                                 {
                                     issue: 'PM-42',
                                     column: 4,

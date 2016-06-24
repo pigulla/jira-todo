@@ -41,14 +41,14 @@ class JiraTodo {
         return this._processor.process(source)
             .bind(this)
             .then(result => this._collectErrors(result, logger))
-            .tap(function (errors) {
-                if (errors.length === 0) {
+            .tap(function (reports) {
+                if (reports.length === 0) {
                     logger.debug('File is OK');
                 }
             })
             .tap(reports => formatter.report({
                 file: filename,
-                errors: reports
+                reports
             }));
     }
 
@@ -60,7 +60,7 @@ class JiraTodo {
      */
     _collectErrors(result, logger) {
         const validator = this._validator;
-        const errors = [];
+        const reports = [];
 
         result.comments.forEach(function (comment) {
             comment.todos.forEach(function (todo) {
@@ -68,7 +68,7 @@ class JiraTodo {
                     logger.warn(
                         `No issue key given for keyword "${todo.keyword}" ` +
                         `in comment starting in line ${comment.line}`);
-                    errors.push({
+                    reports.push({
                         issue: null,
                         message: 'No issue key given',
                         line: comment.line,
@@ -87,7 +87,7 @@ class JiraTodo {
                         logger.warn(
                             `Problem found for issue ${data.issue.key} ` +
                             `in comment starting in line ${comment.line}: ${data.error}`);
-                        errors.push({
+                        reports.push({
                             issue: data.issue.key,
                             message: data.error,
                             line: comment.line,
@@ -97,7 +97,7 @@ class JiraTodo {
             }, this);
         }, this);
 
-        return errors;
+        return reports;
     }
 }
 

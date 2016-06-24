@@ -65,7 +65,7 @@ module.exports.result.logs = [
 module.exports.result.report = [
     {
         file: 'one/service.js',
-        errors: [
+        reports: [
             {
                 issue: 'TRANS-1942',
                 message: 'Status "Resolved" (id 5) is not allowed',
@@ -76,7 +76,7 @@ module.exports.result.report = [
     },
     {
         file: 'one/two/Component.jsx',
-        errors: [
+        reports: [
             {
                 issue: 'DEMO-1058',
                 message: 'Project "DEMO" is not allowed',
