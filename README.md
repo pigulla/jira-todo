@@ -27,7 +27,7 @@ jira-todo will be triggered by the keyword `TODO` and identify the referenced Ji
 
 ##### Example
 
-![https://raw.githubusercontent.com/wiki/pigulla/jira-todo/images/example.png](example)
+![example](example/example.png)
 
 
 ## The Why
