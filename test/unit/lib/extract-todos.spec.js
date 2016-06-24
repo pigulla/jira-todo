@@ -42,6 +42,23 @@ describe('extractTodos', function () {
         });
     });
 
+    it('without key', function () {
+        const result = extract('TODO');
+
+        expect(result.todos[0].issues).to.be.instanceof(Set);
+        expect(result.issues).to.be.instanceof(Map);
+        expect(test.objectify(result)).to.deep.equal({
+            todos: [
+                {
+                    keyword: 'TODO',
+                    text: null,
+                    issues: []
+                }
+            ],
+            issues: {}
+        });
+    });
+
     it('multiple', function () {
         const result = extract('TODO: fix in PM-42 and X-99');
 

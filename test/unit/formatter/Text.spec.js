@@ -32,11 +32,10 @@ describe('text formatter', function () {
             .and.to.have.been.calledWithMatch({ enabled: false });
     });
 
-    it('produces the correct number of output lines', function () {
+    it('produces the correct output', function () {
         const output = helper.format(TextFormatter, helper.sampleResult, true);
         const actual = output.trim().split(/\n/);
         const expected = [
-            'Found no valid issues in file "foo.js"',
             'No problems found in file "foo.js"',
             'Found 1 valid issue in file "bar/baz.js"',
             'Found 2 problems in file "bar/baz.js"',

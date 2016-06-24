@@ -119,6 +119,6 @@ class Processor {
 }
 
 Processor.ISSUE_PATTERN = '(?<key>(?<project>[A-Z][_A-Z0-9]*)-(?<number>\\d+))';
-Processor.TODO_PATTERN_TEMPLATE = '(?:^|\\*|\\s|@)(?<keyword>%s)(?:!|:|\\s)(?<text>.+)';
+Processor.TODO_PATTERN_TEMPLATE = '(?:^|\\*|\\s|@)(?<keyword>%s)(?:(?:!|:|\\s)(?<text>.+))?';
 
 module.exports = Processor;

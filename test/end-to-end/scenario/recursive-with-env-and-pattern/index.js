@@ -6,6 +6,7 @@ module.exports.result = {};
 module.exports.setup.argv = [
     '--monochrome',
     '--format', 'json',
+    '--verbose',
     '--includeValid',
     '--logFormat', 'json',
     '--pattern', '**/*.{js,jsx}',

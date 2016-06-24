@@ -25,6 +25,11 @@ function fibonacci(n) {
 ```
 jira-todo will be triggered by the keyword `TODO` and identify the referenced Jira issue `FIB-42`. In a second step it will contact the Jira server, retrieve the data for that  issue and validate whether its type and status are acceptable.
 
+##### Example
+
+![https://raw.githubusercontent.com/wiki/pigulla/jira-todo/images/example.png](example)
+
+
 ## The Why
 In most projects the code is riddled with TODOs and FIXMEs, but experience shows that those are oftentimes not resolved unless there is a ticket in your issue tracker that forces you to (sooner or later).
 

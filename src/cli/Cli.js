@@ -63,7 +63,7 @@ class Cli {
 
         this._logger = bunyan.createLogger({
             name: pkg.name,
-            LEVEL,
+            level: LEVEL,
             stream: logStream
         });
     }

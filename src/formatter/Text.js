@@ -41,10 +41,13 @@ class TextFormatter extends Formatter {
         this._fileCount++;
         this._errorCount += errors.length;
 
-        this._writeLn(this._chalk.gray(
-            `Found ${valid.length === 0 ? 'no' : valid.length} valid issue${valid.length === 1 ? '' : 's'} ` +
-            `in file "${fileReport.file}"`
-        ));
+        if (valid.length > 0) {
+            /* istanbul ignore next */
+            this._writeLn(this._chalk.gray(
+                `Found ${valid.length} valid issue${valid.length === 1 ? '' : 's'} ` +
+                `in file "${fileReport.file}"`
+            ));
+        }
 
         if (errors.length === 0) {
             this._writeLn(this._chalk.gray(`No problems found in file "${fileReport.file}"`));
@@ -56,8 +59,10 @@ class TextFormatter extends Formatter {
         }
 
         errors.forEach(function (error) {
+            const where = error.issue ? `issue ${error.issue}` : 'todo';
+            
             this._writeLn(
-                this._chalk.yellow(`  Problem with issue ${error.issue} in comment starting in line ${error.line}: `) +
+                this._chalk.yellow(`  Problem with ${where} in comment starting in line ${error.line}: `) +
                 this._chalk.yellow.bold(error.message)
             );
         }, this);

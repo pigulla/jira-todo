@@ -27,7 +27,7 @@ module.exports = function extractTodos(string, todoRegex, issueRegex) {
 
         XRegExp.forEach(str, todoRegex, match => result.push({
             keyword: match.keyword,
-            text: match.text
+            text: match.text || null
         }));
 
         return result;
