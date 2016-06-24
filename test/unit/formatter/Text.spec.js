@@ -20,19 +20,32 @@ describe('text formatter', function () {
 
     it('uses color', function () {
         helper.format(TextFormatter, [], false);
-        expect(chalk.constructor).to.have.been.calledWithNew;
-        expect(chalk.constructor).to.have.been.calledWithMatch({ enabled: true });
+        expect(chalk.constructor).to.have.been.calledOnce
+            .and.to.have.been.calledWithNew
+            .and.to.have.been.calledWithMatch({ enabled: true });
     });
 
     it('disables color', function () {
         helper.format(TextFormatter, [], true);
-        expect(chalk.constructor).to.have.been.calledWithNew;
-        expect(chalk.constructor).to.have.been.calledWithMatch({ enabled: false });
+        expect(chalk.constructor).to.have.been.calledOnce
+            .and.to.have.been.calledWithNew
+            .and.to.have.been.calledWithMatch({ enabled: false });
     });
 
     it('produces the correct number of output lines', function () {
         const output = helper.format(TextFormatter, helper.sampleResult, true);
+        const actual = output.trim().split(/\n/);
+        const expected = [
+            'Found no valid issues in file "foo.js"',
+            'No problems found in file "foo.js"',
+            'Found 1 valid issue in file "bar/baz.js"',
+            'Found 2 problems in file "bar/baz.js"',
+            '  Problem with issue undefined in comment starting in line 12: Oh noes',
+            '  Problem with issue undefined in comment starting in line 42: Escape > me!',
+            '',
+            'Found 2 errors in 2 files'
+        ];
 
-        expect(output.trim().split(/\n/)).to.have.length(6);
+        expect(actual).to.deep.equal(expected);
     });
 });

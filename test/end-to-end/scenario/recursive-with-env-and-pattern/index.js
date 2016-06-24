@@ -6,6 +6,7 @@ module.exports.result = {};
 module.exports.setup.argv = [
     '--monochrome',
     '--format', 'json',
+    '--includeValid',
     '--logFormat', 'json',
     '--pattern', '**/*.{js,jsx}',
     '--jsx',
@@ -16,6 +17,9 @@ module.exports.setup.argv = [
     '--projectsFilter', 'TRANS',
     '--projectsFilter', 'FOO',
     '--issueStatusDefault', 'excluded',
+    '--issueStatusFilter', '1',
+    '--issueTypesDefault', 'excluded',
+    '--issueTypesFilter', '1',
     '--jiraPort', '8080'
 ];
 
@@ -31,11 +35,11 @@ module.exports.result.logs = [
     },
     {
         level: 'INFO',
-        msg: 'All issue types are allowed'
+        msg: 'All but the following issue types are forbidden: 1'
     },
     {
         level: 'INFO',
-        msg: 'No issue status are allowed'
+        msg: 'All but the following issue status are forbidden: 1'
     },
     {
         level: 'INFO',
@@ -45,6 +49,11 @@ module.exports.result.logs = [
         filename: 'one/service.js',
         level: 'WARN',
         msg: 'Problem found for issue TRANS-1942 in comment starting in line 7: Status "Resolved" (id 5) is not allowed'
+    },
+    {
+        filename: 'one/service.js',
+        level: 'INFO',
+        msg: 'Valid issue TRANS-2112 found in comment starting in line 10'
     },
     {
         filename: 'one/two/Component.jsx',
@@ -67,10 +76,18 @@ module.exports.result.report = [
         file: 'one/service.js',
         reports: [
             {
+                valid: false,
                 issue: 'TRANS-1942',
                 message: 'Status "Resolved" (id 5) is not allowed',
                 line: 7,
                 column: 4
+            },
+            {
+                valid: true,
+                issue: 'TRANS-2112',
+                message: 'Issue is valid',
+                line: 10,
+                column: 17
             }
         ]
     },
@@ -78,12 +95,14 @@ module.exports.result.report = [
         file: 'one/two/Component.jsx',
         reports: [
             {
+                valid: false,
                 issue: 'DEMO-1058',
                 message: 'Project "DEMO" is not allowed',
                 line: 4,
                 column: 4
             },
             {
+                valid: false,
                 column: 8,
                 issue: 'FOO-42',
                 line: 7,

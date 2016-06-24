@@ -28,6 +28,7 @@ describe('JiraTodo', function () {
         options = {
             logger: test.nullLogger(),
             allowTodosWithoutIssues: false,
+            includeValid: false,
             processor: {
                 keywords: ['todo'],
                 connector: {
@@ -62,10 +63,10 @@ describe('JiraTodo', function () {
         it('succeeds with valid options', function () {
             expect(() => new JiraTodo(options)).not.to.throw(Error);
 
-            expect(Processor).to.have.been.calledOnce;
-            expect(Processor).to.have.been.calledWithNew;
-            expect(Validator).to.have.been.calledOnce;
-            expect(Validator).to.have.been.calledWithNew;
+            expect(Processor).to.have.been.calledOnce
+                .and.to.have.been.calledWithNew;
+            expect(Validator).to.have.been.calledOnce
+                .and.to.have.been.calledWithNew;
         });
     });
 
@@ -81,15 +82,18 @@ describe('JiraTodo', function () {
             return jt.run('source', 'example.js', formatter)
                 .then(function (result) {
                     expect(validate).not.to.have.been.called;
-                    expect(process).to.have.been.calledOnce;
-                    expect(process).to.have.been.calledWithExactly('source');
+                    expect(process).to.have.been.calledOnce
+                        .and.to.have.been.calledWithExactly('source');
                     expect(result).to.deep.equal([]);
                 });
         });
 
         describe('for data', function () {
             beforeEach(function () {
-                validate.returns('Some error');
+                validate.withArgs(sinon.match({ key: 'PM-38' })).returns('Some error');
+                validate.withArgs(sinon.match({ key: 'PM-42' })).returns('Some other error');
+                validate.withArgs(sinon.match({ key: 'PM-99' })).returns(null);
+
                 process.returns(Promise.resolve({
                     comments: [
                         {
@@ -104,6 +108,7 @@ describe('JiraTodo', function () {
                                 }
                             ]
                         },
+
                         {
                             line: 42,
                             column: 2,
@@ -125,6 +130,18 @@ describe('JiraTodo', function () {
                                     keyword: 'FIXME',
                                     text: ' ',
                                     issues: new Set()
+                                }
+                            ]
+                        },
+                        {
+                            line: 113,
+                            column: 1,
+                            value: '// @TODO: fix in PM-99!',
+                            todos: [
+                                {
+                                    keyword: 'TODO',
+                                    text: ' fix in PM-99!',
+                                    issues: new Set(['PM-99'])
                                 }
                             ]
                         }
@@ -151,9 +168,63 @@ describe('JiraTodo', function () {
                                 statusId: 2,
                                 statusName: 'In Progress'
                             }
+                        }],
+                        ['PM-99', {
+                            key: 'PM-99',
+                            project: 'PM',
+                            number: 99,
+                            status: {
+                                typeId: 1,
+                                typeName: 'Task',
+                                statusId: 1,
+                                statusName: 'Open'
+                            }
                         }]
                     ])
                 }));
+            });
+
+            it('and todos without issues forbidden, including valid issues', function () {
+                options.includeValid = true;
+
+                const jt = new JiraTodo(options);
+
+                return jt.run('source', 'example.js', formatter)
+                    .then(function (result) {
+                        expect(validate).callCount(3);
+                        expect(process).to.have.been.calledOnce
+                            .and.to.have.been.calledWithExactly('source');
+                        expect(result).to.deep.equal([
+                            {
+                                valid: false,
+                                issue: 'PM-38',
+                                message: 'Some error',
+                                line: 13,
+                                column: 4
+                            },
+                            {
+                                valid: false,
+                                issue: 'PM-42',
+                                message: 'Some other error',
+                                line: 42,
+                                column: 2
+                            },
+                            {
+                                valid: false,
+                                issue: null,
+                                message: 'No issue key given',
+                                line: 99,
+                                column: 1
+                            },
+                            {
+                                valid: true,
+                                issue: 'PM-99',
+                                message: 'Issue is valid',
+                                line: 113,
+                                column: 1
+                            }
+                        ]);
+                    });
             });
 
             it('and todos without issues forbidden', function () {
@@ -161,23 +232,26 @@ describe('JiraTodo', function () {
 
                 return jt.run('source', 'example.js', formatter)
                     .then(function (result) {
-                        expect(validate).callCount(2);
-                        expect(process).to.have.been.calledOnce;
-                        expect(process).to.have.been.calledWithExactly('source');
+                        expect(validate).callCount(3);
+                        expect(process).to.have.been.calledOnce
+                            .and.to.have.been.calledWithExactly('source');
                         expect(result).to.deep.equal([
                             {
+                                valid: false,
                                 issue: 'PM-38',
                                 message: 'Some error',
                                 line: 13,
                                 column: 4
                             },
                             {
+                                valid: false,
                                 issue: 'PM-42',
-                                message: 'Some error',
+                                message: 'Some other error',
                                 line: 42,
                                 column: 2
                             },
                             {
+                                valid: false,
                                 issue: null,
                                 message: 'No issue key given',
                                 line: 99,
@@ -192,19 +266,21 @@ describe('JiraTodo', function () {
 
                 return jt.run('source', 'example.js', formatter)
                     .then(function (result) {
-                        expect(validate).callCount(2);
-                        expect(process).to.have.been.calledOnce;
-                        expect(process).to.have.been.calledWithExactly('source');
+                        expect(validate).callCount(3);
+                        expect(process).to.have.been.calledOnce
+                            .and.to.have.been.calledWithExactly('source');
                         expect(result).to.deep.equal([
                             {
+                                valid: false,
                                 issue: 'PM-38',
                                 message: 'Some error',
                                 line: 13,
                                 column: 4
                             },
                             {
+                                valid: false,
                                 issue: 'PM-42',
-                                message: 'Some error',
+                                message: 'Some other error',
                                 line: 42,
                                 column: 2
                             }

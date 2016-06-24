@@ -62,6 +62,7 @@ jt.Result;
 
 /**
  * @typedef {Array.<{
+ *   valid: boolean,
  *   issue: string,
  *   message: string,
  *   line: number,

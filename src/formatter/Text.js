@@ -35,21 +35,27 @@ class TextFormatter extends Formatter {
 
     /** @inheritDoc */
     report(fileReport) {
+        const errors = fileReport.reports.filter(report => !report.valid);
+        const valid = fileReport.reports.filter(report => report.valid);
+
         this._fileCount++;
-        this._errorCount += fileReport.reports.length;
+        this._errorCount += errors.length;
 
-        const count = fileReport.reports.length;
+        this._writeLn(this._chalk.gray(
+            `Found ${valid.length === 0 ? 'no' : valid.length} valid issue${valid.length === 1 ? '' : 's'} ` +
+            `in file "${fileReport.file}"`
+        ));
 
-        if (count === 0) {
-            this._writeLn(this._chalk.gray(`No problems found in file ${fileReport.file}`));
+        if (errors.length === 0) {
+            this._writeLn(this._chalk.gray(`No problems found in file "${fileReport.file}"`));
         } else {
             /* istanbul ignore next */
             this._writeLn(this._chalk.white(
-                `Found ${count} problem${count > 1 ? 's' : ''} in file "${fileReport.file}"`
+                `Found ${errors.length} problem${errors.length > 1 ? 's' : ''} in file "${fileReport.file}"`
             ));
         }
 
-        fileReport.reports.forEach(function (error) {
+        errors.forEach(function (error) {
             this._writeLn(
                 this._chalk.yellow(`  Problem with issue ${error.issue} in comment starting in line ${error.line}: `) +
                 this._chalk.yellow.bold(error.message)

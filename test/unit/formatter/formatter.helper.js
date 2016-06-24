@@ -11,11 +11,19 @@ module.exports.sampleResult = [
         file: 'bar/baz.js',
         reports: [
             {
+                valid: false,
                 line: 12,
                 column: 2,
                 message: 'Oh noes'
             },
             {
+                valid: true,
+                line: 17,
+                column: 1,
+                message: 'I am Groot'
+            },
+            {
+                valid: false,
                 line: 42,
                 column: 4,
                 message: 'Escape > me!'

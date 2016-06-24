@@ -44,7 +44,7 @@ module.exports = function cliRunner(glob, jt, formatter) {
                 .fromCallback(cb => fs.readFile(file, cb))
                 .then(buffer => buffer.toString())
                 .then(source => jt.run(source, match, formatter))
-                .then(errors => (errorCount += errors.length))
+                .then(reports => (errorCount += reports.filter(report => !report.valid).length))
                 .catch(error => stop(error, file))
                 .finally(callback);
         }

@@ -6,4 +6,6 @@
 module.exports = function Service(options) {
     /* What is this?
      * TODO TRANS-1942 */
+
+    return null; // @todo TRANS-2112
 }

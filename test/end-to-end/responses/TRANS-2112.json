@@ -1,0 +1,209 @@
+{
+    "expand": "renderedFields,names,schema,transitions,operations,editmeta,changelog,versionedRepresentations",
+    "id": "596605",
+    "self": "https://jira.host.invalid/rest/api/2/issue/596605",
+    "key": "TRANS-2112",
+    "fields": {
+        "customfield_12130": null,
+        "customfield_16732": null,
+        "customfield_12131": null,
+        "customfield_10230": null,
+        "customfield_14430": null,
+        "customfield_16730": {
+            "self": "https://jira.host.invalid/rest/api/2/customFieldOption/13930",
+            "value": "Other",
+            "id": "13930"
+        },
+        "fixVersions": [],
+        "resolution": null,
+        "customfield_12531": "Not Started",
+        "customfield_16733": null,
+        "customfield_11436": "9223372036854775807",
+        "customfield_11435": "9223372036854775807",
+        "customfield_11437": "9223372036854775807",
+        "lastViewed": "2016-06-24T16:22:53.533+0000",
+        "customfield_10180": null,
+        "priority": {
+            "self": "https://jira.host.invalid/rest/api/2/priority/4",
+            "iconUrl": "https://jira.host.invalid/images/icons/priorities/minor.svg",
+            "name": "Minor",
+            "id": "4"
+        },
+        "customfield_11431": "9223372036854775807",
+        "customfield_11434": "9223372036854775807",
+        "customfield_11433": "9223372036854775807",
+        "labels": [
+            "planned"
+        ],
+        "aggregatetimeoriginalestimate": null,
+        "timeestimate": null,
+        "versions": [],
+        "issuelinks": [],
+        "assignee": null,
+        "status": {
+            "self": "https://jira.host.invalid/rest/api/2/status/1",
+            "description": "Issue is open and has not yet been accepted by Atlassian.",
+            "iconUrl": "https://jira.host.invalid/images/icons/statuses/open.png",
+            "name": "Open",
+            "id": "1",
+            "statusCategory": {
+                "self": "https://jira.host.invalid/rest/api/2/statuscategory/2",
+                "id": 2,
+                "key": "new",
+                "colorName": "blue-gray",
+                "name": "To Do"
+            }
+        },
+        "customfield_16030": null,
+        "components": [],
+        "customfield_14130": null,
+        "customfield_14532": null,
+        "customfield_11930": null,
+        "aggregatetimeestimate": null,
+        "creator": {
+            "self": "https://jira.host.invalid/rest/api/2/user?username=ttadej",
+            "name": "ttadej",
+            "key": "ttadej",
+            "emailAddress": "ttadej at atlassian dot com",
+            "avatarUrls": {
+                "48x48": "https://jira.host.invalid/secure/useravatar?ownerId=ttadej&avatarId=84706",
+                "24x24": "https://jira.host.invalid/secure/useravatar?size=small&ownerId=ttadej&avatarId=84706",
+                "16x16": "https://jira.host.invalid/secure/useravatar?size=xsmall&ownerId=ttadej&avatarId=84706",
+                "32x32": "https://jira.host.invalid/secure/useravatar?size=medium&ownerId=ttadej&avatarId=84706"
+            },
+            "displayName": "Tyler Tadej",
+            "active": true,
+            "timeZone": "America/Chicago"
+        },
+        "customfield_15331": null,
+        "subtasks": [],
+        "customfield_10160": "4233600",
+        "customfield_10161": "true",
+        "customfield_11130": "9223372036854775807",
+        "customfield_13430": null,
+        "customfield_10680": null,
+        "reporter": {
+            "self": "https://jira.host.invalid/rest/api/2/user?username=ttadej",
+            "name": "ttadej",
+            "key": "ttadej",
+            "emailAddress": "ttadej at atlassian dot com",
+            "avatarUrls": {
+                "48x48": "https://jira.host.invalid/secure/useravatar?ownerId=ttadej&avatarId=84706",
+                "24x24": "https://jira.host.invalid/secure/useravatar?size=small&ownerId=ttadej&avatarId=84706",
+                "16x16": "https://jira.host.invalid/secure/useravatar?size=xsmall&ownerId=ttadej&avatarId=84706",
+                "32x32": "https://jira.host.invalid/secure/useravatar?size=medium&ownerId=ttadej&avatarId=84706"
+            },
+            "displayName": "Tyler Tadej",
+            "active": true,
+            "timeZone": "America/Chicago"
+        },
+        "aggregateprogress": {
+            "progress": 0,
+            "total": 0
+        },
+        "progress": {
+            "progress": 0,
+            "total": 0
+        },
+        "votes": {
+            "self": "https://jira.host.invalid/rest/api/2/issue/TRANS-2112/votes",
+            "votes": 0,
+            "hasVoted": false
+        },
+        "worklog": {
+            "startAt": 0,
+            "maxResults": 20,
+            "total": 0,
+            "worklogs": []
+        },
+        "issuetype": {
+            "self": "https://jira.host.invalid/rest/api/2/issuetype/1",
+            "id": "1",
+            "description": "A problem which impairs or prevents the functions of the product.",
+            "iconUrl": "https://jira.host.invalid/secure/viewavatar?size=xsmall&avatarId=51493&avatarType=issuetype",
+            "name": "Bug",
+            "subtask": false,
+            "avatarId": 51493
+        },
+        "customfield_16530": null,
+        "timespent": null,
+        "customfield_10150": [
+            "ttadej(ttadej)"
+        ],
+        "customfield_16930": null,
+        "project": {
+            "self": "https://jira.host.invalid/rest/api/2/project/11460",
+            "id": "11460",
+            "key": "TRANS",
+            "name": "Atlassian Translations",
+            "avatarUrls": {
+                "48x48": "https://jira.host.invalid/secure/projectavatar?pid=11460&avatarId=10011",
+                "24x24": "https://jira.host.invalid/secure/projectavatar?size=small&pid=11460&avatarId=10011",
+                "16x16": "https://jira.host.invalid/secure/projectavatar?size=xsmall&pid=11460&avatarId=10011",
+                "32x32": "https://jira.host.invalid/secure/projectavatar?size=medium&pid=11460&avatarId=10011"
+            }
+        },
+        "customfield_16532": null,
+        "customfield_16531": null,
+        "customfield_12730": null,
+        "aggregatetimespent": null,
+        "customfield_16933": null,
+        "customfield_16932": null,
+        "customfield_16535": null,
+        "resolutiondate": null,
+        "workratio": -1,
+        "watches": {
+            "self": "https://jira.host.invalid/rest/api/2/issue/TRANS-2112/watchers",
+            "watchCount": 1,
+            "isWatching": false
+        },
+        "customfield_15430": null,
+        "created": "2016-05-05T20:17:18.547+0000",
+        "customfield_15830": null,
+        "customfield_11631": null,
+        "customfield_12833": null,
+        "customfield_12832": null,
+        "customfield_14735": "0|12eru0:",
+        "updated": "2016-05-06T10:23:29.619+0000",
+        "customfield_14330": null,
+        "timeoriginalestimate": null,
+        "description": "Need to update copyright in footer to 2016",
+        "customfield_16632": null,
+        "customfield_12431": null,
+        "customfield_12430": null,
+        "customfield_16630": null,
+        "customfield_12433": null,
+        "customfield_10650": null,
+        "customfield_14733": "1|i0mk27:",
+        "customfield_10651": null,
+        "customfield_12432": null,
+        "customfield_14734": "0|12eru0:",
+        "customfield_12831": null,
+        "customfield_12435": null,
+        "customfield_14731": "2|i0xgqz:",
+        "customfield_12434": null,
+        "timetracking": {},
+        "customfield_12830": null,
+        "customfield_10653": null,
+        "customfield_14732": "0|12esgo:",
+        "attachment": [],
+        "summary": "TAC footer has 2015 copyright year",
+        "customfield_13230": null,
+        "customfield_15532": null,
+        "customfield_13231": null,
+        "customfield_15530": null,
+        "customfield_15932": null,
+        "customfield_15930": null,
+        "customfield_11730": null,
+        "customfield_15931": null,
+        "customfield_12931": null,
+        "environment": null,
+        "duedate": null,
+        "comment": {
+            "startAt": 0,
+            "maxResults": 0,
+            "total": 0,
+            "comments": []
+        }
+    }
+}

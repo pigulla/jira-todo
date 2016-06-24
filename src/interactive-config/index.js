@@ -3,6 +3,7 @@
 const chalk = require('chalk');
 const inquirer = require('inquirer');
 const Promise = require('bluebird');
+const JSONs = require('json-strictify');
 const JiraConnector = require('jira-connector');
 
 /* eslint-disable no-console */
@@ -181,6 +182,12 @@ inquirer
             default: false
         },
         {
+            name: 'includeValid',
+            message: 'Should todos with valid issues be included in the output?',
+            type: 'confirm',
+            default: false
+        },
+        {
             name: 'jsx',
             message: 'Do you need to parse JSX files?',
             type: 'confirm',
@@ -258,7 +265,10 @@ inquirer
             name: '_savePassword',
             message: 'Do you want to store your Jira password (not recommended)?',
             type: 'confirm',
-            default: false
+            default: false,
+            when(answers) {
+                return answers._authentication;
+            }
         }
     ])
     .then(function (answers) {
@@ -281,5 +291,5 @@ inquirer
             'the "jira-todo" property:'
         ));
         console.log();
-        console.log(JSON.stringify(answers, null, 4));
+        console.log(JSONs.stringify(answers, null, 4));
     });

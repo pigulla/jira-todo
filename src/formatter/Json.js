@@ -1,5 +1,6 @@
 'use strict';
 
+const JSONs = require('json-strictify');
 const Formatter = require('./Formatter');
 
 /**
@@ -25,7 +26,7 @@ class JsonFormatter extends Formatter {
             this._writeLn(',');
         }
 
-        this._stream.write(JSON.stringify(fileReport), 2);
+        this._stream.write(JSONs.stringify(fileReport), 2);
     }
 
     /** @inheritDoc */

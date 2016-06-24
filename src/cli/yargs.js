@@ -72,6 +72,11 @@ const OPTIONS = {
         choices: Object.keys(formatters),
         default: 'text'
     },
+    'includeValid': {
+        type: 'boolean',
+        describe: 'Include valid issues in output',
+        default: false
+    },
     'output': {
         type: 'string',
         requiresArg: true,
@@ -228,7 +233,7 @@ module.exports = yargs
         'sourceType', 'ecmaVersion', 'jsx', 'globalReturn', 'impliedStrict', 'experimentalObjectRestSpread'
     ], 'Parser configuration')
     .group([
-        'output', 'format', 'logFormat', 'verbose', 'monochrome'
+        'output', 'format', 'includeValid', 'logFormat', 'verbose', 'monochrome'
     ], 'Logging and output')
     .group([
         'jiraHost', 'jiraProtocol', 'jiraPort', 'jiraUsername', 'jiraPassword'

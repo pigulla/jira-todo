@@ -49,6 +49,7 @@ module.exports.result.report = [
         file: 'my-file.js',
         reports: [
             {
+                valid: false,
                 issue: 'FOO-42',
                 message: 'Issue was not found',
                 line: 4,

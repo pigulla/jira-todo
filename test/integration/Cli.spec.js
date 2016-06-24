@@ -179,6 +179,7 @@ describe('Integration for cli wrapper', function () {
             const proc = getProcessMock([
                 '--monochrome',
                 '--logFormat', 'short',
+                '--includeValid',
                 '--verbose', '--verbose', '--verbose',
                 '--jiraUsername', 'myusername',
                 '--jiraPassword', 'mypassword',
@@ -206,48 +207,63 @@ describe('Integration for cli wrapper', function () {
                         {
                             reports: [
                                 {
+                                    valid: true,
+                                    issue: 'PM-1234',
+                                    column: 4,
+                                    line: 7,
+                                    message: 'Issue is valid'
+                                },
+                                {
+                                    valid: false,
                                     issue: 'X-99',
                                     column: 4,
                                     line: 7,
                                     message: 'Project "X" is not allowed'
                                 },
                                 {
+                                    valid: false,
                                     issue: 'PM-42',
                                     column: 4,
                                     line: 7,
                                     message: 'Status "Resolved" (id 5) is not allowed'
                                 },
                                 {
+                                    valid: false,
                                     issue: 'TK-4711',
                                     column: 4,
                                     line: 9,
                                     message: 'Issue was not found'
                                 },
                                 {
+                                    valid: false,
                                     issue: 'ABC-13',
                                     column: 8,
                                     line: 17,
                                     message: 'Type "Story" (id 9) is not allowed'
                                 },
                                 {
+                                    valid: false,
                                     issue: 'ABC-99',
                                     column: 4,
                                     line: 21,
                                     message: 'Status "Resolved" (id 5) is not allowed'
                                 },
                                 {
+                                    valid: false,
                                     issue: null,
                                     column: 4,
                                     line: 27,
                                     message: 'No issue key given'
                                 },
                                 {
+                                    valid: false,
                                     issue: 'ABC-99',
                                     column: 4,
                                     line: 31,
                                     message: 'Status "Resolved" (id 5) is not allowed'
                                 },
                                 {
+                                    valid: false,
                                     issue: 'ABC-1000',
                                     column: 4,
                                     line: 34,
@@ -291,6 +307,7 @@ describe('Integration for cli wrapper', function () {
                         {
                             reports: [
                                 {
+                                    valid: false,
                                     issue: 'PM-42',
                                     column: 4,
                                     line: 6,

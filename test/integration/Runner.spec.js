@@ -33,6 +33,7 @@ describe('Integration test for cli runner', function () {
         const jt = new JiraTodo({
             logger,
             allowTodosWithoutIssues: false,
+            includeValid: true,
             processor: {
                 keywords: [],
                 connector: {
@@ -83,6 +84,7 @@ describe('Integration test for cli runner', function () {
                         file: '../fixtures/testing.es6.js',
                         reports: [
                             {
+                                valid: false,
                                 issue: 'PM-42',
                                 message: 'Type "Task" (id 3) is not allowed',
                                 line: 6,

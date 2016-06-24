@@ -13,13 +13,13 @@ class CheckstyleFormatter extends Formatter {
      * @param {jt.Reports} report
      */
     _report(reports) {
-        reports.forEach(function (error) {
+        reports.forEach(function (report) {
             this._writeLn([
                 '<error',
-                `line="${error.line}"`,
-                `column="${error.column}"`,
-                'severity="error"',
-                `message="${escape(error.message)}"/>`
+                `line="${report.line}"`,
+                `column="${report.column}"`,
+                `severity="${report.valid ? 'info' : 'error'}"`,
+                `message="${escape(report.message)}"/>`
             ].join(' '), 4);
         }, this);
     }

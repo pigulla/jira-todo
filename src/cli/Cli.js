@@ -92,6 +92,7 @@ class Cli {
         return new JiraTodo({
             logger: this._logger,
             allowTodosWithoutIssues: argv.allowTodosWithoutIssues,
+            includeValid: argv.includeValid,
             processor: {
                 keywords: argv.keyword,
                 connector: connectorConfig,

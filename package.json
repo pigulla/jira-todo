@@ -1,6 +1,6 @@
 {
   "name": "jira-todo",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Check your source code for todos and the Jira issues referenced by them.",
   "engines": {
     "node": ">=4"
@@ -53,6 +53,7 @@
     "http-status": "0.2.3",
     "inquirer": "1.0.3",
     "jira-connector": "2.3.0",
+    "json-strictify": "1.0.0",
     "lodash.defaults": "4.0.1",
     "stream-blackhole": "1.0.3",
     "xml-escape": "1.1.0",
