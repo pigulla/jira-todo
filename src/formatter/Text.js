@@ -60,7 +60,7 @@ class TextFormatter extends Formatter {
 
         errors.forEach(function (error) {
             const where = error.issue ? `issue ${error.issue}` : 'todo';
-            
+
             this._writeLn(
                 this._chalk.yellow(`  Problem with ${where} in comment starting in line ${error.line}: `) +
                 this._chalk.yellow.bold(error.message)

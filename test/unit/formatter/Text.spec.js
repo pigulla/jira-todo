@@ -38,11 +38,12 @@ describe('text formatter', function () {
         const expected = [
             'No problems found in file "foo.js"',
             'Found 1 valid issue in file "bar/baz.js"',
-            'Found 2 problems in file "bar/baz.js"',
-            '  Problem with issue undefined in comment starting in line 12: Oh noes',
-            '  Problem with issue undefined in comment starting in line 42: Escape > me!',
+            'Found 3 problems in file "bar/baz.js"',
+            '  Problem with issue PM-99 in comment starting in line 12: Oh noes',
+            '  Problem with todo in comment starting in line 15: No issue key given',
+            '  Problem with issue PM-1000 in comment starting in line 42: Escape > me!',
             '',
-            'Found 2 errors in 2 files'
+            'Found 3 errors in 2 files'
         ];
 
         expect(actual).to.deep.equal(expected);

@@ -42,22 +42,27 @@ describe('checkstyle formatter', function () {
             const document = formatAndParse(helper.sampleResult);
             const errors = document.find('//error');
 
-            expect(errors).to.have.length(3);
+            expect(errors).to.have.length(4);
 
             expect(errors[0].attr('line').value()).to.equal('12');
             expect(errors[0].attr('column').value()).to.equal('2');
             expect(errors[0].attr('message').value()).to.equal('Oh noes');
             expect(errors[0].attr('severity').value()).to.equal('error');
 
-            expect(errors[1].attr('line').value()).to.equal('17');
-            expect(errors[1].attr('column').value()).to.equal('1');
-            expect(errors[1].attr('message').value()).to.equal('I am Groot');
-            expect(errors[1].attr('severity').value()).to.equal('info');
+            expect(errors[1].attr('line').value()).to.equal('15');
+            expect(errors[1].attr('column').value()).to.equal('10');
+            expect(errors[1].attr('message').value()).to.equal('No issue key given');
+            expect(errors[1].attr('severity').value()).to.equal('error');
 
-            expect(errors[2].attr('line').value()).to.equal('42');
-            expect(errors[2].attr('column').value()).to.equal('4');
-            expect(errors[2].attr('message').value()).to.equal('Escape > me!');
-            expect(errors[2].attr('severity').value()).to.equal('error');
+            expect(errors[2].attr('line').value()).to.equal('17');
+            expect(errors[2].attr('column').value()).to.equal('1');
+            expect(errors[2].attr('message').value()).to.equal('I am Groot');
+            expect(errors[2].attr('severity').value()).to.equal('info');
+
+            expect(errors[3].attr('line').value()).to.equal('42');
+            expect(errors[3].attr('column').value()).to.equal('4');
+            expect(errors[3].attr('message').value()).to.equal('Escape > me!');
+            expect(errors[3].attr('severity').value()).to.equal('error');
         });
     });
 });
