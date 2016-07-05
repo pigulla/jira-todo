@@ -1,4 +1,4 @@
-## 1.1.0 (2016-??-??)
+## 1.1.0 (2016-07-05)
 
 - Add `includeValid` option
 - Fix log level filter not being set correctly
