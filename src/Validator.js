@@ -16,7 +16,7 @@ class Validator {
         assert.object(logger, 'logger');
 
         this._logger = logger;
-        this._opts = this._initOptions(options);
+        this._opts = Validator._initOptions(options);
 
         this._logDebuggingInfo();
     }
@@ -26,19 +26,23 @@ class Validator {
      * @return {?string}
      */
     validate(issue) {
+        const projects = this._opts.projects;
+        const issueTypes = this._opts.issueTypes;
+        const issueStatus = this._opts.issueStatus;
+
         if (!issue.status) {
             return 'Issue was not found';
         }
 
-        if (!this._isOk(issue.project, this._opts.projects.default, this._opts.projects.filter)) {
+        if (!Validator._isOk(issue.project, projects.default, projects.filter)) {
             return `Project "${issue.project}" is not allowed`;
         }
 
-        if (!this._isOk(issue.status.typeId, this._opts.issueTypes.default, this._opts.issueTypes.filter)) {
+        if (!Validator._isOk(issue.status.typeId, issueTypes.default, issueTypes.filter)) {
             return `Type "${issue.status.typeName}" (id ${issue.status.typeId}) is not allowed`;
         }
 
-        if (!this._isOk(issue.status.statusId, this._opts.issueStatus.default, this._opts.issueStatus.filter)) {
+        if (!Validator._isOk(issue.status.statusId, issueStatus.default, issueStatus.filter)) {
             return `Status "${issue.status.statusName}" (id ${issue.status.statusId}) is not allowed`;
         }
 
@@ -52,7 +56,7 @@ class Validator {
      * @param {Set} filter
      * @return {boolean}
      */
-    _isOk(value, dflt, filter) {
+    static _isOk(value, dflt, filter) {
         if (dflt === 'included') {
             return !filter.has(value);
         } /* istanbul ignore else */ else if (dflt === 'excluded') {
@@ -67,7 +71,7 @@ class Validator {
      * @param {object} options
      * @return {object}
      */
-    _initOptions(options) {
+    static _initOptions(options) {
         const opts = defaults({}, options, {
             projects: {},
             issueTypes: {},
@@ -87,7 +91,7 @@ class Validator {
             filter: []
         });
 
-        this._validateOptions(opts);
+        Validator._validateOptions(opts);
 
         return opts;
     }
@@ -96,7 +100,7 @@ class Validator {
      * @private
      * @param {object} options
      */
-    _validateOptions(options) {
+    static _validateOptions(options) {
         assert.object(options.projects, 'options.projects');
         assert.object(options.issueTypes, 'options.issueTypes');
         assert.object(options.issueStatus, 'options.issueStatus');

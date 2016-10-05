@@ -1,3 +1,8 @@
+## 1.1.1 (2016-10-05)
+
+ - Update dependencies
+ - Small improvements to interactive-config
+
 ## 1.1.0 (2016-07-05)
 
 - Add `includeValid` option

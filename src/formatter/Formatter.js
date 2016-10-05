@@ -26,6 +26,8 @@ class Formatter {
         this._stream.write(padding + (arguments.length === 0 ? '' : string) + os.EOL);
     }
 
+    /* eslint-disable class-methods-use-this */
+
     /**
      */
     start() {
@@ -41,6 +43,8 @@ class Formatter {
      */
     end() {
     }
+
+    /* eslint-enable class-methods-use-this */
 }
 
 module.exports = Formatter;

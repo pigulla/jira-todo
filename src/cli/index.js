@@ -1,7 +1,7 @@
 #!/usr/bin/env node
+/* eslint-disable no-process-env, no-process-exit */
 
 'use strict';
-/* eslint-disable no-process-env, no-process-exit */
 
 const Cli = require('./Cli');
 

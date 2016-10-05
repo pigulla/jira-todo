@@ -41,12 +41,12 @@ describe('analyze', function () {
     });
 
     it('filters comments without todos', function () {
-        const TODO_1 = Symbol();
-        const TODO_2 = Symbol();
+        const TODO_1 = Symbol('Todo 1');
+        const TODO_2 = Symbol('Todo 2');
         const ISSUE_1_KEY = 'KEY-1';
         const ISSUE_2_KEY = 'KEY-2';
-        const ISSUE_1 = Symbol();
-        const ISSUE_2 = Symbol();
+        const ISSUE_1 = Symbol('Issue 1');
+        const ISSUE_2 = Symbol('Issue 2');
 
         extractComments.returns([
             {

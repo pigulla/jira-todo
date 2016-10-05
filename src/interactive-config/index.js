@@ -56,7 +56,10 @@ inquirer
         {
             message: 'Please enter the hostname of your Jira server (without "http", e.g. "acme.atlassian.net"):',
             name: 'jiraHost',
-            type: 'string'
+            type: 'string',
+            validate(answer) {
+                return answer.length > 0 ? true : 'Please enter the hostname';
+            }
         },
         {
             message: 'What protocol do you want to use?',
@@ -71,6 +74,9 @@ inquirer
             type: 'string',
             default(answers) {
                 return answers.jiraProtocol === 'https' ? 443 : 80;
+            },
+            validate(answer) {
+                return /^\d+$/.test(answer) ? true : 'Please enter a port number';
             }
         },
         {
@@ -85,6 +91,9 @@ inquirer
             type: 'string',
             when(answers) {
                 return answers._authentication;
+            },
+            validate(answer) {
+                return answer.length > 0 ? true : 'Please enter your username';
             }
         },
         {
@@ -95,6 +104,10 @@ inquirer
                 return answers._authentication;
             },
             validate(password, answers) {
+                if (password.length === 0) {
+                    return 'Please enter your password';
+                }
+
                 const options = Object.assign({}, answers, { jiraPassword: password });
 
                 return jira(options, 'myPermissions', 'getMyPermissions').return(true);
