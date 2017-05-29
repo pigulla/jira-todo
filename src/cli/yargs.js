@@ -154,7 +154,7 @@ const OPTIONS = {
         type: 'number',
         requiresArg: true,
         describe: 'Supported ECMAScript version',
-        choices: [3, 5, 6, 7],
+        choices: [3, 5, 6, 7, 8],
         default: 6
     },
     'sourceType': {

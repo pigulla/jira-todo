@@ -1,3 +1,8 @@
+## 1.2.0 (2017-05-29)
+
+ - Add "8" to valid ecmaVersion parameter options
+ - Update dependencies
+
 ## 1.1.1 (2016-10-05)
 
  - Update dependencies

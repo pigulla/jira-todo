@@ -132,7 +132,7 @@ describe('Cli', function () {
     });
 
     it('for errors', function () {
-        runner.returns(Promise.reject('Oh noes'));
+        runner.returns(Promise.reject(new Error('Oh noes')));
 
         return cli(proc)
             .then(exitCode => expect(exitCode).to.equal(2));

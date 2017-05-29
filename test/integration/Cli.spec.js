@@ -319,5 +319,50 @@ describe('Integration for cli wrapper', function () {
                     ]);
                 });
         });
+
+        it('for testing.es8.js', function () {
+            test.addIssueToNock('PM-42', {
+                statusId: 5,
+                statusName: 'Resolved'
+            });
+
+            const tmpFile = tmp.fileSync();
+            const proc = getProcessMock([
+                '--monochrome',
+                '--logFormat', 'long',
+                '--verbose', '--verbose', '--verbose',
+                '--jiraUsername', 'myusername',
+                '--jiraPassword', 'mypassword',
+                '--jiraHost', 'jira.host.invalid',
+                '--pattern', '**/testing.es8.js',
+                '--ecmaVersion', '8',
+                '--projectsDefault', 'included',
+                '--issueStatusDefault', 'excluded',
+                '--issueStatusFilter', '1',
+                '--format', 'json',
+                '--output', tmpFile.name
+            ]);
+
+            return cli(proc)
+                .then(exitCode => expect(exitCode).to.equal(1))
+                .then(() => Promise.fromCallback(cb => fs.readFile(tmpFile.name, cb)))
+                .then(contents => JSON.parse(contents.toString()))
+                .then(function (result) {
+                    expect(result).to.deep.equal([
+                        {
+                            reports: [
+                                {
+                                    valid: false,
+                                    issue: 'PM-42',
+                                    column: 4,
+                                    line: 12,
+                                    message: 'Status "Resolved" (id 5) is not allowed'
+                                }
+                            ],
+                            file: 'test/fixtures/testing.es8.js'
+                        }
+                    ]);
+                });
+        });
     });
 });
