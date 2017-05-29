@@ -210,7 +210,7 @@ inquirer
             name: 'ecmaVersion',
             message: 'Which version of ECMAScript are you using?',
             type: 'list',
-            choices: ['3', '5', '6', '7'],
+            choices: ['3', '5', '6', '7', '8'],
             default: '6',
             filter(input) {
                 return parseInt(input, 10);
